@@ -16,6 +16,10 @@ run/main_scene="res://scenes/world.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.png"
 
+[physics]
+
+3d/default_gravity=12.0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

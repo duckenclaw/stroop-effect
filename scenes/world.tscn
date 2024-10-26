@@ -8,6 +8,7 @@
 [node name="World" type="Node3D"]
 
 [node name="Player" parent="." instance=ExtResource("1_l36pb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lkiu3")
