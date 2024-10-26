@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://dguvbimxk8r80"]
+
+[ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://materials/player_material.tres" id="1_a22rp"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_kqdvt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_m5wr1"]
+material = ExtResource("1_a22rp")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cwfqp"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_kqdvt")
+
+[node name="Mesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_m5wr1")
+
+[node name="Collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_cwfqp")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, -4.68079e-16, 3.27752e-16, 3.27752e-16, 0.939693, 0.34202, -4.68079e-16, -0.34202, 0.939693, 2.08165e-12, 2, 3)
+fov = 90.0

@@ -11,8 +11,10 @@ config_version=5
 [application]
 
 config/name="Stroop-effect"
+config/version="0.0.1"
+run/main_scene="res://scenes/world.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="res://icon.png"
 
 [rendering]
 
