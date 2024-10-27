@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c77pmyteofxak"]
+
+[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://scenes/low_obstacle.tscn" id="1_bigum"]
+[ext_resource type="PackedScene" uid="uid://bg1hiam3u4626" path="res://scenes/floor.tscn" id="2_8usx5"]
+
+[node name="Terrain_0" type="MeshInstance3D"]
+
+[node name="LowObstacle" parent="." instance=ExtResource("1_bigum")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, -2)
+
+[node name="Floor" parent="." instance=ExtResource("2_8usx5")]
