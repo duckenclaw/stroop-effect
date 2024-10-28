@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://scenes/low_obstacle.tscn" id="1_xwa3v"]
 [ext_resource type="PackedScene" uid="uid://bg1hiam3u4626" path="res://scenes/floor.tscn" id="2_6c0ml"]
 
-[node name="Terrain_0" type="MeshInstance3D"]
+[node name="Terrain_0" type="Node3D"]
 
 [node name="LowObstacle" parent="." instance=ExtResource("1_xwa3v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, -2)
