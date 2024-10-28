@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://ct5v2edvqq13h"]
+
+[ext_resource type="Script" path="res://scenes/ui/lose_ui.gd" id="1_gh3jp"]
+
+[node name="LoseUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gh3jp")
+
+[node name="LoseText" type="Label" parent="."]
+layout_mode = 2
+offset_left = 414.0
+offset_right = 617.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 42
+text = "YOU LOST"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+custom_minimum_size = Vector2(260, 80)
+layout_mode = 2
+offset_left = 386.0
+offset_top = 488.0
+offset_right = 646.0
+offset_bottom = 568.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_font_sizes/font_size = 36
+text = "Restart"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

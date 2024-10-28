@@ -1,4 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bug0idg373q3i"]
+[gd_scene load_steps=5 format=3 uid="uid://bug0idg373q3i"]
+
+[ext_resource type="Material" uid="uid://ktpg8kie2icx" path="res://materials/obstacle_material.tres" id="1_yssao"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_mdp1s"]
 size = Vector3(4, 1, 1)
@@ -13,6 +15,7 @@ size = Vector3(3, 0.8, 1)
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.5, 2.08165e-12)
+material_override = ExtResource("1_yssao")
 mesh = SubResource("BoxMesh_mdp1s")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
