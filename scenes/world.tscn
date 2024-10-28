@@ -7,8 +7,7 @@
 
 [node name="World" type="Node3D"]
 
-[node name="Player" parent="." instance=ExtResource("1_l36pb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+[node name="TerrainController" parent="." instance=ExtResource("2_8iu0y")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_lkiu3")
@@ -18,4 +17,10 @@ transform = Transform3D(0.707107, -0.5, 0.5, 2.4663e-16, 0.707107, 0.707107, -0.
 light_energy = 2.5
 light_indirect_energy = 3.0
 
-[node name="TerrainController" parent="." instance=ExtResource("2_8iu0y")]
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, -4.96191e-16, 3.16108e-16, 3.16108e-16, 0.906308, 0.422618, -4.96191e-16, -0.422618, 0.906308, 2.08165e-12, 2, 3)
+
+[node name="Player" parent="." instance=ExtResource("1_l36pb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[connection signal="lose" from="Player" to="TerrainController" method="_on_player_lose"]

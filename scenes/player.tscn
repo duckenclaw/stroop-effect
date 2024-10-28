@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dguvbimxk8r80"]
+[gd_scene load_steps=6 format=3 uid="uid://dguvbimxk8r80"]
 
 [ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://materials/player_material.tres" id="1_a22rp"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_kqdvt"]
@@ -7,6 +7,9 @@
 material = ExtResource("1_a22rp")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cwfqp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_32p4h"]
+radius = 0.25
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_kqdvt")
@@ -19,6 +22,10 @@ mesh = SubResource("BoxMesh_m5wr1")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_cwfqp")
 
-[node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, -4.68079e-16, 3.27752e-16, 3.27752e-16, 0.939693, 0.34202, -4.68079e-16, -0.34202, 0.939693, 2.08165e-12, 2, 3)
-fov = 90.0
+[node name="Hitbox" type="Area3D" parent="."]
+
+[node name="Collider" type="CollisionShape3D" parent="Hitbox"]
+transform = Transform3D(1, 0, -1.5246e-23, -1.5246e-23, -4.37114e-08, -1, 0, 1, -4.37114e-08, 2.08165e-12, 0.5, 2.08165e-12)
+shape = SubResource("CapsuleShape3D_32p4h")
+
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]

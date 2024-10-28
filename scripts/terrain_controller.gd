@@ -13,7 +13,11 @@ var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
 @export var terrain_velocity: float = 10.0
 ## The number of blocks to keep rendered to the viewport
-@export var num_terrain_blocks = 3
+@export var num_terrain_blocks = 10
+## Position offset for when to delete the first terrain
+@export var deletion_offset = 10
+## Starting platform
+@export var start_block = load("res://scenes/terrains/terrain_5.tscn")
 ## Path to directory holding the terrain block scenes
 @export_dir var terrian_blocks_path = "res://scenes/terrains/"
 
@@ -29,10 +33,12 @@ func _physics_process(delta: float) -> void:
 
 func _init_blocks(number_of_blocks: int) -> void:
 	for block_index in number_of_blocks:
-		var block = TerrainBlocks.pick_random().instantiate()
+		var block
 		if block_index == 0:
-			block.position.z = block.get_child(1).get_child(0).scale.y/2
+			block = start_block.instantiate()
+			block.position.z = block.mesh.size.y/2
 		else:
+			block = TerrainBlocks.pick_random().instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)
 		terrain_belt.append(block)
@@ -42,7 +48,7 @@ func _progress_terrain(delta: float) -> void:
 	for block in terrain_belt:
 		block.position.z += terrain_velocity * delta
 
-	if terrain_belt[0].position.z >= terrain_belt[0].get_child(1).get_child(0).mesh.size.y/2:
+	if terrain_belt[0].position.z-deletion_offset >= terrain_belt[0].mesh.size.y/2:
 		var last_terrain = terrain_belt[-1]
 		var first_terrain = terrain_belt.pop_front()
 
@@ -53,8 +59,8 @@ func _progress_terrain(delta: float) -> void:
 		first_terrain.queue_free()
 
 
-func _append_to_far_edge(target_block: Node3D, appending_block: Node3D) -> void:
-	appending_block.position.z = target_block.position.z - target_block.get_child(1).get_child(0).mesh.size.y/2 - appending_block.get_child(1).get_child(0).mesh.size.y/2
+func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInstance3D) -> void:
+	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
 
 
 func _load_terrain_scenes(target_path: String) -> void:
@@ -62,3 +68,7 @@ func _load_terrain_scenes(target_path: String) -> void:
 	for scene_path in dir.get_files():
 		print("Loading terrian block scene: " + target_path + "/" + scene_path)
 		TerrainBlocks.append(load(target_path + "/" + scene_path))
+
+
+func _on_player_lose():
+	terrain_velocity = 0.0

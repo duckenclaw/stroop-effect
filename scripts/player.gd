@@ -8,6 +8,8 @@ const MOVE_SPEED = 7.5  # Speed of lerping between tracks
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 
+signal lose()
+
 func _physics_process(delta):
 	# Add gravity.
 	if not is_on_floor():
@@ -31,3 +33,8 @@ func _physics_process(delta):
 
 	# Move the character.
 	move_and_slide()
+
+func _on_hitbox_area_entered(area):
+	if area.is_in_group("obstacle"):
+		lose.emit()
+		self.process_mode = Node.PROCESS_MODE_DISABLED

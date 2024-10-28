@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxodyyjk7dr3t"]
+
+[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://terrain_colliders.tscn" id="2_l7gxt"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 10)
+
+[node name="Terrain_5" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="TerrainColliders" parent="." instance=ExtResource("2_l7gxt")]
