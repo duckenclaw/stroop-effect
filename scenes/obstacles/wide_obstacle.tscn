@@ -6,10 +6,10 @@
 size = Vector3(4, 1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_07lmp"]
-size = Vector3(3, 0.2, 1)
+size = Vector3(4, 0.2, 1.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7ifdx"]
-size = Vector3(3, 0.8, 1)
+size = Vector3(4, 0.8, 1)
 
 [node name="WideObstacle" type="StaticBody3D"]
 

@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
 const SPEED = 7.5
-const JUMP_VELOCITY = 6.5
+const JUMP_VELOCITY = 5.5
 const TRACK_POSITIONS = [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
 const MOVE_SPEED = 7.5  # Speed of lerping between tracks
 
@@ -14,11 +14,13 @@ func _physics_process(delta):
 	# Add gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+		if Input.is_action_just_pressed("ui_down"):
+			velocity.y -= gravity*50 * delta
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_up") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-
+	
 	# Handle track switching with input.
 	if Input.is_action_just_pressed("ui_left") and current_track > 0:
 		current_track -= 1
