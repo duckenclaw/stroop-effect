@@ -37,6 +37,9 @@ func _init_blocks(number_of_blocks: int) -> void:
 		if block_index == 0:
 			block = start_block.instantiate()
 			block.position.z = block.mesh.size.y/2
+		elif block_index == 1:
+			block = start_block.instantiate()
+			_append_to_far_edge(terrain_belt[block_index-1], block)
 		else:
 			block = TerrainBlocks.pick_random().instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
