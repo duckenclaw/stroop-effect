@@ -1,35 +1,27 @@
 extends Node3D
 class_name TerrainController
-## This builds and operates the terrain "conveyor belt"
-##
-## A set of randomly choosen terrain blocks is rendered to the viewport.
-## As the game played the terrian is moved in the posative Z direction.
-## When a given block passes behind this node it is removed and a new block
-## is added to the far end of the conveyor
 
-## Holds the catalog of loaded terrian block scenes
+@onready var player = get_parent().get_node("Player")
+
 var TerrainBlocks: Array = []
-## The set of terrian blocks which are currently rendered to viewport
 var terrain_belt: Array[MeshInstance3D] = []
 @export var terrain_velocity: float = 10.0
-## The number of blocks to keep rendered to the viewport
 @export var num_terrain_blocks = 10
-## Position offset for when to delete the first terrain
 @export var deletion_offset = 10
-## Starting platform
 @export var start_block = load("res://scenes/terrains/terrain_5.tscn")
-## Path to directory holding the terrain block scenes
 @export_dir var terrian_blocks_path = "res://scenes/terrains/"
+@export_dir var materials_path = "res://materials/obstacle_materials/"  # Path to obstacle materials
 
+# Array to store loaded obstacle materials
+var obstacle_materials: Array = []
 
 func _ready() -> void:
 	_load_terrain_scenes(terrian_blocks_path)
+	_load_obstacle_materials(materials_path)
 	_init_blocks(num_terrain_blocks)
-
 
 func _physics_process(delta: float) -> void:
 	_progress_terrain(delta)
-
 
 func _init_blocks(number_of_blocks: int) -> void:
 	for block_index in number_of_blocks:
@@ -45,7 +37,7 @@ func _init_blocks(number_of_blocks: int) -> void:
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)
 		terrain_belt.append(block)
-
+		_assign_random_materials(block)  # Assign materials after adding block
 
 func _progress_terrain(delta: float) -> void:
 	for block in terrain_belt:
@@ -59,19 +51,34 @@ func _progress_terrain(delta: float) -> void:
 		_append_to_far_edge(last_terrain, block)
 		add_child(block)
 		terrain_belt.append(block)
+		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
-
 
 func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInstance3D) -> void:
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
 
-
 func _load_terrain_scenes(target_path: String) -> void:
 	var dir = DirAccess.open(target_path)
 	for scene_path in dir.get_files():
-		print("Loading terrian block scene: " + target_path + "/" + scene_path)
+		print("Loading terrain block scene: " + target_path + "/" + scene_path)
 		TerrainBlocks.append(load(target_path + "/" + scene_path))
 
+# Load all materials from the specified directory
+func _load_obstacle_materials(target_path: String) -> void:
+	var dir = DirAccess.open(target_path)
+	for material_path in dir.get_files():
+		var material = load(target_path + "/" + material_path)
+		if material is Material:
+			obstacle_materials.append(material)
+
+# Randomly assign materials to each obstacle within the block
+func _assign_random_materials(block: Node) -> void:
+	for obstacle in block.get_children():
+		if obstacle.name.ends_with("Obstacle"):  # Check for obstacle nodes
+			if obstacle.has_node("Mesh"):  # Ensure there's a mesh instance
+				var mesh_instance = obstacle.get_node("Mesh")
+				var random_material = obstacle_materials.pick_random()
+				mesh_instance.material_override = random_material
 
 func _on_player_lose():
 	terrain_velocity = 0.0
