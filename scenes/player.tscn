@@ -9,7 +9,7 @@ material = ExtResource("1_a22rp")
 [sub_resource type="BoxShape3D" id="BoxShape3D_cwfqp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p3nr5"]
-size = Vector3(1.1, 0.25, 1.1)
+size = Vector3(1.1, 0.25, 1.5)
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_kqdvt")

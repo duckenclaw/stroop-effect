@@ -67,9 +67,9 @@ func _on_hitbox_area_entered(area):
 		if obstacle_color != current_color:
 			lose.emit()
 			self.process_mode = Node.PROCESS_MODE_DISABLED
-		elif obstacle_color == current_color:
-			add_points(1)
+		else:
 			area.get_parent().queue_free()
+			add_points(1)
 			
 func add_points(amount: int):
 	points += amount
