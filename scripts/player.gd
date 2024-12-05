@@ -70,12 +70,15 @@ func _on_hitbox_area_entered(area):
 		else:
 			area.get_parent().queue_free()
 			add_points(1)
+	elif area.is_in_group("collectible"):
+		change_color()
+		area.queue_free()
 			
 func add_points(amount: int):
 	points += amount
 	ui.update_points(points)
-	if points % 3 == 0:
-		change_color()
+	#if points % 3 == 0:
+		#change_color()
 
 func _load_colors(target_path: String) -> void:
 	var dir = DirAccess.open(target_path)

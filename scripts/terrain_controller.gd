@@ -5,10 +5,12 @@ class_name TerrainController
 
 var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
+var terrains_count: int = 0
 @export var terrain_velocity: float = 10.0
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
-@export var start_block = load("res://scenes/terrains/terrain_5.tscn")
+@export var start_block = load("res://scenes/special_terrains/terrain_free.tscn")
+@export var color_change_block = load("res://scenes/special_terrains/terrain_color_change.tscn")
 @export_dir var terrian_blocks_path = "res://scenes/terrains/"
 @export_dir var materials_path = "res://materials/obstacle_materials/"  # Path to obstacle materials
 
@@ -37,20 +39,25 @@ func _init_blocks(number_of_blocks: int) -> void:
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)
 		terrain_belt.append(block)
+		print(terrains_count)
 		_assign_random_materials(block)  # Assign materials after adding block
 
 func _progress_terrain(delta: float) -> void:
 	for block in terrain_belt:
-		block.position.z += terrain_velocity * delta
+		block.position.z += (terrain_velocity + terrains_count/100.0) * delta
 
 	if terrain_belt[0].position.z-deletion_offset >= terrain_belt[0].mesh.size.y/2:
 		var last_terrain = terrain_belt[-1]
 		var first_terrain = terrain_belt.pop_front()
-
-		var block = TerrainBlocks.pick_random().instantiate()
+		var block
+		if terrains_count % 5 == 0:
+			block = color_change_block.instantiate()
+		else:
+			block = TerrainBlocks.pick_random().instantiate()
 		_append_to_far_edge(last_terrain, block)
 		add_child(block)
 		terrain_belt.append(block)
+		terrains_count += 1
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://scenes/obstacles/wide_obstacle.tscn" id="1_oe5ee"]
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://scenes/obstacles/high_obstacle.tscn" id="1_ouneh"]
-[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://terrain_colliders.tscn" id="3_vajrj"]
+[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://scenes/terrain_colliders.tscn" id="3_vajrj"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 10)
