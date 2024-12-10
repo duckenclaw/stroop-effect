@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://d124i6n4a6ibb"]
+
+[ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://scenes/obstacles/long_high_obstacle.tscn" id="1_iinqg"]
+[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://scenes/obstacles/wide_obstacle.tscn" id="2_8lvw2"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 10)
+
+[node name="Terrain_7" type="MeshInstance3D"]
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="LongHighObstacle" parent="." instance=ExtResource("1_iinqg")]
+
+[node name="WideObstacle" parent="." instance=ExtResource("2_8lvw2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.08165e-12, -3)
