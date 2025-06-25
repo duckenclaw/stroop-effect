@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://cfjx40l0hw0rv"]
+[gd_scene load_steps=5 format=3 uid="uid://cfjx40l0hw0rv"]
 
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://scenes/obstacles/high_obstacle.tscn" id="1_i177p"]
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://materials/terrain.tres" id="1_r6siv"]
 [ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://scenes/obstacles/wide_obstacle.tscn" id="1_r7xvr"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 10)
 
 [node name="Terrain_5" type="MeshInstance3D"]
+material_override = ExtResource("1_r6siv")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="WideObstacle" parent="." instance=ExtResource("1_r7xvr")]

@@ -7,6 +7,7 @@ var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
 var terrains_count: int = 0
 @export var terrain_velocity: float = 10.0
+@export var terrain_velocity_increase: float = 0.025
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
 @export var start_block = load("res://scenes/special_terrains/terrain_free.tscn")
@@ -63,6 +64,7 @@ func _progress_terrain(delta: float) -> void:
 
 func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInstance3D) -> void:
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
+	terrain_velocity += player.points * terrain_velocity_increase
 
 func _load_terrain_scenes(target_path: String) -> void:
 	var dir = DirAccess.open(target_path)
@@ -81,7 +83,7 @@ func _load_obstacle_materials(target_path: String) -> void:
 # Randomly assign materials to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
 	for obstacle in block.get_children():
-		if obstacle.name.ends_with("Obstacle"):  # Check for obstacle nodes
+		if obstacle.name.ends_with("Obstacle") and not(obstacle.name.begins_with("Ramp")):  # Check for obstacle nodes
 			if obstacle.has_node("Mesh"):  # Ensure there's a mesh instance
 				var mesh_instance = obstacle.get_node("Mesh")
 				var random_material = obstacle_materials.pick_random()

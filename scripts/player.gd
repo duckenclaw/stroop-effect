@@ -1,15 +1,19 @@
 extends CharacterBody3D
 
-const SPEED = 7.5
 const JUMP_VELOCITY = 5.5
 const TRACK_POSITIONS = [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
-const MOVE_SPEED = 7.5  # Speed of lerping between tracks
 const DOWN_SPEED = 50.0 # Speed of going down when pressing down in a jump
+const MOVE_SPEED = 7.5 # Speed of lerping between tracks
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 
 @onready var ui = get_parent().get_node("CanvasLayer/UI")
+@onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
+
+
+@export var point_sfx: AudioStreamMP3
+@export var color_change_sfx: AudioStreamMP3
 
 @export_dir var materials_path = "res://materials/obstacle_materials/"  # Path to obstacle materials
 
@@ -43,7 +47,7 @@ func _physics_process(delta):
 			velocity.y -= gravity * DOWN_SPEED * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("ui_up") and is_on_floor():
+	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("jump")) and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	
 	# Handle track switching with input.
@@ -57,6 +61,9 @@ func _physics_process(delta):
 	
 	# Smoothly move towards the target X position.
 	global_transform.origin.x = lerp(global_transform.origin.x, target_x, MOVE_SPEED * delta)
+	
+	# Keep the player centered on the Z axis.
+	global_transform.origin.z = lerp(global_transform.origin.z, 0.0, MOVE_SPEED * delta)
 
 	# Move the character.
 	move_and_slide()
@@ -68,10 +75,15 @@ func _on_hitbox_area_entered(area):
 			lose.emit()
 			self.process_mode = Node.PROCESS_MODE_DISABLED
 		else:
+			audio_stream_player.stream = point_sfx
+			audio_stream_player.playing = true
 			area.get_parent().queue_free()
 			add_points(1)
 	elif area.is_in_group("collectible"):
+		audio_stream_player.stream = color_change_sfx
+		audio_stream_player.playing = true
 		change_color()
+		add_points(3)
 		area.queue_free()
 			
 func add_points(amount: int):

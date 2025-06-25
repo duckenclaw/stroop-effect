@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dxodyyjk7dr3t"]
+[gd_scene load_steps=4 format=3 uid="uid://dxodyyjk7dr3t"]
 
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://materials/terrain.tres" id="1_cu0im"]
 [ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://scenes/terrain_colliders.tscn" id="1_ts8rq"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 10)
 
 [node name="Terrain_5" type="MeshInstance3D"]
+material_override = ExtResource("1_cu0im")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="TerrainColliders" parent="." instance=ExtResource("1_ts8rq")]

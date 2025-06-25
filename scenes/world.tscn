@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://3kb35cm3l6ce"]
+[gd_scene load_steps=8 format=3 uid="uid://3kb35cm3l6ce"]
 
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://scenes/player.tscn" id="1_l36pb"]
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://scenes/terrain_controller.tscn" id="2_8iu0y"]
 [ext_resource type="PackedScene" uid="uid://bwcqe7y7c8upv" path="res://scenes/ui/ui.tscn" id="3_0nf68"]
+[ext_resource type="AudioStream" uid="uid://diahq04ocpctw" path="res://sound/electric-spiral.mp3" id="4_guta5"]
+[ext_resource type="Script" path="res://scripts/MusicController.gd" id="5_gu7ap"]
+[ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://sound/wika-wika.mp3" id="6_n2hxv"]
 
 [sub_resource type="Environment" id="Environment_lkiu3"]
 
@@ -23,10 +26,21 @@ light_energy = 2.5
 light_indirect_energy = 3.0
 
 [node name="Camera" type="Camera3D" parent="."]
-transform = Transform3D(1, -4.96191e-16, 3.16108e-16, 3.16108e-16, 0.906308, 0.422618, -4.96191e-16, -0.422618, 0.906308, 2.08165e-12, 2, 3)
+transform = Transform3D(1, -4.9619e-16, 3.16109e-16, 3.16108e-16, 0.906308, 0.422618, -4.96191e-16, -0.422618, 0.906308, 2.08165e-12, 4, 4)
 
 [node name="Player" parent="." instance=ExtResource("1_l36pb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+current = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_guta5")
+autoplay = true
+script = ExtResource("5_gu7ap")
+lose_sound = ExtResource("6_n2hxv")
+bgm = ExtResource("4_guta5")
+
 [connection signal="lose" from="Player" to="CanvasLayer/UI" method="_on_player_lose"]
 [connection signal="lose" from="Player" to="TerrainController" method="_on_player_lose"]
+[connection signal="lose" from="Player" to="AudioStreamPlayer3D" method="_on_player_lose"]
