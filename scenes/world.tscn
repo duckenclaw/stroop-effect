@@ -1,13 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://3kb35cm3l6ce"]
+[gd_scene load_steps=11 format=3 uid="uid://3kb35cm3l6ce"]
 
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://scenes/player.tscn" id="1_l36pb"]
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://scenes/terrain_controller.tscn" id="2_8iu0y"]
 [ext_resource type="PackedScene" uid="uid://bwcqe7y7c8upv" path="res://scenes/ui/ui.tscn" id="3_0nf68"]
+[ext_resource type="Shader" uid="uid://duk153mirc34n" path="res://scripts/world.gdshader" id="3_i7141"]
 [ext_resource type="AudioStream" uid="uid://diahq04ocpctw" path="res://sound/electric-spiral.mp3" id="4_guta5"]
 [ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://scripts/MusicController.gd" id="5_gu7ap"]
 [ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://sound/wika-wika.mp3" id="6_n2hxv"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]
+shader = ExtResource("3_i7141")
+
+[sub_resource type="Sky" id="Sky_7r4gi"]
+sky_material = SubResource("ShaderMaterial_4mrxx")
+
 [sub_resource type="Environment" id="Environment_lkiu3"]
+background_mode = 2
+sky = SubResource("Sky_7r4gi")
 
 [node name="World" type="Node3D"]
 

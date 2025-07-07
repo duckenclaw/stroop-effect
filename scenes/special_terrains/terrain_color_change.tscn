@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://d3gu0f0ummoww"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://materials/terrain.tres" id="1_sc0hu"]
-[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://scenes/color_change.tscn" id="1_u6lob"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://scenes/obstacles/color_change.tscn" id="1_u6lob"]
 [ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://scenes/terrain_colliders.tscn" id="2_sy00k"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]

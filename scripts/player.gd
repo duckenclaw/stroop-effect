@@ -83,7 +83,7 @@ func _on_hitbox_area_entered(area):
 		audio_stream_player.stream = color_change_sfx
 		audio_stream_player.playing = true
 		change_color()
-		add_points(3)
+		add_points(1)
 		area.queue_free()
 			
 func add_points(amount: int):

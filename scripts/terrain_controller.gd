@@ -6,12 +6,13 @@ class_name TerrainController
 var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
 var terrains_count: int = 0
-@export var terrain_velocity: float = 10.0
-@export var terrain_velocity_increase: float = 0.025
+@export var terrain_velocity: float = 7.5
+@export var terrain_velocity_increase: float = 0.005
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
 @export var start_block = load("res://scenes/special_terrains/terrain_free.tscn")
 @export var color_change_block = load("res://scenes/special_terrains/terrain_color_change.tscn")
+@export var color_change_frequency: int = 10
 @export_dir var terrian_blocks_path = "res://scenes/terrains/"
 @export_dir var materials_path = "res://materials/obstacle_materials/"  # Path to obstacle materials
 
@@ -51,7 +52,7 @@ func _progress_terrain(delta: float) -> void:
 		var last_terrain = terrain_belt[-1]
 		var first_terrain = terrain_belt.pop_front()
 		var block
-		if terrains_count % 5 == 0:
+		if terrains_count % color_change_frequency == 0:
 			block = color_change_block.instantiate()
 		else:
 			block = TerrainBlocks.pick_random().instantiate()
