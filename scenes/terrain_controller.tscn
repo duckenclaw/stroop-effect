@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cn4cwipscakb7"]
 
-[ext_resource type="Script" path="res://scripts/terrain_controller.gd" id="1_wtau4"]
+[ext_resource type="Script" uid="uid://di38b48wh8eod" path="res://scripts/terrain_controller.gd" id="1_wtau4"]
 [ext_resource type="PackedScene" uid="uid://dxodyyjk7dr3t" path="res://scenes/special_terrains/terrain_free.tscn" id="2_3snv8"]
 
 [node name="TerrainController" type="Node3D"]
