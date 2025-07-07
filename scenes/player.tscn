@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://sound/color_change.mp3" id="3_jhvac"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_4oojc"]
+material = ExtResource("1_a22rp")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_smlqq"]
 
