@@ -1,25 +1,35 @@
-[gd_scene load_steps=6 format=3 uid="uid://27rypyrrqu02"]
+[gd_scene load_steps=7 format=3 uid="uid://27rypyrrqu02"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://materials/terrain.tres" id="1_sdr76"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://scenes/obstacles/low_obstacle.tscn" id="2_o2khu"]
 [ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://scenes/obstacles/long_high_obstacle.tscn" id="4_48iqc"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://scenes/obstacles/color_change.tscn" id="5_rxk7k"]
+[ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://scenes/obstacles/ultrawide_obstacle.tscn" id="6_3uw1g"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
-size = Vector2(7, 10)
+size = Vector2(7, 15)
 
 [node name="Terrain_9" type="MeshInstance3D"]
 material_override = ExtResource("1_sdr76")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="LowObstacle" parent="." instance=ExtResource("2_o2khu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
 
 [node name="LongHighObstacle" parent="." instance=ExtResource("4_48iqc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
 [node name="ColorChange" parent="." instance=ExtResource("5_rxk7k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99123, 0.987483, 4.00572)
+
+[node name="LongHighObstacle2" parent="." instance=ExtResource("4_48iqc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
+
+[node name="WideObstacle" parent="." instance=ExtResource("6_3uw1g")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.5)
 
 [node name="LowObstacle2" parent="." instance=ExtResource("2_o2khu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+
+[node name="ColorChange2" parent="." instance=ExtResource("5_rxk7k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, -6)

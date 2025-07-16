@@ -11,7 +11,7 @@ size = Vector3(4, 0.2, 1.2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7ifdx"]
 size = Vector3(4, 0.8, 1)
 
-[node name="WideObstacle" type="StaticBody3D"]
+[node name="WideObstacle" type="StaticBody3D" groups=["obstacle"]]
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.5, 2.08165e-12)

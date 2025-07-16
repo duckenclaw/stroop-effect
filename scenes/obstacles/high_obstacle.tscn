@@ -12,7 +12,7 @@ size = Vector3(1, 0.2, 1.2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_07lmp"]
 size = Vector3(1, 1.8, 1)
 
-[node name="HighObstacle" type="StaticBody3D"]
+[node name="HighObstacle" type="StaticBody3D" groups=["obstacle"]]
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, 2.08165e-12)

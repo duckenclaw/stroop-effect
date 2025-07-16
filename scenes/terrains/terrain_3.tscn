@@ -9,14 +9,14 @@
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://scenes/obstacles/color_change.tscn" id="7_3hedp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
-size = Vector2(7, 10)
+size = Vector2(7, 15)
 
 [node name="Terrain_3" type="MeshInstance3D"]
 material_override = ExtResource("1_6hhcc")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="WideObstacle" parent="." instance=ExtResource("1_oe5ee")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.08165e-12, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 5)
 
 [node name="HighObstacle" parent="." instance=ExtResource("1_ouneh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.08165e-12, -2)
@@ -27,7 +27,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.08165e-12, -2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.08165e-12, 2.08165e-12)
 
 [node name="LowObstacle" parent="." instance=ExtResource("6_bt6e4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.08165e-12, 2.08165e-12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
 
 [node name="ColorChange" parent="." instance=ExtResource("7_3hedp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -2)
+
+[node name="WideObstacle2" parent="." instance=ExtResource("1_oe5ee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, -4)
+
+[node name="WideObstacle3" parent="." instance=ExtResource("1_oe5ee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1, -5)

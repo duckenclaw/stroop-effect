@@ -8,17 +8,17 @@
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://scenes/obstacles/color_change.tscn" id="6_pbc4r"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
-size = Vector2(7, 10)
+size = Vector2(7, 15)
 
 [node name="Terrain_1" type="MeshInstance3D"]
 material_override = ExtResource("1_aju4s")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="HighObstacle" parent="." instance=ExtResource("2_xygmi")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.08165e-12, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 
 [node name="LowObstacle" parent="." instance=ExtResource("2_er1c2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
 
 [node name="LongObstacle" parent="." instance=ExtResource("1_e4hyj")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.08165e-12, -3)

@@ -2,36 +2,51 @@ extends Control
 
 @onready var gUi = $MarginContainer/HUD
 @onready var loseUi = $MarginContainer/LoseUI
+@onready var colorLabel = gUi.get_node("ColorContainer/Color")
+@onready var pointsLabel = gUi.get_node("HBoxContainer/Number")
+@onready var losePointsLabel = loseUi.get_node("HBoxContainer/Number")
 
 var points = 0
 
 var is_lost = false
 
-var red = Color(0.7, 0, 0.05, 1.0)
-var blue = Color(0, 0.05, 0.7, 1.0)
-var green = Color(0.05, 0.7, 0, 1.0)
+var red = Color(0.8, 0, 0, 1.0)
+var blue = Color(0, 0, 0.8, 1.0)
+var green = Color(0, 0.8, 0, 1.0)
+var purple = Color(0.8, 0, 0.8, 1.0)
+var yellow = Color(0.8, 0.8, 0, 1.0)
+var orange = Color(0.8, 0.4, 0, 1.0)
 
 func _ready():
 	update_points(points)
 
 func update_points(target: int):
 	points = target
-	gUi.get_node("HBoxContainer/Number").text = str(points)
-	loseUi.get_node("HBoxContainer/Number").text = str(points)
+	pointsLabel.text = str(points)
+	losePointsLabel.text = str(points)
 	
 func update_color(target: String, target_color):
-	var colorLabel = gUi.get_node("Color")
 	colorLabel.text = target
 	match target_color:
+		"green":
+			colorLabel.set("theme_override_colors/font_color", [red, blue, purple, yellow, orange].pick_random())
+			print("green")
 		"red":
-			colorLabel.set("theme_override_colors/font_color", red)
+			colorLabel.set("theme_override_colors/font_color", [green, blue, purple, yellow, orange].pick_random())
 			print("red")
 		"blue":
-			colorLabel.set("theme_override_colors/font_color", blue)
+			colorLabel.set("theme_override_colors/font_color", [green, red, purple, yellow, orange].pick_random())
 			print("blue")
-		"green":
-			colorLabel.set("theme_override_colors/font_color", green)
-			print("green")
+		"purple":
+			colorLabel.set("theme_override_colors/font_color", [green, red, blue, yellow, orange].pick_random())
+			print("purple")
+		"yellow":
+			colorLabel.set("theme_override_colors/font_color", [green, red, blue, purple, orange].pick_random())
+			print("yellow")
+		"orange":
+			colorLabel.set("theme_override_colors/font_color", [green, red, blue, purple, yellow].pick_random())
+			print("orange")
+
 
 func _on_player_lose():
 	is_lost = true

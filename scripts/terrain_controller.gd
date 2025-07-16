@@ -84,11 +84,10 @@ func _load_obstacle_materials(target_path: String) -> void:
 # Randomly assign materials to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
 	for obstacle in block.get_children():
-		if obstacle.name.ends_with("Obstacle") and not(obstacle.name.begins_with("Ramp")):  # Check for obstacle nodes
-			if obstacle.has_node("Mesh"):  # Ensure there's a mesh instance
-				var mesh_instance = obstacle.get_node("Mesh")
-				var random_material = obstacle_materials.pick_random()
-				mesh_instance.material_override = random_material
+		if obstacle.is_in_group("obstacle"):
+			var mesh_instance = obstacle.get_node("Mesh")
+			var random_material = obstacle_materials.pick_random()
+			mesh_instance.material_override = random_material
 
 func _on_player_lose():
 	terrain_velocity = 0.0
