@@ -1,10 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://xaaw8o5xxd88"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3h4qi"]
-size = Vector3(2, 2, 2)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nsmcd"]
 albedo_color = Color(0, 1, 1, 1)
+emission_enabled = true
+emission = Color(0, 1, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_2b52s"]
 material = SubResource("StandardMaterial3D_nsmcd")
@@ -31,6 +32,18 @@ tracks/1/path = NodePath("MeshInstance3D:mesh:material:albedo_color")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:mesh:material:emission")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -64,6 +77,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(0, 1, 1, 1), Color(1, 0, 1, 1), Color(1, 1, 0, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:mesh:material:emission")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 1, 1, 1), Color(1, 0, 1, 1), Color(1, 1, 0, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hdlbk"]
 _data = {
@@ -74,11 +99,11 @@ _data = {
 [node name="ColorChange" type="Area3D" groups=["collectible"]]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.5, 2.08165e-12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_3h4qi")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.707107, 0.5, 0.5, 2.4663e-16, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 2.08165e-12, 1.25, 2.08165e-12)
+transform = Transform3D(0.707107, 0.5, 0.5, 2.4663e-16, 0.707107, -0.707107, -0.707107, 0.5, 0.5, 0, 0.75, 0)
 mesh = SubResource("BoxMesh_2b52s")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

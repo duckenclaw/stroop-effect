@@ -1,6 +1,8 @@
-[gd_resource type="StandardMaterial3D" format=3 uid="uid://c7v88ghpfbffv"]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c7v88ghpfbffv"]
+
+[ext_resource type="Texture2D" uid="uid://bpaxg0or5tae1" path="res://materials/textures/player_texture.png" id="1_yh180"]
 
 [resource]
-albedo_color = Color(0, 0.396078, 0.27451, 1)
+albedo_texture = ExtResource("1_yh180")
 metallic = 0.25
 metallic_specular = 0.0

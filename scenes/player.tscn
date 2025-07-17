@@ -1,17 +1,137 @@
-[gd_scene load_steps=8 format=3 uid="uid://dguvbimxk8r80"]
+[gd_scene load_steps=14 format=3 uid="uid://dguvbimxk8r80"]
 
 [ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://materials/player_material.tres" id="1_a22rp"]
 [ext_resource type="Script" uid="uid://dm18ngbeufinn" path="res://scripts/player.gd" id="1_kqdvt"]
 [ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://sound/score.mp3" id="2_2m7jq"]
 [ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://sound/color_change.mp3" id="3_jhvac"]
+[ext_resource type="BoxMesh" uid="uid://ccxm4u02x251x" path="res://meshes/cube_trail.tres" id="5_qlg0r"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_4oojc"]
-material = ExtResource("1_a22rp")
+[sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_smlqq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p3nr5"]
 size = Vector3(1, 0.25, 1.25)
+
+[sub_resource type="Animation" id="Animation_tuyoq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:mesh:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fjrip"]
+resource_name = "idle"
+length = 3.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 0.45, 0), Vector3(0, 0.5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:mesh:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0.9, 0.9, 0.9), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_qlg0r"]
+resource_name = "jump"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:mesh:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1.2, 0.8, 1.2), Vector3(1, 1, 1), Vector3(0.8, 1.2, 0.8)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.025, 0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.5, 0), Vector3(0, 0.4, 0), Vector3(0, 0.5, 0), Vector3(0, 0.6, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_smehm"]
+resource_name = "slam"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Mesh:mesh:size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1, 4.28709),
+"update": 0,
+"values": [Vector3(0.8, 1.2, 0.8), Vector3(1.4, 0.6, 1.4), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.25),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.6, 0), Vector3(0, 0.3, 0), Vector3(0, 0.5, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tuyoq"]
+_data = {
+&"RESET": SubResource("Animation_tuyoq"),
+&"idle": SubResource("Animation_fjrip"),
+&"jump": SubResource("Animation_qlg0r"),
+&"slam": SubResource("Animation_smehm")
+}
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_kqdvt")
@@ -21,11 +141,13 @@ materials_path = "res://materials/obstacle_materials"
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
 material_override = ExtResource("1_a22rp")
-mesh = SubResource("SphereMesh_4oojc")
+mesh = SubResource("BoxMesh_qlg0r")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
 shape = SubResource("SphereShape3D_smlqq")
 
 [node name="Hitbox" type="Area3D" parent="."]
@@ -37,4 +159,25 @@ shape = SubResource("BoxShape3D_p3nr5")
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 volume_db = -5.0
 
+[node name="TrailParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+visible = false
+amount = 50
+lifetime = 4.0
+mesh = ExtResource("5_qlg0r")
+emission_shape = 3
+emission_box_extents = Vector3(0.45, 0.45, 0.45)
+direction = Vector3(0, 0, 100)
+spread = 15.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 5.0
+initial_velocity_max = 5.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_tuyoq")
+}
+autoplay = "idle"
+
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

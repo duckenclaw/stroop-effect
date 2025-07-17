@@ -6,10 +6,12 @@ const DOWN_SPEED = 50.0 # Speed of going down when pressing down in a jump
 const MOVE_SPEED = 7.5 # Speed of lerping between tracks
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var is_slamming: bool = false
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 
 @onready var ui = get_parent().get_node("CanvasLayer/UI")
 @onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 
 @export var point_sfx: AudioStreamMP3
@@ -43,17 +45,24 @@ func _physics_process(delta):
 	# Add gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-		if Input.is_action_just_pressed("ui_down"):
+		if Input.is_action_just_pressed("slam") and !is_slamming:
+			is_slamming = true
 			velocity.y -= gravity * DOWN_SPEED * delta
 
 	# Handle jump.
-	if (Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("jump")) and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if is_on_floor():
+		if is_slamming:
+			animation_player.play("slam")
+		elif animation_player.current_animation != "idle":
+			animation_player.play("idle", 0.1)
+		if Input.is_action_just_pressed("jump"):
+			animation_player.play("jump")
+			velocity.y = JUMP_VELOCITY
 	
 	# Handle track switching with input.
-	if Input.is_action_just_pressed("ui_left") and current_track > 0:
+	if Input.is_action_just_pressed("left") and current_track > 0:
 		current_track -= 1
-	elif Input.is_action_just_pressed("ui_right") and current_track < TRACK_POSITIONS.size() - 1:
+	elif Input.is_action_just_pressed("right") and current_track < TRACK_POSITIONS.size() - 1:
 		current_track += 1
 
 	# Calculate the target X position based on the current track.
@@ -100,3 +109,10 @@ func _load_colors(target_path: String) -> void:
 			# Extract the name of the material without the file extension
 			var color_name = material_path.get_file().get_basename()  # This removes the extension
 			colors.append(color_name)
+
+
+func _on_animation_player_animation_finished(anim_name):
+	match anim_name:
+		"slam":
+			is_slamming = false
+			animation_player.play("idle", 0.5)

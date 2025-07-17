@@ -27,7 +27,7 @@ text = "YOU LOST"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="RestartButton" type="Button" parent="."]
 custom_minimum_size = Vector2(260, 80)
 layout_mode = 1
 anchors_preset = 7
@@ -45,7 +45,7 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 36
 text = "Restart"
 
-[node name="HBoxContainer" type="VBoxContainer" parent="."]
+[node name="ResultsContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -61,16 +61,35 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Score" type="Label" parent="HBoxContainer"]
+[node name="ScoreContainer" type="HBoxContainer" parent="ResultsContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="ResultsContainer/ScoreContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Your total score: "
 
-[node name="Number" type="Label" parent="HBoxContainer"]
+[node name="Number" type="Label" parent="ResultsContainer/ScoreContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "5"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="DistanceContainer" type="HBoxContainer" parent="ResultsContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Distance" type="Label" parent="ResultsContainer/DistanceContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Distance: "
+
+[node name="Number" type="Label" parent="ResultsContainer/DistanceContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="RestartButton" to="." method="_on_button_pressed"]

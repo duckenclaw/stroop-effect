@@ -41,7 +41,6 @@ func _init_blocks(number_of_blocks: int) -> void:
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)
 		terrain_belt.append(block)
-		print(terrains_count)
 		_assign_random_materials(block)  # Assign materials after adding block
 
 func _progress_terrain(delta: float) -> void:
@@ -60,6 +59,7 @@ func _progress_terrain(delta: float) -> void:
 		add_child(block)
 		terrain_belt.append(block)
 		terrains_count += 1
+		print(terrains_count)
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 
@@ -70,7 +70,6 @@ func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInst
 func _load_terrain_scenes(target_path: String) -> void:
 	var dir = DirAccess.open(target_path)
 	for scene_path in dir.get_files():
-		print("Loading terrain block scene: " + target_path + "/" + scene_path)
 		TerrainBlocks.append(load(target_path + "/" + scene_path))
 
 # Load all materials from the specified directory
@@ -91,3 +90,5 @@ func _assign_random_materials(block: Node) -> void:
 
 func _on_player_lose():
 	terrain_velocity = 0.0
+	#print(get_parent().get_node("CanvasLayer/UI").distance)
+	#get_parent().get_node("CanvasLayer/UI").distance = terrains_count
