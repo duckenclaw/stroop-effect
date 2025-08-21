@@ -7,7 +7,7 @@ var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
 var terrains_count: int = 0
 @export var terrain_velocity: float = 7.5
-@export var terrain_velocity_increase: float = 0.005
+@export var terrain_velocity_increase: float = 0.025
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
 @export var start_block = load("res://scenes/special_terrains/terrain_free.tscn")
@@ -83,7 +83,7 @@ func _load_obstacle_materials(target_path: String) -> void:
 # Randomly assign materials to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
 	for obstacle in block.get_children():
-		if obstacle.is_in_group("obstacle"):
+		if obstacle.is_in_group("obstacle") or obstacle.is_in_group("collectible"):
 			var mesh_instance = obstacle.get_node("Mesh")
 			var random_material = obstacle_materials.pick_random()
 			mesh_instance.material_override = random_material

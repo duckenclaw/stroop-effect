@@ -4,11 +4,11 @@
 [ext_resource type="Script" uid="uid://dm18ngbeufinn" path="res://scripts/player.gd" id="1_kqdvt"]
 [ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://sound/score.mp3" id="2_2m7jq"]
 [ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://sound/color_change.mp3" id="3_jhvac"]
-[ext_resource type="BoxMesh" uid="uid://ccxm4u02x251x" path="res://meshes/cube_trail.tres" id="5_qlg0r"]
+[ext_resource type="BoxMesh" uid="uid://ccxm4u02x251x" path="res://resources/cube_trail.tres" id="5_qlg0r"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_qlg0r"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_smlqq"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_qlg0r"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p3nr5"]
 size = Vector3(1, 0.25, 1.25)
@@ -141,14 +141,12 @@ materials_path = "res://materials/obstacle_materials"
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-visible = false
 material_override = ExtResource("1_a22rp")
 mesh = SubResource("BoxMesh_qlg0r")
 
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-visible = false
-shape = SubResource("SphereShape3D_smlqq")
+shape = SubResource("BoxShape3D_qlg0r")
 
 [node name="Hitbox" type="Area3D" parent="."]
 
@@ -162,8 +160,9 @@ volume_db = -5.0
 [node name="TrailParticles3D" type="CPUParticles3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 visible = false
-amount = 50
-lifetime = 4.0
+amount = 25
+speed_scale = 1.25
+fixed_fps = 30
 mesh = ExtResource("5_qlg0r")
 emission_shape = 3
 emission_box_extents = Vector3(0.45, 0.45, 0.45)

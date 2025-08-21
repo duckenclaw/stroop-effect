@@ -12,6 +12,7 @@ var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = ri
 @onready var ui = get_parent().get_node("CanvasLayer/UI")
 @onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var mesh: MeshInstance3D = $Mesh
 
 
 @export var point_sfx: AudioStreamMP3
@@ -30,11 +31,9 @@ signal lose()
 
 func _ready():
 	_load_colors(materials_path)
-	change_color()
+	change_color(colors.pick_random())
 
-func change_color():
-	while new_current_color == current_color or new_current_color == "":
-		new_current_color = colors.pick_random()
+func change_color(new_current_color: String):
 	while new_pseudo_color == new_current_color or new_pseudo_color == pseudo_color:
 		new_pseudo_color = colors.pick_random()
 	current_color = new_current_color
@@ -91,7 +90,8 @@ func _on_hitbox_area_entered(area):
 	elif area.is_in_group("collectible"):
 		audio_stream_player.stream = color_change_sfx
 		audio_stream_player.playing = true
-		change_color()
+		var collectible_color = area.get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
+		change_color(collectible_color)
 		add_points(1)
 		area.queue_free()
 			

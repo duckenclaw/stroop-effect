@@ -12,9 +12,9 @@ config_version=5
 
 config/name="Stroop-effect"
 config/version="0.0.1"
-config/tags=PackedStringArray("runner")
+config/tags=PackedStringArray("3d", "runner")
 run/main_scene="res://scenes/world.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.png"
 
 [input]
@@ -50,4 +50,6 @@ slam={
 
 [rendering]
 
-renderer/rendering_method="mobile"
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
