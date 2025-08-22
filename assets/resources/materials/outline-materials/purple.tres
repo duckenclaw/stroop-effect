@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bp5i71xqo6v4g"]
+
+[ext_resource type="Material" uid="uid://04xqhjmljkm3" path="res://assets/resources/materials/obstacle-materials/purple.tres" id="1_ciwyq"]
+[ext_resource type="Shader" uid="uid://dwax3pg33s1oa" path="res://assets/resources/outline.gdshader" id="2_pxsk6"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_ciwyq")
+shader = ExtResource("2_pxsk6")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.03

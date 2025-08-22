@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://dtk2k7j3aeqxn"]
+
+[ext_resource type="Material" uid="uid://bp4pwwra8mkb2" path="res://assets/resources/materials/obstacle-materials/blue.tres" id="1_4v8r2"]
+[ext_resource type="Shader" uid="uid://dwax3pg33s1oa" path="res://assets/resources/outline.gdshader" id="2_4v8r2"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_4v8r2")
+shader = ExtResource("2_4v8r2")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.050000002375000005

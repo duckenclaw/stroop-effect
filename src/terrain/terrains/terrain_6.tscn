@@ -1,0 +1,38 @@
+[gd_scene load_steps=7 format=3 uid="uid://k1h2mrfmmv46"]
+
+[ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://src/terrain/obstacle-scenes/long_high_obstacle.tscn" id="1_2sxa2"]
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_ioewk"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/obstacle-scenes/color_change.tscn" id="5_85gik"]
+[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="6_6og4e"]
+[ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="6_qi1xu"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_6" type="MeshInstance3D"]
+material_override = ExtResource("1_ioewk")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="LongObstacle" parent="." groups=["obstacle"] instance=ExtResource("1_2sxa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="ColorChange" parent="." instance=ExtResource("5_85gik")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 3)
+
+[node name="ColorChange2" parent="." instance=ExtResource("5_85gik")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -1)
+
+[node name="ColorChange3" parent="." instance=ExtResource("5_85gik")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -3)
+
+[node name="Ramp" parent="." instance=ExtResource("6_qi1xu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+
+[node name="LongHighObstacle2" parent="." groups=["obstacle"] instance=ExtResource("1_2sxa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -3)
+
+[node name="LongObstacle2" parent="." instance=ExtResource("6_6og4e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="LongObstacle3" parent="." instance=ExtResource("6_6og4e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1)

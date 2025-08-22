@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://c514kpmegsnsd"]
+
+[ext_resource type="Material" uid="uid://ktpg8kie2icx" path="res://assets/resources/materials/obstacle-materials/red.tres" id="1_p8u48"]
+[ext_resource type="Shader" uid="uid://dwax3pg33s1oa" path="res://assets/resources/outline.gdshader" id="2_gbfn4"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_p8u48")
+shader = ExtResource("2_gbfn4")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.030000001425000002

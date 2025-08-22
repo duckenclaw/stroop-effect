@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://em21olv8egqt"]
+
+[ext_resource type="Material" uid="uid://bwjag0n5jwdk2" path="res://assets/resources/materials/obstacle-materials/green.tres" id="1_pkl28"]
+[ext_resource type="Shader" uid="uid://dwax3pg33s1oa" path="res://assets/resources/outline.gdshader" id="2_crtim"]
+
+[resource]
+render_priority = 0
+next_pass = ExtResource("1_pkl28")
+shader = ExtResource("2_crtim")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_thickness = 0.03

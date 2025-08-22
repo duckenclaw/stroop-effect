@@ -1,0 +1,13 @@
+[gd_scene load_steps=5 format=3 uid="uid://cn4cwipscakb7"]
+
+[ext_resource type="Script" uid="uid://di38b48wh8eod" path="res://src/controllers/terrain_controller.gd" id="1_0ulod"]
+[ext_resource type="PackedScene" uid="uid://dxodyyjk7dr3t" path="res://src/terrain/terrains/terrain_free.tscn" id="2_3snv8"]
+[ext_resource type="PackedScene" uid="uid://d3gu0f0ummoww" path="res://src/terrain/terrains/terrain_color_change.tscn" id="3_cs5h4"]
+[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://src/terrain/terrain_colliders.tscn" id="4_kmxv3"]
+
+[node name="TerrainController" type="Node3D"]
+script = ExtResource("1_0ulod")
+start_block = ExtResource("2_3snv8")
+color_change_block = ExtResource("3_cs5h4")
+
+[node name="TerrainColliders" parent="." instance=ExtResource("4_kmxv3")]

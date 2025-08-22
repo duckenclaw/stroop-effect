@@ -1,0 +1,38 @@
+[gd_scene load_steps=9 format=3 uid="uid://27rypyrrqu02"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_sdr76"]
+[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="2_o2khu"]
+[ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://src/terrain/obstacle-scenes/long_high_obstacle.tscn" id="4_48iqc"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/obstacle-scenes/color_change.tscn" id="5_rxk7k"]
+[ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="6_3uw1g"]
+[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://src/terrain/terrain_colliders.tscn" id="6_5rgt7"]
+[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="7_a7k2u"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_9" type="MeshInstance3D"]
+material_override = ExtResource("1_sdr76")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="LongHighObstacle" parent="." groups=["obstacle"] instance=ExtResource("4_48iqc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)
+
+[node name="ColorChange" parent="." instance=ExtResource("5_rxk7k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99123, 0.987483, 4.00572)
+
+[node name="LongHighObstacle2" parent="." groups=["obstacle"] instance=ExtResource("4_48iqc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5)
+
+[node name="WideObstacle" parent="." instance=ExtResource("6_3uw1g")]
+
+[node name="LowObstacle2" parent="." instance=ExtResource("2_o2khu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -6)
+
+[node name="ColorChange2" parent="." instance=ExtResource("5_rxk7k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, -6)
+
+[node name="TerrainColliders" parent="." instance=ExtResource("6_5rgt7")]
+
+[node name="LongObstacle" parent="." instance=ExtResource("7_a7k2u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
