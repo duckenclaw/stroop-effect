@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://src/controllers/terrain_controller.tscn" id="2_53egh"]
 [ext_resource type="Shader" uid="uid://duk153mirc34n" path="res://assets/resources/world.gdshader" id="3_dotkg"]
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://src/player/player.tscn" id="4_tnjnu"]
-[ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://src/controllers/MusicController.gd" id="6_eemcn"]
+[ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://src/controllers/music_controller.gd" id="6_eemcn"]
 [ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://assets/sound/wika-wika.mp3" id="7_njovb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]

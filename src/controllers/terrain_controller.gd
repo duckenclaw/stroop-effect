@@ -6,8 +6,8 @@ class_name TerrainController
 var TerrainBlocks: Array = []
 var terrain_belt: Array[MeshInstance3D] = []
 var terrains_count: int = 0
-@export var terrain_velocity: float = 5.0
-@export var terrain_velocity_increase: float = 0.01
+@export var terrain_velocity: float = 7.5
+@export var terrain_velocity_increase: float = 0.0025
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
 @export var start_block = load("res://src/terrain/terrains/terrain_free.tscn")
@@ -59,7 +59,6 @@ func _progress_terrain(delta: float) -> void:
 		add_child(block)
 		terrain_belt.append(block)
 		terrains_count += 1
-		print(terrains_count)
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 
@@ -90,5 +89,3 @@ func _assign_random_materials(block: Node) -> void:
 
 func _on_player_lose():
 	terrain_velocity = 0.0
-	#print(get_parent().get_node("CanvasLayer/UI").distance)
-	#get_parent().get_node("CanvasLayer/UI").distance = terrains_count

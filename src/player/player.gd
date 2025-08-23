@@ -1,18 +1,25 @@
 extends CharacterBody3D
 
-const JUMP_VELOCITY = 5.5
-const TRACK_POSITIONS = [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
-const DOWN_SPEED = 50.0 # Speed of going down when pressing down in a jump
-const MOVE_SPEED = 7.5 # Speed of lerping between tracks
+const JUMP_VELOCITY := 5.5
+const TRACK_POSITIONS := [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
+const DOWN_SPEED := 50.0 # Speed of going down when pressing down in a jump
+const MOVE_SPEED := 7.5 # Speed of lerping between tracks
+const STREAK_DECAY := 1.5 # time in second for the streak to decay
+const MAX_STREAK := 5.0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_slamming: bool = false
+var is_on_streak: bool = true
+var point_modifier: float = 1.0
+@export var modifier_multipier: float = 1.0
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 
 @onready var ui = get_parent().get_node("CanvasLayer/UI")
 @onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var mesh: MeshInstance3D = $Mesh
+@onready var slam_raycast: RayCast3D = $SlamRaycast
+@onready var streak_timer: Timer = $StreakTimer
 
 @export var point_sfx: AudioStreamMP3
 @export var color_change_sfx: AudioStreamMP3
@@ -24,7 +31,7 @@ var current_color = ""
 var new_current_color = ""
 var pseudo_color = ""
 var new_pseudo_color = ""
-var points = 0
+var points = 0.0
 
 signal lose()
 
@@ -32,10 +39,10 @@ func _ready():
 	_load_colors(materials_path)
 	change_color(colors.pick_random())
 
-func change_color(new_current_color: String):
-	while new_pseudo_color == new_current_color or new_pseudo_color == pseudo_color:
+func change_color(target_color: String):
+	while new_pseudo_color == target_color or new_pseudo_color == target_color:
 		new_pseudo_color = colors.pick_random()
-	current_color = new_current_color
+	current_color = target_color
 	pseudo_color = new_pseudo_color
 	ui.update_color(current_color, pseudo_color)
 
@@ -51,6 +58,24 @@ func _physics_process(delta):
 	if is_on_floor():
 		if is_slamming:
 			animation_player.play("slam")
+			var slammed_object = slam_raycast.get_collider()
+			print(slammed_object)
+			if slammed_object and slammed_object.is_in_group("obstacle"):
+				var obstacle_color = slammed_object.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
+				if obstacle_color != current_color:
+					animation_player.play("jump", 0.1)
+					is_slamming = false
+				else:
+					audio_stream_player.stream = point_sfx
+					audio_stream_player.playing = true
+		
+					var obstacle = slammed_object.get_parent()
+					var collision_point = global_position # Approximation: player’s position
+					obstacle.start_dissolve(collision_point)
+					velocity.y = JUMP_VELOCITY * 1.5
+		
+					add_points(2.0)
+				
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")
 			velocity.y = JUMP_VELOCITY
@@ -58,11 +83,9 @@ func _physics_process(delta):
 	# Handle track switching with input.
 	if Input.is_action_just_pressed("left") and current_track > 0:
 		current_track -= 1
-		print("playing left animation")
 		animation_player.play("left", 0.01)
 	elif Input.is_action_just_pressed("right") and current_track < TRACK_POSITIONS.size() - 1:
 		current_track += 1
-		print("playing right animation")
 		animation_player.play("right", 0.01)
 
 	# Calculate the target X position based on the current track.
@@ -90,21 +113,29 @@ func _on_hitbox_area_entered(area):
 			var obstacle = area.get_parent()
 			var collision_point = global_position # Approximation: player’s position
 			obstacle.start_dissolve(collision_point)
-
-			add_points(1)
+		
+			add_points(1.0)
 
 	elif area.is_in_group("collectible"):
 		audio_stream_player.stream = color_change_sfx
 		audio_stream_player.playing = true
 		var collectible_color = area.get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
 		change_color(collectible_color)
-		add_points(1)
+		
+		add_points(3.0)
 		area.queue_free()
+		
+		if point_modifier < 5.0:
+			point_modifier += modifier_multipier
+		else: 
+			point_modifier = 5.0
 
 			
-func add_points(amount: int):
-	points += amount
-	ui.update_points(points)
+func add_points(amount: float):
+	points += amount * point_modifier
+	streak_timer.start(STREAK_DECAY)
+	print("streak timer restarted")
+	ui.update_points(points, point_modifier)
 	#if points % 3 == 0:
 		#change_color()
 
@@ -125,3 +156,9 @@ func _on_animation_player_animation_finished(anim_name):
 			animation_player.play("idle", 0.5)
 		_:
 			animation_player.play("idle", 0.5)
+
+
+func _on_streak_timeout():
+	point_modifier = 1.0
+	ui.update_points(points, point_modifier)
+	print("streak timer ended")
