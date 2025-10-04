@@ -10,6 +10,7 @@ const MAX_STREAK := 5.0
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_slamming: bool = false
 var is_on_streak: bool = true
+var can_double_jump: bool = false
 var point_modifier: float = 1.0
 @export var modifier_multipier: float = 1.0
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
@@ -59,7 +60,6 @@ func _physics_process(delta):
 		if is_slamming:
 			animation_player.play("slam")
 			var slammed_object = slam_raycast.get_collider()
-			print(slammed_object)
 			if slammed_object and slammed_object.is_in_group("obstacle"):
 				var obstacle_color = slammed_object.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
 				if obstacle_color != current_color:
@@ -79,6 +79,9 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")
 			velocity.y = JUMP_VELOCITY
+	elif can_double_jump and Input.is_action_just_pressed("jump"):
+		animation_player.play("jump")
+		velocity.y = JUMP_VELOCITY
 	
 	# Handle track switching with input.
 	if Input.is_action_just_pressed("left") and current_track > 0:
@@ -101,6 +104,7 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_hitbox_area_entered(area):
+	
 	if area.is_in_group("obstacle"):
 		var obstacle_color = area.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
 		if obstacle_color != current_color:
@@ -113,7 +117,7 @@ func _on_hitbox_area_entered(area):
 			var obstacle = area.get_parent()
 			var collision_point = global_position # Approximation: player’s position
 			obstacle.start_dissolve(collision_point)
-		
+
 			add_points(1.0)
 
 	elif area.is_in_group("collectible"):
@@ -121,20 +125,20 @@ func _on_hitbox_area_entered(area):
 		audio_stream_player.playing = true
 		var collectible_color = area.get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
 		change_color(collectible_color)
-		
-		add_points(3.0)
-		area.queue_free()
-		
+
 		if point_modifier < 5.0:
 			point_modifier += modifier_multipier
 		else: 
 			point_modifier = 5.0
 
+		add_points(1.0)
+		area.queue_free()
+		
+
 			
 func add_points(amount: float):
 	points += amount * point_modifier
 	streak_timer.start(STREAK_DECAY)
-	print("streak timer restarted")
 	ui.update_points(points, point_modifier)
 	#if points % 3 == 0:
 		#change_color()
@@ -161,4 +165,3 @@ func _on_animation_player_animation_finished(anim_name):
 func _on_streak_timeout():
 	point_modifier = 1.0
 	ui.update_points(points, point_modifier)
-	print("streak timer ended")

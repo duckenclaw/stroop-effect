@@ -25,12 +25,12 @@ func _ready():
 
 func update_points(target: float, point_modifier: float):
 	points = target
-	pointsLabel.text = str(points)
-	losePointsLabel.text = str(points)
+	pointsLabel.text = str(int(points))
+	losePointsLabel.text = str(int(points))
 	loseDistanceLabel.text = str(distance*15)
 	if point_modifier > 1.0:
 		modifierLabel.visible = true
-		modifierLabel.text = str(point_modifier)
+		modifierLabel.text = str(int(point_modifier))
 	else:
 		modifierLabel.visible = false
 		

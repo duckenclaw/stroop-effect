@@ -25,30 +25,19 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Mesh:mesh:material:albedo_color")
+tracks/1/path = NodePath("Mesh:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(0, 1, 1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Mesh:mesh:material:emission")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(0, 1, 1, 1)]
+"values": [Vector3(0, 0.75, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_b2x42"]
 resource_name = "rotate"
+length = 3.0
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -57,34 +46,22 @@ tracks/0/path = NodePath("Mesh:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(-2.35619, -2.35619, -2.35619), Vector3(3.48787e-16, 3.48787e-16, 3.48787e-16), Vector3(2.35619, 2.35619, 2.35619)]
+"values": [Vector3(-6.2831855, -6.2831855, -6.2831855), Vector3(-4.1887903, -4.1887903, -4.1887903), Vector3(-2.0943952, -2.0943952, -2.0943952), Vector3(0, 0, 0), Vector3(2.0943952, 2.0943952, 2.0943952), Vector3(4.1887903, 4.1887903, 4.1887903), Vector3(6.2831855, 6.2831855, 6.2831855)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
-tracks/1/enabled = false
-tracks/1/path = NodePath("Mesh:mesh:material:albedo_color")
+tracks/1/enabled = true
+tracks/1/path = NodePath("Mesh:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.5, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Color(0, 1, 1, 1), Color(1, 0, 1, 1), Color(1, 1, 0, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = false
-tracks/2/path = NodePath("Mesh:mesh:material:emission")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Color(0, 1, 1, 1), Color(1, 0, 1, 1), Color(1, 1, 0, 1)]
+"values": [Vector3(0, 0.75, 0), Vector3(0, 0.5, 0), Vector3(0, 0.75, 0), Vector3(0, 0.5, 0), Vector3(0, 0.75, 0), Vector3(0, 0.5, 0), Vector3(0, 0.75, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hdlbk"]
@@ -100,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_3h4qi")
 
 [node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.70710707, 0.49999982, 0.49999994, 2.4662974e-16, 0.7071069, -0.7071066, -0.7071068, 0.49999997, 0.5000001, 0, 0.75, 0)
+transform = Transform3D(0.70710707, 0.49999982, 0.4999999, 2.4662974e-16, 0.7071069, -0.7071066, -0.7071068, 0.49999997, 0.5000001, 0, 0.75, 0)
 mesh = SubResource("BoxMesh_2b52s")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
