@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://de5fjgwgmdo2y"]
+
+[node name="StartUI" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="StartPromptLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 420.0
+offset_top = 548.0
+offset_right = 612.0
+offset_bottom = 568.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+text = "Press <SPACEBAR> to start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TutorialLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_right = 425.0
+offset_bottom = 330.0
+text = "Controls:
+↑/W/Space - Jump
+↓/S - Slam
+→/D - Right
+←/A - Left
+
+Instructions:
+1. Survive as long as possible!
+2. Destroy obstacles that have the same color that is written on the top to gain points
+3. Collect rotating Color Change Blocks to gain points and change the destructible color
+4. Slam down on obstacles with your current color to bounce on them"

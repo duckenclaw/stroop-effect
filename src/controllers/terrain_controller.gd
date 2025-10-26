@@ -3,9 +3,12 @@ class_name TerrainController
 
 @onready var player = get_parent().get_node("Player")
 
-var TerrainBlocks: Array = []
+@export var terrain_blocks: Array[PackedScene] = []  # Drag and drop terrain scenes here in the editor
+@export var obstacle_materials: Array[ShaderMaterial] = []  # Drag and drop materials here in the editor
+
 var terrain_belt: Array[MeshInstance3D] = []
 var terrains_count: int = 0
+var is_progressing: bool = false
 @export var terrain_velocity: float = 7.5
 @export var terrain_velocity_increase: float = 0.0025
 @export var num_terrain_blocks = 10
@@ -13,19 +16,18 @@ var terrains_count: int = 0
 @export var start_block = load("res://src/terrain/terrains/terrain_free.tscn")
 @export var color_change_block = load("res://src/terrain/terrains/terrain_color_change.tscn")
 @export var color_change_frequency: int = 10
-@export_dir var terrain_blocks_path = "res://src/terrain/terrains"
-@export_dir var materials_path = "res://assets/resources/materials/outline-materials/"  # Path to obstacle materials
-
-# Array to store loaded obstacle materials
-var obstacle_materials: Array = []
 
 func _ready() -> void:
-	_load_terrain_scenes(terrain_blocks_path)
-	_load_obstacle_materials(materials_path)
+	if terrain_blocks.is_empty():
+		push_error("No terrain blocks assigned! Please add terrain scenes to the TerrainController in the editor.")
+	if obstacle_materials.is_empty():
+		push_warning("No obstacle materials assigned. Obstacles will use their default materials.")
 	_init_blocks(num_terrain_blocks)
+	player.start_game.connect(_on_game_start)
 
 func _physics_process(delta: float) -> void:
-	_progress_terrain(delta)
+	if is_progressing:
+		_progress_terrain(delta)
 
 func _init_blocks(number_of_blocks: int) -> void:
 	for block_index in number_of_blocks:
@@ -37,7 +39,7 @@ func _init_blocks(number_of_blocks: int) -> void:
 			block = start_block.instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		else:
-			block = TerrainBlocks.pick_random().instantiate()
+			block = terrain_blocks.pick_random().instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)
 		terrain_belt.append(block)
@@ -54,7 +56,7 @@ func _progress_terrain(delta: float) -> void:
 		if terrains_count % color_change_frequency == 0:
 			block = color_change_block.instantiate()
 		else:
-			block = TerrainBlocks.pick_random().instantiate()
+			block = terrain_blocks.pick_random().instantiate()
 		_append_to_far_edge(last_terrain, block)
 		add_child(block)
 		terrain_belt.append(block)
@@ -66,21 +68,10 @@ func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInst
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
 	terrain_velocity += player.points * terrain_velocity_increase
 
-func _load_terrain_scenes(target_path: String) -> void:
-	var dir = DirAccess.open(target_path)
-	for scene_path in dir.get_files():
-		TerrainBlocks.append(load(target_path + "/" + scene_path))
-
-# Load all materials from the specified directory
-func _load_obstacle_materials(target_path: String) -> void:
-	var dir = DirAccess.open(target_path)
-	for material_path in dir.get_files():
-		var material = load(target_path + "/" + material_path)
-		if material is ShaderMaterial:
-			obstacle_materials.append(material)
-
 # Randomly assign materials to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
+	if obstacle_materials.is_empty():
+		return
 	for obstacle in block.get_children():
 		if obstacle.is_in_group("obstacle") or obstacle.is_in_group("collectible"):
 			var mesh_instance = obstacle.get_node("Mesh")
@@ -89,3 +80,6 @@ func _assign_random_materials(block: Node) -> void:
 
 func _on_player_lose():
 	terrain_velocity = 0.0
+
+func _on_game_start():
+	is_progressing = true

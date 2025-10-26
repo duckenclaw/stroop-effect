@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 const JUMP_VELOCITY := 5.5
 const TRACK_POSITIONS := [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
-const DOWN_SPEED := 50.0 # Speed of going down when pressing down in a jump
+const DOWN_SPEED := 100.0 # Speed of going down when pressing down in a jump
 const MOVE_SPEED := 7.5 # Speed of lerping between tracks
 const STREAK_DECAY := 1.5 # time in second for the streak to decay
 const MAX_STREAK := 5.0
@@ -35,10 +35,12 @@ var new_pseudo_color = ""
 var points = 0.0
 
 signal lose()
+signal start_game()
 
 func _ready():
 	_load_colors(materials_path)
 	change_color(colors.pick_random())
+	set_physics_process(false)  # Disable player processing until game starts
 
 func change_color(target_color: String):
 	while new_pseudo_color == target_color or new_pseudo_color == target_color:

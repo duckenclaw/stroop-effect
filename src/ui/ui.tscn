@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bwcqe7y7c8upv"]
+[gd_scene load_steps=8 format=3 uid="uid://bwcqe7y7c8upv"]
 
 [ext_resource type="FontFile" uid="uid://bhcel1eb0ooi5" path="res://assets/PixeloidMono.ttf" id="1_8wxmc"]
 [ext_resource type="PackedScene" uid="uid://ct5v2edvqq13h" path="res://src/ui/lose_ui.tscn" id="1_orkqn"]
 [ext_resource type="Script" uid="uid://bphqyd6esm5s6" path="res://src/ui/ui.gd" id="1_v17bj"]
 [ext_resource type="PackedScene" uid="uid://cwj82y7otjcu" path="res://src/ui/hud.tscn" id="2_0qi8r"]
+[ext_resource type="PackedScene" uid="uid://de5fjgwgmdo2y" path="res://src/ui/start_ui.tscn" id="5_sjdex"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wxmc"]
 bg_color = Color(0.07881496, 0.07881499, 0.07881493, 1)
@@ -45,39 +46,10 @@ visible = false
 layout_mode = 2
 
 [node name="HUD" parent="MarginContainer" instance=ExtResource("2_0qi8r")]
-layout_mode = 2
-
-[node name="StartUI" type="Control" parent="MarginContainer"]
 visible = false
 layout_mode = 2
 
-[node name="StartPromptLabel" type="Label" parent="MarginContainer/StartUI"]
-layout_mode = 0
-offset_left = 420.0
-offset_top = 548.0
-offset_right = 612.0
-offset_bottom = 568.0
-size_flags_horizontal = 4
-size_flags_vertical = 8
-text = "Press <_> to start"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="TutorialLabel" type="RichTextLabel" parent="MarginContainer/StartUI"]
-layout_mode = 1
-anchors_preset = -1
-offset_right = 416.0
-offset_bottom = 330.0
-text = "Controls:
-↑/W/Space - Jump
-↓/S - Slam
-→/D - Right
-←/A - Left
-
-Instructions:
-1. Survive as long as possible!
-2. Destroy obstacles that have the same color that is written on the top to gain points
-3. Collect rotating Color Change Blocks to gain points and change the destructible color
-4. Slam down on obstacles with indestructible colors to bounce on them"
+[node name="StartUI" parent="MarginContainer" instance=ExtResource("5_sjdex")]
+layout_mode = 2
 
 [connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_lose_ui_restart"]
