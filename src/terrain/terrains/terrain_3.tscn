@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="1_ouneh"]
 [ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="5_ypu0d"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="6_bt6e4"]
-[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/obstacle-scenes/color_change.tscn" id="7_3hedp"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="7_3hedp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)

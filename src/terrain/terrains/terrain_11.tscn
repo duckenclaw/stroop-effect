@@ -1,20 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://51482k2sgdmw"]
+[gd_scene load_steps=5 format=3 uid="uid://51482k2sgdmw"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_3qcs6"]
 [ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_t2bqk"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="4_3qcs6"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
 
-[node name="Terrain_10" type="MeshInstance3D"]
+[node name="Terrain_11" type="MeshInstance3D" unique_id=1519576082]
 material_override = ExtResource("1_3qcs6")
 mesh = SubResource("PlaneMesh_nrxnt")
 
-[node name="HMovingObstacle" parent="." instance=ExtResource("2_t2bqk")]
+[node name="HMovingObstacle" parent="." unique_id=781151431 instance=ExtResource("2_t2bqk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
 
-[node name="HMovingObstacle2" parent="." instance=ExtResource("2_t2bqk")]
+[node name="HMovingObstacle2" parent="." unique_id=1527150591 instance=ExtResource("2_t2bqk")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 0, 2.5)
 
-[node name="HMovingObstacle3" parent="." instance=ExtResource("2_t2bqk")]
+[node name="HMovingObstacle3" parent="." unique_id=261244985 instance=ExtResource("2_t2bqk")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 0, -2.5)
+
+[node name="Flight" parent="." unique_id=18222875 instance=ExtResource("4_3qcs6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.09659529, 0, -0.24405575)

@@ -8,4 +8,4 @@ render_priority = 0
 next_pass = ExtResource("1_pkl28")
 shader = ExtResource("2_crtim")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 0.03
+shader_parameter/outline_thickness = 0.050000002375

@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://byo6qyin7nhyn"]
+
+[ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://assets/resources/materials/player_material.tres" id="1_fvgsm"]
+[ext_resource type="Script" uid="uid://cdtidg4lwmrdj" path="res://src/terrain/collectible/flight.gd" id="1_yts62"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8521"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_u8521"]
+material = ExtResource("1_fvgsm")
+size = Vector3(1, 0.5, 0.5)
+
+[node name="Flight" type="Area3D" unique_id=18222875 groups=["flight"]]
+script = ExtResource("1_yts62")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=706113317]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_u8521")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=770796340]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 0.5, 0)
+mesh = SubResource("PrismMesh_u8521")

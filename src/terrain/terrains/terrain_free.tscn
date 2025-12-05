@@ -6,8 +6,8 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 20)
 
-[node name="Terrain_5" type="MeshInstance3D"]
+[node name="TerrainFree" type="MeshInstance3D" unique_id=553629451]
 material_override = ExtResource("1_cu0im")
 mesh = SubResource("PlaneMesh_nrxnt")
 
-[node name="TerrainColliders" parent="." instance=ExtResource("1_ts8rq")]
+[node name="TerrainColliders" parent="." unique_id=771660623 instance=ExtResource("1_ts8rq")]

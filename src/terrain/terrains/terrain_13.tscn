@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bf0dkrpqs4ywj"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_em1yg"]
+[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="2_gdg6x"]
+[ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="2_rxuuv"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_13" type="MeshInstance3D" unique_id=1519576082]
+material_override = ExtResource("1_em1yg")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="VMovingObstacle" parent="." unique_id=553843706 instance=ExtResource("2_gdg6x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="VMovingObstacle2" parent="." unique_id=1077444352 instance=ExtResource("2_gdg6x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -5)
+
+[node name="VMovingObstacle3" parent="." unique_id=695737128 instance=ExtResource("2_gdg6x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -5)
+
+[node name="WideObstacle" parent="." unique_id=1320140977 instance=ExtResource("2_rxuuv")]

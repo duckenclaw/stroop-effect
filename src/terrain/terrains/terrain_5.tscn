@@ -3,30 +3,30 @@
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="1_i177p"]
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_r6siv"]
 [ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="2_223ih"]
-[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/obstacle-scenes/color_change.tscn" id="4_n82kv"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_n82kv"]
 [ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="5_223ih"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="6_huo7i"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
 
-[node name="Terrain_5" type="MeshInstance3D"]
+[node name="Terrain_5" type="MeshInstance3D" unique_id=1100895618]
 material_override = ExtResource("1_r6siv")
 mesh = SubResource("PlaneMesh_nrxnt")
 
-[node name="WideObstacle" parent="." instance=ExtResource("2_223ih")]
+[node name="WideObstacle" parent="." unique_id=681163421 instance=ExtResource("2_223ih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 
-[node name="HighObstacle" parent="." instance=ExtResource("1_i177p")]
+[node name="HighObstacle" parent="." unique_id=1027548281 instance=ExtResource("1_i177p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
-[node name="ColorChange" parent="." instance=ExtResource("4_n82kv")]
+[node name="ColorChange" parent="." unique_id=1900497915 instance=ExtResource("4_n82kv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
 
-[node name="ColorChange2" parent="." instance=ExtResource("4_n82kv")]
+[node name="ColorChange2" parent="." unique_id=257735599 instance=ExtResource("4_n82kv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.5, 5)
 
-[node name="Ramp" parent="." instance=ExtResource("5_223ih")]
+[node name="Ramp" parent="." unique_id=929242987 instance=ExtResource("5_223ih")]
 
-[node name="LowObstacle" parent="." instance=ExtResource("6_huo7i")]
+[node name="LowObstacle" parent="." unique_id=1724807768 instance=ExtResource("6_huo7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)

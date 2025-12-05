@@ -132,6 +132,7 @@ mesh = SubResource("PrismMesh_at8qy")
 [node name="Collider" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.1, 2.08165e-12)
 shape = SubResource("BoxShape3D_5m6hq")
+debug_color = Color(4.042983e-06, 0.6412676, 0.3419421, 0.41960785)
 
 [node name="Hitbox" type="Area3D" parent="." groups=["obstacle"]]
 

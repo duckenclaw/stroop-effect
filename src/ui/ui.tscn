@@ -19,7 +19,7 @@ shadow_offset = Vector2(2, 4)
 default_font = ExtResource("1_8wxmc")
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_8wxmc")
 
-[node name="UI" type="Control"]
+[node name="UI" type="Control" unique_id=814134532]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -29,7 +29,7 @@ grow_vertical = 2
 theme = SubResource("Theme_sjdex")
 script = ExtResource("1_v17bj")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=133790596]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,15 +41,16 @@ theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 60
 theme_override_constants/margin_bottom = 40
 
-[node name="LoseUI" parent="MarginContainer" instance=ExtResource("1_orkqn")]
+[node name="HUD" parent="MarginContainer" unique_id=741258464 instance=ExtResource("2_0qi8r")]
 visible = false
 layout_mode = 2
 
-[node name="HUD" parent="MarginContainer" instance=ExtResource("2_0qi8r")]
+[node name="LoseUI" parent="MarginContainer" unique_id=1858290617 instance=ExtResource("1_orkqn")]
 visible = false
 layout_mode = 2
 
-[node name="StartUI" parent="MarginContainer" instance=ExtResource("5_sjdex")]
+[node name="StartUI" parent="MarginContainer" unique_id=735652102 instance=ExtResource("5_sjdex")]
 layout_mode = 2
 
+[connection signal="exit" from="MarginContainer/LoseUI" to="." method="_on_lose_ui_exit"]
 [connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_lose_ui_restart"]

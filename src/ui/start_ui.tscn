@@ -2,14 +2,24 @@
 
 [node name="StartUI" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="StartPromptLabel" type="Label" parent="."]
-layout_mode = 0
-offset_left = 420.0
-offset_top = 548.0
-offset_right = 612.0
-offset_bottom = 568.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -102.5
+offset_top = -23.0
+offset_right = 102.5
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 text = "Press <SPACEBAR> to start"

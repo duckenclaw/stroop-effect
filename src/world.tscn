@@ -1,31 +1,12 @@
-[gd_scene load_steps=30 format=3 uid="uid://3kb35cm3l6ce"]
+[gd_scene load_steps=11 format=3 uid="uid://3kb35cm3l6ce"]
 
 [ext_resource type="PackedScene" uid="uid://bwcqe7y7c8upv" path="res://src/ui/ui.tscn" id="1_jvefd"]
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://src/controllers/terrain_controller.tscn" id="2_53egh"]
-[ext_resource type="PackedScene" uid="uid://dycrbwoh5143u" path="res://src/terrain/terrains/terrain_0.tscn" id="3_7igba"]
 [ext_resource type="Shader" uid="uid://duk153mirc34n" path="res://assets/resources/world.gdshader" id="3_dotkg"]
-[ext_resource type="PackedScene" uid="uid://cblpv53inbdvd" path="res://src/terrain/terrains/terrain_1.tscn" id="4_cgjhx"]
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://src/player/player.tscn" id="4_tnjnu"]
-[ext_resource type="PackedScene" uid="uid://df3u3358r0n8v" path="res://src/terrain/terrains/terrain_2.tscn" id="5_ngmlu"]
 [ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://src/controllers/music_controller.gd" id="6_eemcn"]
-[ext_resource type="PackedScene" uid="uid://bog1lio3v4co3" path="res://src/terrain/terrains/terrain_3.tscn" id="6_esudu"]
-[ext_resource type="PackedScene" uid="uid://c332w5abhjkbr" path="res://src/terrain/terrains/terrain_4.tscn" id="7_2imy6"]
 [ext_resource type="AudioStream" uid="uid://diahq04ocpctw" path="res://assets/sound/electric-spiral.mp3" id="7_jvefd"]
 [ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://assets/sound/wika-wika.mp3" id="7_njovb"]
-[ext_resource type="PackedScene" uid="uid://cfjx40l0hw0rv" path="res://src/terrain/terrains/terrain_5.tscn" id="8_0mdou"]
-[ext_resource type="PackedScene" uid="uid://k1h2mrfmmv46" path="res://src/terrain/terrains/terrain_6.tscn" id="9_61w3o"]
-[ext_resource type="PackedScene" uid="uid://d124i6n4a6ibb" path="res://src/terrain/terrains/terrain_7.tscn" id="10_mlvry"]
-[ext_resource type="PackedScene" uid="uid://brdamf01k28wb" path="res://src/terrain/terrains/terrain_8.tscn" id="11_kqsvi"]
-[ext_resource type="PackedScene" uid="uid://27rypyrrqu02" path="res://src/terrain/terrains/terrain_9.tscn" id="12_xtube"]
-[ext_resource type="PackedScene" uid="uid://yyoy81uhm818" path="res://src/terrain/terrains/terrain_10.tscn" id="13_5735e"]
-[ext_resource type="PackedScene" uid="uid://51482k2sgdmw" path="res://src/terrain/terrains/terrain_11.tscn" id="14_whabk"]
-[ext_resource type="PackedScene" uid="uid://d3gu0f0ummoww" path="res://src/terrain/terrains/terrain_color_change.tscn" id="15_eaktq"]
-[ext_resource type="Material" uid="uid://dtk2k7j3aeqxn" path="res://assets/resources/materials/outline-materials/blue.tres" id="16_6bowm"]
-[ext_resource type="Material" uid="uid://em21olv8egqt" path="res://assets/resources/materials/outline-materials/green.tres" id="17_jwl4o"]
-[ext_resource type="Material" uid="uid://b58bi7ni8lyng" path="res://assets/resources/materials/outline-materials/orange.tres" id="18_esgyj"]
-[ext_resource type="Material" uid="uid://bp5i71xqo6v4g" path="res://assets/resources/materials/outline-materials/purple.tres" id="19_r7jet"]
-[ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="20_lu850"]
-[ext_resource type="Material" uid="uid://bcf7irb2fkf5j" path="res://assets/resources/materials/outline-materials/yellow.tres" id="21_814kb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]
 shader = ExtResource("3_dotkg")
@@ -37,34 +18,34 @@ sky_material = SubResource("ShaderMaterial_4mrxx")
 background_mode = 2
 sky = SubResource("Sky_7r4gi")
 
-[node name="World" type="Node3D"]
+[node name="World" type="Node3D" unique_id=629089285]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1802391738]
 
-[node name="UI" parent="CanvasLayer" instance=ExtResource("1_jvefd")]
+[node name="UI" parent="CanvasLayer" unique_id=662209091 instance=ExtResource("1_jvefd")]
 
-[node name="TerrainController" parent="." instance=ExtResource("2_53egh")]
-terrain_blocks = Array[PackedScene]([ExtResource("3_7igba"), ExtResource("4_cgjhx"), ExtResource("5_ngmlu"), ExtResource("6_esudu"), ExtResource("7_2imy6"), ExtResource("8_0mdou"), ExtResource("9_61w3o"), ExtResource("10_mlvry"), ExtResource("11_kqsvi"), ExtResource("12_xtube"), ExtResource("13_5735e"), ExtResource("14_whabk"), ExtResource("15_eaktq")])
-obstacle_materials = Array[ShaderMaterial]([ExtResource("16_6bowm"), ExtResource("17_jwl4o"), ExtResource("18_esgyj"), ExtResource("19_r7jet"), ExtResource("20_lu850"), ExtResource("21_814kb")])
+[node name="TerrainController" parent="." unique_id=857633645 instance=ExtResource("2_53egh")]
+terrain_velocity = 5.5
+terrain_velocity_increase = 0.002
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=564663090]
 environment = SubResource("Environment_lkiu3")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=935047671]
 transform = Transform3D(0.707107, -0.5, 0.5, 2.4663e-16, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 5, 10, 10)
 light_energy = 2.5
 light_indirect_energy = 3.0
 
-[node name="Camera" type="Camera3D" parent="."]
+[node name="Camera" type="Camera3D" parent="." unique_id=1672375145]
 transform = Transform3D(1, -4.9619e-16, 3.16109e-16, 3.16108e-16, 0.906308, 0.422618, -4.96191e-16, -0.422618, 0.906308, 2.08165e-12, 4, 4)
 
-[node name="Player" parent="." instance=ExtResource("4_tnjnu")]
+[node name="Player" parent="." unique_id=908379222 instance=ExtResource("4_tnjnu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 
-[node name="AudioListener3D" type="AudioListener3D" parent="."]
+[node name="AudioListener3D" type="AudioListener3D" parent="." unique_id=1267849246]
 current = true
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1634425807]
 autoplay = true
 script = ExtResource("6_eemcn")
 lose_sound = ExtResource("7_njovb")

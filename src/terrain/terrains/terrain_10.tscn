@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://yyoy81uhm818"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_acmh0"]
-[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/obstacle-scenes/color_change.tscn" id="3_13aaf"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="3_13aaf"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="5_vphf8"]
 [ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="6_nn8pw"]
 [ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="7_4qh5v"]
@@ -9,30 +9,30 @@
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
 
-[node name="Terrain_10" type="MeshInstance3D"]
+[node name="Terrain_10" type="MeshInstance3D" unique_id=534926402]
 material_override = ExtResource("1_acmh0")
 mesh = SubResource("PlaneMesh_nrxnt")
 
-[node name="ColorChange" parent="." instance=ExtResource("3_13aaf")]
+[node name="ColorChange" parent="." unique_id=1479729268 instance=ExtResource("3_13aaf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.99123, 0.987483, 4.00572)
 
-[node name="LowObstacle2" parent="." instance=ExtResource("5_vphf8")]
+[node name="LowObstacle2" parent="." unique_id=897048601 instance=ExtResource("5_vphf8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -5)
 
-[node name="ColorChange2" parent="." instance=ExtResource("3_13aaf")]
+[node name="ColorChange2" parent="." unique_id=1768882866 instance=ExtResource("3_13aaf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, -5)
 
-[node name="LongObstacle" parent="." instance=ExtResource("7_4qh5v")]
+[node name="LongObstacle" parent="." unique_id=683979357 instance=ExtResource("7_4qh5v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
 
-[node name="VMovingObstacle" parent="." instance=ExtResource("6_nn8pw")]
+[node name="VMovingObstacle" parent="." unique_id=296925022 instance=ExtResource("6_nn8pw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
 
-[node name="VMovingObstacle2" parent="." instance=ExtResource("6_nn8pw")]
+[node name="VMovingObstacle2" parent="." unique_id=1680034909 instance=ExtResource("6_nn8pw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 3)
 
-[node name="VMovingObstacle3" parent="." instance=ExtResource("6_nn8pw")]
+[node name="VMovingObstacle3" parent="." unique_id=1555286171 instance=ExtResource("6_nn8pw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -5)
 
-[node name="VMovingObstacle4" parent="." instance=ExtResource("6_nn8pw")]
+[node name="VMovingObstacle4" parent="." unique_id=444991834 instance=ExtResource("6_nn8pw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)

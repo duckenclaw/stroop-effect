@@ -14,12 +14,21 @@ config/name="Stroop-effect"
 config/version="0.0.1"
 config/tags=PackedStringArray("3d", "runner")
 run/main_scene="res://src/world.tscn"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.png"
+
+[display]
+
+window/size/viewport_width=1600
+window/size/viewport_height=900
 
 [global_group]
 
 double-jump=""
+color-clear=""
+color-change=""
+color-match=""
+flight=""
 
 [input]
 

@@ -4,14 +4,15 @@ extends Control
 @onready var loseUi = $MarginContainer/LoseUI
 @onready var startUi = $MarginContainer/StartUI
 @onready var colorLabel = hud.get_node("ColorContainer/Color")
-@onready var pointsLabel = hud.get_node("ScoreContainer/ValueLabel")
-@onready var modifierLabel = hud.get_node("ScoreContainer/ModifierLabel")
+@onready var pointsLabel = hud.get_node("VBoxContainer/ScoreContainer/ValueLabel")
+@onready var modifierLabel = hud.get_node("VBoxContainer/ScoreContainer/ModifierLabel")
+@onready var distanceLabel = hud.get_node("VBoxContainer/DistanceContainer/ValueLabel")
 @onready var losePointsLabel = loseUi.get_node("ResultsContainer/ScoreContainer/Number")
 @onready var loseDistanceLabel = loseUi.get_node("ResultsContainer/DistanceContainer/Number")
 @onready var player = get_parent().get_parent().get_node("Player")
+@onready var terrain_controller = get_parent().get_parent().get_node("TerrainController")
 
-var points = 0
-var distance = 0
+var points = 0.0
 
 var is_lost = false
 var game_started = false
@@ -27,40 +28,46 @@ func _ready():
 	update_points(points, 1.0)
 	hud.visible = false
 	startUi.visible = true
+	player.pause.connect(_on_player_pause)
+	player.unpause.connect(_on_player_unpause)
+
+func _process(_delta):
+	if game_started and not is_lost:
+		update_distance()
 
 func update_points(target: float, point_modifier: float):
 	points = target
 	pointsLabel.text = str(int(points))
 	losePointsLabel.text = str(int(points))
-	loseDistanceLabel.text = str(distance*15)
 	if point_modifier > 1.0:
 		modifierLabel.visible = true
 		modifierLabel.text = str(int(point_modifier))
 	else:
 		modifierLabel.visible = false
+
+func update_distance():
+	if terrain_controller:
+		var distance = terrain_controller.distance
+		distanceLabel.text = str(int(distance))
+		loseDistanceLabel.text = str(int(distance))
 		
 	
-func update_color(target: String, target_color):
+func update_color(target: String):
 	colorLabel.text = target
-#	match target_color:
-#		"green":
-#			colorLabel.set("theme_override_colors/font_color", [red, blue, purple, yellow, orange].pick_random())
-#		"red":
-#			colorLabel.set("theme_override_colors/font_color", [green, blue, purple, yellow, orange].pick_random())
-#		"blue":
-#			colorLabel.set("theme_override_colors/font_color", [green, red, purple, yellow, orange].pick_random())
-#		"purple":
-#			colorLabel.set("theme_override_colors/font_color", [green, red, blue, yellow, orange].pick_random())
-#		"yellow":
-#			colorLabel.set("theme_override_colors/font_color", [green, red, blue, purple, orange].pick_random())
-#		"orange":
-#			colorLabel.set("theme_override_colors/font_color", [green, red, blue, purple, yellow].pick_random())
 
 
 func _on_player_lose():
 	is_lost = true
 	hud.visible = false
 	loseUi.visible = true
+
+func _on_player_pause():
+	hud.visible = false
+	loseUi.visible = true
+
+func _on_player_unpause():
+	loseUi.visible = false
+	hud.visible = true
 
 func _unhandled_input(event):
 	# Handle game start on first jump press
@@ -87,3 +94,7 @@ func _on_game_start():
 
 	# Start the game (emit signal to terrain controller)
 	player.start_game.emit()
+
+
+func _on_lose_ui_exit():
+	get_tree().quit(0)

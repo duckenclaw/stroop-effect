@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvgd3yicbpyeu"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_ehcs4"]
+[ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_7q8s7"]
+[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="3_7q8s7"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_17" type="MeshInstance3D" unique_id=356058010]
+material_override = ExtResource("1_ehcs4")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="HMovingObstacle" parent="." unique_id=560536401 instance=ExtResource("2_7q8s7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 0, -4)
+
+[node name="HMovingObstacle2" parent="." unique_id=2144517042 instance=ExtResource("2_7q8s7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.5, -4)
+
+[node name="HMovingObstacle3" parent="." unique_id=1551854534 instance=ExtResource("2_7q8s7")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 1.5, 4)
+
+[node name="HMovingObstacle4" parent="." unique_id=352950064 instance=ExtResource("2_7q8s7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="VMovingObstacle" parent="." unique_id=1933538220 instance=ExtResource("3_7q8s7")]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0, 4, 0)
+
+[node name="VMovingObstacle2" parent="." unique_id=997072736 instance=ExtResource("3_7q8s7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="VMovingObstacle3" parent="." unique_id=1550233366 instance=ExtResource("3_7q8s7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)

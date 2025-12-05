@@ -97,26 +97,26 @@ _data = {
 &"obstacle_slam": SubResource("Animation_at8qy")
 }
 
-[node name="VMovingObstacle" type="StaticBody3D" groups=["obstacle"]]
+[node name="VMovingObstacle" type="StaticBody3D" unique_id=1885634719 groups=["obstacle"]]
 script = ExtResource("1_at8qy")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1335189908]
 transform = Transform3D(-4.371139e-08, -8.742278e-08, -1, 0, -1, 8.742278e-08, -1, 3.821371e-15, 4.371139e-08, 2.08165e-12, 0.6, 2.08165e-12)
 material_override = ExtResource("2_6l7d8")
 mesh = SubResource("PrismMesh_at8qy")
 
-[node name="Collider" type="CollisionShape3D" parent="."]
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=1029108289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.1, 2.08165e-12)
 shape = SubResource("BoxShape3D_5m6hq")
 
-[node name="Hitbox" type="Area3D" parent="." groups=["obstacle"]]
+[node name="Hitbox" type="Area3D" parent="." unique_id=962348379 groups=["obstacle"]]
 
-[node name="Collider" type="CollisionShape3D" parent="Hitbox"]
+[node name="Collider" type="CollisionShape3D" parent="Hitbox" unique_id=912671848]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.4, 2.08165e-12)
 shape = SubResource("BoxShape3D_07lmp")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=348444018]
 libraries = {
 &"": SubResource("AnimationLibrary_6l7d8")
 }
-autoplay = "obstacle_slam"
+autoplay = &"obstacle_slam"

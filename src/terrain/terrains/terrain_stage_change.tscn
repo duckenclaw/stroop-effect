@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdte7kckrw1ly"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_tf1da"]
+[ext_resource type="PackedScene" uid="uid://co4a1rip2whko" path="res://src/terrain/terrain_colliders.tscn" id="2_q3tvh"]
+[ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://assets/resources/materials/player_material.tres" id="3_q3tvh"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 20)
+
+[sub_resource type="QuadMesh" id="QuadMesh_cnn1u"]
+material = ExtResource("3_q3tvh")
+size = Vector2(7, 7)
+
+[node name="Terrain_5" type="MeshInstance3D" unique_id=458067915]
+material_override = ExtResource("1_tf1da")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="TerrainColliders" parent="." unique_id=430823830 instance=ExtResource("2_q3tvh")]
+
+[node name="StageChangeMesh" type="MeshInstance3D" parent="." unique_id=297002119]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 10)
+mesh = SubResource("QuadMesh_cnn1u")

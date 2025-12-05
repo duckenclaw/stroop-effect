@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b031iqtbuhpyp"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_unjjt"]
+[ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_vu4ub"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_15" type="MeshInstance3D" unique_id=356058010]
+material_override = ExtResource("1_unjjt")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="HMovingObstacle" parent="." unique_id=560536401 instance=ExtResource("2_vu4ub")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 1.5, 0)
+
+[node name="HMovingObstacle2" parent="." unique_id=2144517042 instance=ExtResource("2_vu4ub")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
