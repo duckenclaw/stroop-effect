@@ -70,23 +70,22 @@ func change_color(target_color: String):
 	# Load and apply the material to the player mesh
 	var material_file = materials_path + "/" + target_color + ".tres"
 	var material = load(material_file)
-	print(material)
+
 	mesh.material_override = material
 
 	ui.update_color(current_color)
 
 func _physics_process(delta):
 	
-	# Add gravity.
-	if not is_on_floor():
-		if is_levitating:
-			global_transform.origin.y = lerp(global_transform.origin.y, 1.5, MOVE_SPEED * delta)
-		else: 
-			velocity.y -= gravity * delta
-		if Input.is_action_just_pressed("slam") and !is_slamming:
-			is_slamming = true
-			is_levitating = false
-			velocity.y -= gravity * DOWN_SPEED * delta
+	if is_levitating:
+		global_transform.origin.y = lerp(global_transform.origin.y, 1.5, MOVE_SPEED * delta)
+	elif not is_on_floor():
+		# Add gravity. 
+		velocity.y -= gravity * delta
+	if Input.is_action_just_pressed("slam") and !is_slamming and not is_on_floor():
+		is_slamming = true
+		is_levitating = false
+		velocity.y -= gravity * DOWN_SPEED * delta
 
 	# Handle jump.
 	if is_on_floor():

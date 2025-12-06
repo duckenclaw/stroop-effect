@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://df3u3358r0n8v"]
+[gd_scene load_steps=4 format=3 uid="uid://df3u3358r0n8v"]
 
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="1_k2w3n"]
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_pgjoj"]
-[ext_resource type="PackedScene" uid="uid://dne86saoygync" path="res://src/terrain/collectible/double_jump.tscn" id="3_pdbx3"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -22,6 +21,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2.08165e-12, 2.08165e-12)
 
 [node name="LowObstacle3" parent="." unique_id=318130636 instance=ExtResource("1_k2w3n")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
-
-[node name="DoubleJump" parent="." unique_id=1878801975 instance=ExtResource("3_pdbx3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.11228657, 0, -0.2055397)

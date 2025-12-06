@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dycrbwoh5143u"]
+[gd_scene load_steps=6 format=3 uid="uid://dycrbwoh5143u"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_gdpad"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="1_xwa3v"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_ax2j5"]
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="5_77brb"]
-[ext_resource type="PackedScene" uid="uid://d1xhkljnbh828" path="res://src/terrain/collectible/color-clear.tscn" id="5_i01ua"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -24,6 +23,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
 
 [node name="HighObstacle" parent="." unique_id=1279061501 instance=ExtResource("5_77brb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
-
-[node name="ColorClear" parent="." unique_id=409387914 instance=ExtResource("5_i01ua")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03268981, 0, 5.6440544)

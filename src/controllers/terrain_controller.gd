@@ -85,7 +85,6 @@ func _progress_terrain(delta: float) -> void:
 		else:
 			var current_blocks = _get_current_stage_blocks()
 			block = current_blocks.pick_random().instantiate()
-			print("spawned block: " + block.name)
 
 		_append_to_far_edge(last_terrain, block)
 		add_child(block)

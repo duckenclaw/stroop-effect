@@ -25,7 +25,6 @@ sky = SubResource("Sky_7r4gi")
 [node name="UI" parent="CanvasLayer" unique_id=662209091 instance=ExtResource("1_jvefd")]
 
 [node name="TerrainController" parent="." unique_id=857633645 instance=ExtResource("2_53egh")]
-terrain_velocity = 5.5
 terrain_velocity_increase = 0.002
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=564663090]
