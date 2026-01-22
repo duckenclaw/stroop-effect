@@ -52,7 +52,7 @@ func _init_blocks(number_of_blocks: int) -> void:
 			block = start_block.instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		else:
-			var current_blocks = _get_current_stage_blocks()
+			var current_blocks = _get_current_stage_blocks() 
 			block = current_blocks.pick_random().instantiate()
 			_append_to_far_edge(terrain_belt[block_index-1], block)
 		add_child(block)

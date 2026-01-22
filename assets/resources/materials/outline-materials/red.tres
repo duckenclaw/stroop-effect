@@ -8,4 +8,4 @@ render_priority = 0
 next_pass = ExtResource("1_p8u48")
 shader = ExtResource("2_gbfn4")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
-shader_parameter/outline_thickness = 0.030000001425
+shader_parameter/outline_thickness = 0.03

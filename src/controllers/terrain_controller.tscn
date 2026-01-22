@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cn4cwipscakb7"]
+[gd_scene load_steps=30 format=3 uid="uid://cn4cwipscakb7"]
 
 [ext_resource type="Script" uid="uid://di38b48wh8eod" path="res://src/controllers/terrain_controller.gd" id="1_0ulod"]
 [ext_resource type="PackedScene" uid="uid://dxodyyjk7dr3t" path="res://src/terrain/terrains/special/terrain_free.tscn" id="2_3snv8"]
@@ -16,7 +16,10 @@
 [ext_resource type="PackedScene" uid="uid://k1h2mrfmmv46" path="res://src/terrain/terrains/stage1/terrain_14.tscn" id="10_jge18"]
 [ext_resource type="PackedScene" uid="uid://b031iqtbuhpyp" path="res://src/terrain/terrains/stage1/terrain_15.tscn" id="11_ilyt4"]
 [ext_resource type="PackedScene" uid="uid://df3u3358r0n8v" path="res://src/terrain/terrains/stage2/terrain_2.tscn" id="12_87iug"]
+[ext_resource type="PackedScene" uid="uid://b5cjx06477y11" path="res://src/terrain/terrains/stage1/terrain_18.tscn" id="12_j1lvd"]
 [ext_resource type="PackedScene" uid="uid://bog1lio3v4co3" path="res://src/terrain/terrains/stage2/terrain_3.tscn" id="13_0rhei"]
+[ext_resource type="PackedScene" uid="uid://cf7kw2r56xe5b" path="res://src/terrain/terrains/stage1/terrain_19.tscn" id="13_o7jdk"]
+[ext_resource type="PackedScene" uid="uid://cd2h2sbkymfxv" path="res://src/terrain/terrains/stage1/terrain_20.tscn" id="14_jge18"]
 [ext_resource type="PackedScene" uid="uid://dvc8dv17nu4vh" path="res://src/terrain/terrains/stage2/terrain_6.tscn" id="14_xgom1"]
 [ext_resource type="PackedScene" uid="uid://brdamf01k28wb" path="res://src/terrain/terrains/stage2/terrain_8.tscn" id="15_qutys"]
 [ext_resource type="PackedScene" uid="uid://51482k2sgdmw" path="res://src/terrain/terrains/stage2/terrain_11.tscn" id="16_85hp0"]
@@ -30,7 +33,7 @@
 [node name="TerrainController" type="Node3D" unique_id=1329525983]
 script = ExtResource("1_0ulod")
 obstacle_materials = Array[ShaderMaterial]([ExtResource("2_dkk55"), ExtResource("3_b47kf"), ExtResource("4_uyyly")])
-stage_1_blocks = Array[PackedScene]([ExtResource("5_d5q1a"), ExtResource("6_6vg0p"), ExtResource("7_jpd5j"), ExtResource("8_j1lvd"), ExtResource("9_o7jdk"), ExtResource("10_jge18"), ExtResource("11_ilyt4")])
+stage_1_blocks = Array[PackedScene]([ExtResource("5_d5q1a"), ExtResource("6_6vg0p"), ExtResource("7_jpd5j"), ExtResource("8_j1lvd"), ExtResource("9_o7jdk"), ExtResource("10_jge18"), ExtResource("11_ilyt4"), ExtResource("12_j1lvd"), ExtResource("13_o7jdk"), ExtResource("14_jge18")])
 stage_2_blocks = Array[PackedScene]([ExtResource("5_d5q1a"), ExtResource("6_6vg0p"), ExtResource("7_jpd5j"), ExtResource("8_j1lvd"), ExtResource("9_o7jdk"), ExtResource("10_jge18"), ExtResource("11_ilyt4"), ExtResource("12_87iug"), ExtResource("13_0rhei"), ExtResource("14_xgom1"), ExtResource("15_qutys"), ExtResource("16_85hp0"), ExtResource("17_8yaum"), ExtResource("18_ekvok")])
 stage_3_blocks = Array[PackedScene]([ExtResource("5_d5q1a"), ExtResource("6_6vg0p"), ExtResource("7_jpd5j"), ExtResource("8_j1lvd"), ExtResource("9_o7jdk"), ExtResource("10_jge18"), ExtResource("11_ilyt4"), ExtResource("12_87iug"), ExtResource("13_0rhei"), ExtResource("14_xgom1"), ExtResource("15_qutys"), ExtResource("16_85hp0"), ExtResource("17_8yaum"), ExtResource("18_ekvok"), ExtResource("19_x3e0g"), ExtResource("20_tcp4j"), ExtResource("21_ypey6"), ExtResource("22_hydjo")])
 start_block = ExtResource("2_3snv8")

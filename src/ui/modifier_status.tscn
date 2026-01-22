@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://boici0vkcy5bv"]
+
+[ext_resource type="Texture2D" uid="uid://bwe5msw0k004o" path="res://assets/resources/textures/under.svg" id="1_681jq"]
+[ext_resource type="Texture2D" uid="uid://7j7b0hs2fe0n" path="res://assets/resources/textures/over.svg" id="2_mvale"]
+[ext_resource type="Texture2D" uid="uid://bm0efa4iaq5tu" path="res://assets/resources/textures/progress.svg" id="3_iaixu"]
+
+[node name="ModifierStatus" type="Control" unique_id=1641593130]
+custom_minimum_size = Vector2(256, 128)
+layout_mode = 3
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="EffectLabel" type="Label" parent="." unique_id=1134583141]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -17.0
+offset_right = 40.0
+offset_bottom = 17.0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "EffectName"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TimeProgress" type="Control" parent="." unique_id=855138912]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="TimeProgress" unique_id=943104560]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+value = 33.0
+fill_mode = 4
+texture_under = ExtResource("1_681jq")
+texture_over = ExtResource("2_mvale")
+texture_progress = ExtResource("3_iaixu")
+
+[node name="TimeLabel" type="Label" parent="TimeProgress" unique_id=997442547]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.0
+offset_right = 20.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "10.0"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -1,12 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2ityq1t648me"]
+[gd_scene load_steps=6 format=3 uid="uid://d2ityq1t648me"]
 
-[ext_resource type="Material" uid="uid://ktpg8kie2icx" path="res://assets/resources/materials/obstacle-materials/red.tres" id="1_52m0r"]
 [ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacle.gd" id="1_xd5mm"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="3_5fnjp"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_mdp1s"]
-material = ExtResource("3_5fnjp")
-size = Vector3(1, 1.2, 3)
+[ext_resource type="ArrayMesh" uid="uid://6xji3ygn4m0u" path="res://assets/models/smooth_cube.res" id="3_uvb0c"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_07lmp"]
 size = Vector3(1, 0.2, 3.2)
@@ -14,20 +10,20 @@ size = Vector3(1, 0.2, 3.2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7ifdx"]
 size = Vector3(1, 0.8, 3)
 
-[node name="LongObstacle" type="StaticBody3D" groups=["obstacle"]]
+[node name="LongObstacle" type="StaticBody3D" unique_id=1007587938 groups=["obstacle"]]
 script = ExtResource("1_xd5mm")
 
-[node name="Mesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.6, 2.08165e-12)
-material_override = ExtResource("1_52m0r")
-mesh = SubResource("BoxMesh_mdp1s")
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=1495932462]
+transform = Transform3D(1, 0, 0, 0, 1.2, 0, 0, 0, 3, 2.08165e-12, 0.6, 2.08165e-12)
+material_override = ExtResource("3_5fnjp")
+mesh = ExtResource("3_uvb0c")
 
-[node name="Collider" type="CollisionShape3D" parent="."]
+[node name="Collider" type="CollisionShape3D" parent="." unique_id=172189743]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.1, 2.08165e-12)
 shape = SubResource("BoxShape3D_07lmp")
 
-[node name="Hitbox" type="Area3D" parent="." groups=["obstacle"]]
+[node name="Hitbox" type="Area3D" parent="." unique_id=1553116863 groups=["obstacle"]]
 
-[node name="Collider" type="CollisionShape3D" parent="Hitbox"]
+[node name="Collider" type="CollisionShape3D" parent="Hitbox" unique_id=1234418137]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.4, 2.08165e-12)
 shape = SubResource("BoxShape3D_7ifdx")

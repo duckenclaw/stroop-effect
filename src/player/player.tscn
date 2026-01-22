@@ -4,8 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://assets/sound/score.mp3" id="2_2m7jq"]
 [ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://assets/sound/color_change.mp3" id="3_jhvac"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="4_244u8"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_244u8"]
+[ext_resource type="ArrayMesh" uid="uid://6xji3ygn4m0u" path="res://assets/models/smooth_cube.res" id="5_5f2sf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qlg0r"]
 
@@ -209,7 +208,7 @@ color_change_sfx = ExtResource("3_jhvac")
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1075244860]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 material_override = ExtResource("4_244u8")
-mesh = SubResource("BoxMesh_244u8")
+mesh = ExtResource("5_5f2sf")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1652344375]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -251,8 +250,6 @@ collide_with_bodies = false
 
 [node name="StreakTimer" type="Timer" parent="." unique_id=730767639]
 wait_time = 5.0
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=38588550]
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

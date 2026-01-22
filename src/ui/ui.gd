@@ -4,25 +4,25 @@ extends Control
 @onready var loseUi = $MarginContainer/LoseUI
 @onready var startUi = $MarginContainer/StartUI
 @onready var colorLabel = hud.get_node("ColorContainer/Color")
-@onready var pointsLabel = hud.get_node("VBoxContainer/ScoreContainer/ValueLabel")
-@onready var modifierLabel = hud.get_node("VBoxContainer/ScoreContainer/ModifierLabel")
-@onready var distanceLabel = hud.get_node("VBoxContainer/DistanceContainer/ValueLabel")
+@onready var pointsLabel = hud.get_node("RunStatsContainer/ScoreContainer/ValueLabel")
+@onready var modifierLabel = hud.get_node("RunStatsContainer/ScoreContainer/ModifierLabel")
+@onready var distanceLabel = hud.get_node("RunStatsContainer/DistanceContainer/ValueLabel")
 @onready var losePointsLabel = loseUi.get_node("ResultsContainer/ScoreContainer/Number")
 @onready var loseDistanceLabel = loseUi.get_node("ResultsContainer/DistanceContainer/Number")
+@onready var modifiersContainer = hud.get_node("ModifiersContainer")
 @onready var player = get_parent().get_parent().get_node("Player")
 @onready var terrain_controller = get_parent().get_parent().get_node("TerrainController")
+
+# Preloaded modifier status scene
+var modifier_status_scene = preload("res://src/ui/modifier_status.tscn")
+
+# Active modifier tracking
+var active_modifiers = {}  # Dictionary to track active modifiers: {name: {node, duration, time_left}}
 
 var points = 0.0
 
 var is_lost = false
 var game_started = false
-
-var red = Color(0.8, 0, 0, 1.0)
-var blue = Color(0.5, 0.5, 1.0, 1.0)
-var green = Color(0, 0.8, 0, 1.0)
-var purple = Color(0.8, 0, 0.8, 1.0)
-var yellow = Color(0.8, 0.8, 0, 1.0)
-var orange = Color(0.8, 0.4, 0, 1.0)
 
 func _ready():
 	update_points(points, 1.0)
@@ -30,10 +30,15 @@ func _ready():
 	startUi.visible = true
 	player.pause.connect(_on_player_pause)
 	player.unpause.connect(_on_player_unpause)
+	player.double_jump_started.connect(_on_double_jump_started)
+	player.double_jump_ended.connect(_on_double_jump_ended)
+	player.flight_started.connect(_on_flight_started)
+	player.flight_ended.connect(_on_flight_ended)
 
-func _process(_delta):
+func _process(delta):
 	if game_started and not is_lost:
 		update_distance()
+		_update_modifier_timers(delta)
 
 func update_points(target: float, point_modifier: float):
 	points = target
@@ -98,3 +103,63 @@ func _on_game_start():
 
 func _on_lose_ui_exit():
 	get_tree().quit(0)
+
+# Modifier status functions
+func _add_modifier_status(modifier_name: String, duration: float):
+	# If modifier already exists, update it
+	if active_modifiers.has(modifier_name):
+		active_modifiers[modifier_name].duration = duration
+		active_modifiers[modifier_name].time_left = duration
+		return
+
+	# Create new modifier status display
+	var modifier_status = modifier_status_scene.instantiate()
+	modifiersContainer.add_child(modifier_status)
+
+	# Get references to the child nodes
+	var effect_label = modifier_status.get_node("EffectLabel")
+	var time_label = modifier_status.get_node("TimeProgress/TimeLabel")
+	var progress_bar = modifier_status.get_node("TimeProgress/TextureProgressBar")
+
+	# Set the effect name
+	effect_label.text = modifier_name
+
+	# Store in active modifiers dictionary
+	active_modifiers[modifier_name] = {
+		"node": modifier_status,
+		"duration": duration,
+		"time_left": duration,
+		"effect_label": effect_label,
+		"time_label": time_label,
+		"progress_bar": progress_bar
+	}
+
+func _remove_modifier_status(modifier_name: String):
+	if active_modifiers.has(modifier_name):
+		var modifier_data = active_modifiers[modifier_name]
+		modifier_data.node.queue_free()
+		active_modifiers.erase(modifier_name)
+
+func _on_double_jump_started(duration: float):
+	_add_modifier_status("Double Jump", duration)
+
+func _on_double_jump_ended():
+	_remove_modifier_status("Double Jump")
+
+func _on_flight_started(duration: float):
+	_add_modifier_status("Flight", duration)
+
+func _on_flight_ended():
+	_remove_modifier_status("Flight")
+
+func _update_modifier_timers(delta: float):
+	for modifier_name in active_modifiers.keys():
+		var modifier_data = active_modifiers[modifier_name]
+		modifier_data.time_left -= delta
+
+		# Update time label (show with 1 decimal place)
+		modifier_data.time_label.text = "%.1f" % max(0.0, modifier_data.time_left)
+
+		# Update progress bar (0-100 scale)
+		var progress = (modifier_data.time_left / modifier_data.duration) * 100.0
+		modifier_data.progress_bar.value = max(0.0, progress)

@@ -47,6 +47,10 @@ signal pause()
 signal unpause()
 signal match_color(color_name: String)
 signal color_clear(color_name: String)
+signal double_jump_started(duration: float)
+signal double_jump_ended()
+signal flight_started(duration: float)
+signal flight_ended()
 
 func _ready():
 	_load_colors(materials_path)
@@ -195,6 +199,7 @@ func _on_hitbox_area_entered(area):
 		audio_stream_player.playing = true
 		can_double_jump = true
 		double_jump_timer.start(DOUBLE_JUMP_DURATION)
+		double_jump_started.emit(DOUBLE_JUMP_DURATION)
 		add_points(1.0)
 		area.queue_free()
 
@@ -210,6 +215,7 @@ func _on_hitbox_area_entered(area):
 		audio_stream_player.playing = true
 		is_flying = true
 		flight_timer.start(FLIGHT_DURATION)
+		flight_started.emit(FLIGHT_DURATION)
 		add_points(1.0)
 		area.queue_free()
 
@@ -247,6 +253,7 @@ func _on_streak_timeout():
 
 func _on_double_jump_timeout():
 	can_double_jump = false
+	double_jump_ended.emit()
 
 func _on_flight_timeout():
 	_end_flight()
@@ -255,3 +262,4 @@ func _end_flight():
 	is_flying = false
 	is_levitating = false
 	flight_timer.stop()
+	flight_ended.emit()

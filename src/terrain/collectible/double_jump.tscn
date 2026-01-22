@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://dne86saoygync"]
+[gd_scene load_steps=7 format=3 uid="uid://dne86saoygync"]
 
-[ext_resource type="Script" uid="uid://b7bwor507sbr3" path="res://src/terrain/collectible/double_jump.gd" id="1_035wo"]
 [ext_resource type="Material" uid="uid://c7v88ghpfbffv" path="res://assets/resources/materials/player_material.tres" id="2_6anw2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qrd3d"]
@@ -47,7 +46,6 @@ _data = {
 }
 
 [node name="DoubleJump" type="Area3D" unique_id=1878801975 groups=["double-jump"]]
-script = ExtResource("1_035wo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=868748264]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

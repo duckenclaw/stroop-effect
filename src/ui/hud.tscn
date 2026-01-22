@@ -43,7 +43,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("VBoxContainer/ScoreContainer/ModifierLabel:theme_override_colors/font_color")
+tracks/0/path = NodePath("RunStatsContainer/ScoreContainer/ModifierLabel:theme_override_colors/font_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -55,7 +55,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/ScoreContainer/ModifierLabel:theme_override_font_sizes/font_size")
+tracks/1/path = NodePath("RunStatsContainer/ScoreContainer/ModifierLabel:theme_override_font_sizes/font_size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -72,7 +72,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("VBoxContainer/ScoreContainer/ModifierLabel:theme_override_colors/font_color")
+tracks/0/path = NodePath("RunStatsContainer/ScoreContainer/ModifierLabel:theme_override_colors/font_color")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -84,7 +84,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("VBoxContainer/ScoreContainer/ModifierLabel:theme_override_font_sizes/font_size")
+tracks/1/path = NodePath("RunStatsContainer/ScoreContainer/ModifierLabel:theme_override_font_sizes/font_size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -133,26 +133,26 @@ libraries = {
 }
 autoplay = &"flaring"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1356385611]
+[node name="RunStatsContainer" type="VBoxContainer" parent="." unique_id=1356385611]
 layout_mode = 0
 offset_right = 383.0
 offset_bottom = 146.0
 
-[node name="ScoreContainer" type="FlowContainer" parent="VBoxContainer" unique_id=842237112]
+[node name="ScoreContainer" type="FlowContainer" parent="RunStatsContainer" unique_id=842237112]
 layout_mode = 2
 theme_override_constants/h_separation = 8
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/ScoreContainer" unique_id=1045809281]
+[node name="NameLabel" type="Label" parent="RunStatsContainer/ScoreContainer" unique_id=1045809281]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Score: "
 
-[node name="ValueLabel" type="Label" parent="VBoxContainer/ScoreContainer" unique_id=1887583204]
+[node name="ValueLabel" type="Label" parent="RunStatsContainer/ScoreContainer" unique_id=1887583204]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "5"
 
-[node name="ModifierLabel" type="Label" parent="VBoxContainer/ScoreContainer" unique_id=1184017033]
+[node name="ModifierLabel" type="Label" parent="RunStatsContainer/ScoreContainer" unique_id=1184017033]
 visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 1, 1, 1)
@@ -167,23 +167,34 @@ text = "x2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="VBoxContainer/ScoreContainer" unique_id=1410433672]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RunStatsContainer/ScoreContainer" unique_id=1410433672]
 root_node = NodePath("../../..")
 libraries = {
 &"": SubResource("AnimationLibrary_4rn03")
 }
 autoplay = &"streak"
 
-[node name="DistanceContainer" type="FlowContainer" parent="VBoxContainer" unique_id=710644060]
+[node name="DistanceContainer" type="FlowContainer" parent="RunStatsContainer" unique_id=710644060]
 layout_mode = 2
 theme_override_constants/h_separation = 8
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/DistanceContainer" unique_id=100263906]
+[node name="NameLabel" type="Label" parent="RunStatsContainer/DistanceContainer" unique_id=100263906]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Distance: "
 
-[node name="ValueLabel" type="Label" parent="VBoxContainer/DistanceContainer" unique_id=1166886011]
+[node name="ValueLabel" type="Label" parent="RunStatsContainer/DistanceContainer" unique_id=1166886011]
 layout_mode = 2
 theme_override_font_sizes/font_size = 36
 text = "10"
+
+[node name="ModifiersContainer" type="VBoxContainer" parent="." unique_id=1078700620]
+custom_minimum_size = Vector2(256, 512)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -128.0
+offset_bottom = 512.0
+grow_horizontal = 0
+theme_override_constants/separation = 16

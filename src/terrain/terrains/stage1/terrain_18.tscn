@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://b5cjx06477y11"]
+
+[ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_7sg6t"]
+[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacle-scenes/wide_obstacle.tscn" id="2_7sg6t"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
+size = Vector2(7, 15)
+
+[node name="Terrain_18" type="MeshInstance3D" unique_id=1519576082]
+material_override = ExtResource("1_7sg6t")
+mesh = SubResource("PlaneMesh_nrxnt")
+
+[node name="WideObstacle" parent="." unique_id=507232914 instance=ExtResource("2_7sg6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 3)
+
+[node name="WideObstacle2" parent="." unique_id=1165103214 instance=ExtResource("2_7sg6t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -3)
