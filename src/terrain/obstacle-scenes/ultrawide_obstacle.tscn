@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacle.gd" id="1_3nc8v"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="2_3nc8v"]
-[ext_resource type="ArrayMesh" uid="uid://6xji3ygn4m0u" path="res://assets/models/smooth_cube.res" id="3_e7arh"]
+[ext_resource type="ArrayMesh" uid="uid://bn6fvu02fsot0" path="res://assets/models/smooth_ultrawide_cube.res" id="3_e7arh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_07lmp"]
 size = Vector3(7, 0.2, 1.2)
@@ -14,7 +14,7 @@ size = Vector3(7, 0.8, 1)
 script = ExtResource("1_3nc8v")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=391382764]
-transform = Transform3D(7, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.5, 2.08165e-12)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0.5, 2.08165e-12)
 material_override = ExtResource("2_3nc8v")
 mesh = ExtResource("3_e7arh")
 
