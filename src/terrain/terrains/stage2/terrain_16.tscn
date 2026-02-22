@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c133uraxu5m8p"]
+[gd_scene load_steps=6 format=3 uid="uid://c133uraxu5m8p"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_06r7i"]
 [ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_78j4e"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="3_ocenx"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="4_22uyi"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -21,3 +23,9 @@ transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 2, 1
 
 [node name="HMovingObstacle4" parent="." unique_id=352950064 instance=ExtResource("2_78j4e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2.5)
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("3_ocenx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+collectible_scenes = Array[PackedScene]([ExtResource("4_22uyi")])
+spawn_weights = Array[float]([2.0])
+nothing_weight = 1.0

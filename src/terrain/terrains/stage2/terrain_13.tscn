@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bf0dkrpqs4ywj"]
+[gd_scene load_steps=8 format=3 uid="uid://bf0dkrpqs4ywj"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_em1yg"]
 [ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="2_gdg6x"]
 [ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="2_rxuuv"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="4_xrxaj"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="5_new8l"]
+[ext_resource type="PackedScene" uid="uid://brdlaqygpuxk4" path="res://src/terrain/collectible/color_match.tscn" id="6_48xa4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -21,3 +24,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -5)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -5)
 
 [node name="WideObstacle" parent="." unique_id=1320140977 instance=ExtResource("2_rxuuv")]
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("4_xrxaj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+collectible_scenes = Array[PackedScene]([ExtResource("5_new8l"), ExtResource("6_48xa4")])
+spawn_weights = Array[float]([2.0, 1.0])
+nothing_weight = 1.0
+
+[node name="Collectible2" parent="." unique_id=1262895028 instance=ExtResource("4_xrxaj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -5)
+collectible_scenes = Array[PackedScene]([ExtResource("5_new8l"), ExtResource("6_48xa4")])
+spawn_weights = Array[float]([2.0, 1.0])
+nothing_weight = 1.0
+
+[node name="Collectible3" parent="." unique_id=1821487388 instance=ExtResource("4_xrxaj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -5)
+collectible_scenes = Array[PackedScene]([ExtResource("5_new8l"), ExtResource("6_48xa4")])
+spawn_weights = Array[float]([2.0, 1.0])
+nothing_weight = 1.0

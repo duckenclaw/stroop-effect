@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dvgd3yicbpyeu"]
+[gd_scene load_steps=8 format=3 uid="uid://dvgd3yicbpyeu"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_ehcs4"]
 [ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_7q8s7"]
 [ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="3_7q8s7"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="4_s6d3i"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="5_yhjtm"]
+[ext_resource type="PackedScene" uid="uid://brdlaqygpuxk4" path="res://src/terrain/collectible/color_match.tscn" id="6_cifsk"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -31,3 +34,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 
 [node name="VMovingObstacle3" parent="." unique_id=1550233366 instance=ExtResource("3_7q8s7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("4_s6d3i")]
+collectible_scenes = Array[PackedScene]([ExtResource("5_yhjtm"), ExtResource("6_cifsk")])
+spawn_weights = Array[float]([3.0, 1.0])
+nothing_weight = 1.0

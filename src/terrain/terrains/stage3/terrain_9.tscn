@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://27rypyrrqu02"]
+[gd_scene load_steps=9 format=3 uid="uid://27rypyrrqu02"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_sdr76"]
 [ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://src/terrain/obstacle-scenes/long_high_obstacle.tscn" id="4_48iqc"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="5_rxk7k"]
 [ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="6_3uw1g"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="6_lcgxv"]
 [ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="7_a7k2u"]
+[ext_resource type="PackedScene" uid="uid://dne86saoygync" path="res://src/terrain/collectible/double_jump.tscn" id="7_p4css"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -29,3 +31,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.2, 0)
 
 [node name="LongObstacle" parent="." unique_id=450786267 instance=ExtResource("7_a7k2u")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 4)
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("6_lcgxv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 4)
+collectible_scenes = Array[PackedScene]([ExtResource("5_rxk7k")])
+spawn_weights = Array[float]([2.0])
+nothing_weight = 1.0
+
+[node name="Collectible2" parent="." unique_id=1284192536 instance=ExtResource("6_lcgxv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0)
+collectible_scenes = Array[PackedScene]([ExtResource("5_rxk7k")])
+spawn_weights = Array[float]([2.0])
+nothing_weight = 1.0
+
+[node name="Collectible3" parent="." unique_id=404008400 instance=ExtResource("6_lcgxv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6)
+collectible_scenes = Array[PackedScene]([ExtResource("7_p4css")])
+spawn_weights = Array[float]([2.0])
+nothing_weight = 1.0

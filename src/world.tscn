@@ -26,6 +26,9 @@ sky = SubResource("Sky_7r4gi")
 
 [node name="TerrainController" parent="." unique_id=857633645 instance=ExtResource("2_53egh")]
 terrain_velocity_increase = 0.002
+stage_2_distance = 250.0
+stage_3_distance = 500.0
+stage_4_distance = 750.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=564663090]
 environment = SubResource("Environment_lkiu3")
