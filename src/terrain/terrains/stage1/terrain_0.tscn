@@ -2,10 +2,10 @@
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_gdpad"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="1_xwa3v"]
-[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_ax2j5"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="4_uhaj0"]
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="5_77brb"]
 [ext_resource type="PackedScene" uid="uid://dne86saoygync" path="res://src/terrain/collectible/double_jump.tscn" id="6_ortjs"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="6_uhaj0"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -25,6 +25,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4)
 
 [node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("4_uhaj0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2)
-collectible_scenes = Array[PackedScene]([ExtResource("4_ax2j5"), ExtResource("6_ortjs")])
-spawn_weights = Array[float]([10.0, 10.0])
-nothing_weight = 1.0
+collectible_scenes = Array[PackedScene]([ExtResource("6_ortjs"), ExtResource("6_uhaj0")])
+spawn_weights = Array[float]([1.0, 1.0])
