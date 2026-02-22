@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfjx40l0hw0rv"]
+[gd_scene load_steps=11 format=3 uid="uid://cfjx40l0hw0rv"]
 
 [ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="1_i177p"]
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_r6siv"]
@@ -6,6 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_n82kv"]
 [ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="5_223ih"]
 [ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="6_huo7i"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="7_tiunc"]
+[ext_resource type="PackedScene" uid="uid://d1xhkljnbh828" path="res://src/terrain/collectible/color-clear.tscn" id="8_nyi3y"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="9_hkutg"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -20,13 +23,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 [node name="HighObstacle" parent="." unique_id=1027548281 instance=ExtResource("1_i177p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 
-[node name="ColorChange" parent="." unique_id=1900497915 instance=ExtResource("4_n82kv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
-
-[node name="ColorChange2" parent="." unique_id=257735599 instance=ExtResource("4_n82kv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.5, 5)
-
 [node name="Ramp" parent="." unique_id=929242987 instance=ExtResource("5_223ih")]
 
 [node name="LowObstacle" parent="." unique_id=1724807768 instance=ExtResource("6_huo7i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 5)
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("7_tiunc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2)
+collectible_scenes = Array[PackedScene]([ExtResource("4_n82kv"), ExtResource("8_nyi3y")])
+spawn_weights = Array[float]([3.0, 1.0])
+
+[node name="Collectible2" parent="." unique_id=307510306 instance=ExtResource("7_tiunc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 5)
+collectible_scenes = Array[PackedScene]([ExtResource("4_n82kv"), ExtResource("9_hkutg")])
+spawn_weights = Array[float]([5.0, 1.0])

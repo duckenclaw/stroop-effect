@@ -39,6 +39,41 @@ func _spawn_collectible() -> void:
 		# Add as child of this spawner node
 		add_child(collectible_instance)
 
+		# Assign random material if applicable (color-change collectibles)
+		_assign_material_to_spawned_collectible(collectible_instance)
+
+
+func _assign_material_to_spawned_collectible(collectible_instance: Node) -> void:
+	# Only assign materials to color-change collectibles
+	if not collectible_instance.is_in_group("color-change"):
+		return
+
+	# Find TerrainController in the scene tree
+	var terrain_controller = _find_terrain_controller()
+	if terrain_controller == null:
+		push_warning("TerrainController not found - cannot assign material to color-change collectible")
+		return
+
+	# Check if materials are available
+	if terrain_controller.obstacle_materials.is_empty():
+		return
+
+	# Assign random material to the collectible's mesh
+	var mesh_instance = collectible_instance.get_node("Mesh")
+	if mesh_instance:
+		var random_material = terrain_controller.obstacle_materials.pick_random()
+		mesh_instance.material_override = random_material
+
+
+func _find_terrain_controller() -> Node:
+	# Walk up the scene tree to find TerrainController
+	var current_node = get_parent()
+	while current_node != null:
+		if current_node is TerrainController:
+			return current_node
+		current_node = current_node.get_parent()
+	return null
+
 
 func _weighted_random_selection() -> PackedScene:
 	# Calculate total weight

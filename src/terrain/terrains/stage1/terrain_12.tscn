@@ -1,7 +1,11 @@
-[gd_scene load_steps=4 format=3 uid="uid://qq8i3n2m776s"]
+[gd_scene load_steps=8 format=3 uid="uid://qq8i3n2m776s"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_1bslf"]
 [ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="2_1bslf"]
+[ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="3_6sbmq"]
+[ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_hj2ge"]
+[ext_resource type="PackedScene" uid="uid://dne86saoygync" path="res://src/terrain/collectible/double_jump.tscn" id="5_yney2"]
+[ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="6_7unxm"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
@@ -11,3 +15,18 @@ material_override = ExtResource("1_1bslf")
 mesh = SubResource("PlaneMesh_nrxnt")
 
 [node name="WideObstacle" parent="." unique_id=1320140977 instance=ExtResource("2_1bslf")]
+
+[node name="Collectible" parent="." unique_id=450236818 instance=ExtResource("3_6sbmq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
+collectible_scenes = Array[PackedScene]([ExtResource("4_hj2ge"), ExtResource("5_yney2"), ExtResource("6_7unxm")])
+spawn_weights = Array[float]([2.0, 1.0, 1.0])
+
+[node name="Collectible2" parent="." unique_id=1112677144 instance=ExtResource("3_6sbmq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collectible_scenes = Array[PackedScene]([ExtResource("4_hj2ge"), ExtResource("5_yney2"), ExtResource("6_7unxm")])
+spawn_weights = Array[float]([2.0, 1.0, 1.0])
+
+[node name="Collectible3" parent="." unique_id=2045381201 instance=ExtResource("3_6sbmq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0)
+collectible_scenes = Array[PackedScene]([ExtResource("4_hj2ge"), ExtResource("5_yney2"), ExtResource("6_7unxm")])
+spawn_weights = Array[float]([2.0, 1.0, 1.0])
