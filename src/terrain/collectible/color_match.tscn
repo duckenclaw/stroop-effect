@@ -1,6 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://brdlaqygpuxk4"]
-
-[ext_resource type="Script" uid="uid://b7synmgp50qqy" path="res://src/terrain/collectible/color_match.gd" id="1_wyeql"]
+[gd_scene load_steps=6 format=3 uid="uid://brdlaqygpuxk4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3h4qi"]
 
@@ -71,7 +69,6 @@ _data = {
 }
 
 [node name="ColorMatch" type="Area3D" unique_id=409387914 groups=["color-match"]]
-script = ExtResource("1_wyeql")
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=1010577085]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
