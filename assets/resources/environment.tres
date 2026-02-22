@@ -1,0 +1,13 @@
+[gd_resource type="Environment" load_steps=4 format=3 uid="uid://clolufp5dwoeo"]
+
+[ext_resource type="Shader" uid="uid://duk153mirc34n" path="res://assets/resources/world.gdshader" id="1_0resc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]
+shader = ExtResource("1_0resc")
+
+[sub_resource type="Sky" id="Sky_7r4gi"]
+sky_material = SubResource("ShaderMaterial_4mrxx")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_7r4gi")
