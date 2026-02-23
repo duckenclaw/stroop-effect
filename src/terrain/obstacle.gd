@@ -7,7 +7,7 @@ extends StaticBody3D
 @onready var dissolve_shader: ShaderMaterial = load("res://assets/resources/materials/dissolve_material.tres")
 
 var dissolving := false
-var dissolve_speed := 4.5
+var dissolve_speed := 6.5
 var start_radius := 0.001
 var border_radius := 10.0
 var dissolve_center := Vector3.ZERO

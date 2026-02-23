@@ -12,6 +12,7 @@ extends Control
 @onready var modifiersContainer = hud.get_node("ModifiersContainer")
 @onready var player = get_parent().get_parent().get_node("Player")
 @onready var terrain_controller = get_parent().get_parent().get_node("TerrainController")
+@onready var camera = get_parent().get_parent().get_node("Camera")
 
 # Preloaded modifier status scene
 var modifier_status_scene = preload("res://src/ui/modifier_status.tscn")
@@ -34,6 +35,7 @@ func _ready():
 	player.double_jump_ended.connect(_on_double_jump_ended)
 	player.flight_started.connect(_on_flight_started)
 	player.flight_ended.connect(_on_flight_ended)
+	startUi.game_start_requested.connect(_on_game_start)
 
 func _process(delta):
 	if game_started and not is_lost:
@@ -75,12 +77,8 @@ func _on_player_unpause():
 	hud.visible = true
 
 func _unhandled_input(event):
-	# Handle game start on first jump press
-	if not game_started and event.is_action_pressed("jump"):
-		_on_game_start()
-		get_viewport().set_input_as_handled()
 	# Handle restart key when game is lost
-	elif event is InputEventKey and event.keycode == 82 and is_lost:
+	if event is InputEventKey and event.keycode == 82 and is_lost:
 		restart()
 
 func _on_lose_ui_restart():
@@ -98,7 +96,11 @@ func _on_game_start():
 	player.set_physics_process(true)
 
 	# Start the game (emit signal to terrain controller)
+	# Terrain begins immediately as camera transitions
 	player.start_game.emit()
+
+	# Trigger smooth camera transition to gameplay position
+	camera.transition_to_gameplay()
 
 
 func _on_lose_ui_exit():

@@ -1,0 +1,59 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://qjkwh61ilwvk"]
+
+[ext_resource type="FontFile" uid="uid://bhcel1eb0ooi5" path="res://assets/PixeloidMono.ttf" id="1_sxftv"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f1fht"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+shadow_size = 8
+shadow_offset = Vector2(2, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxftv"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+shadow_size = 4
+shadow_offset = Vector2(2, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h3jh0"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+shadow_color = Color(0, 0, 0, 0.39215687)
+shadow_size = 8
+shadow_offset = Vector2(2, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qir7t"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+
+[resource]
+default_font = ExtResource("1_sxftv")
+default_font_size = 16
+Button/font_sizes/font_size = 18
+Button/styles/hover = SubResource("StyleBoxFlat_f1fht")
+Button/styles/normal = SubResource("StyleBoxFlat_sxftv")
+Button/styles/pressed = SubResource("StyleBoxFlat_h3jh0")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_qir7t")

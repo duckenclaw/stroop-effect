@@ -1,23 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bwcqe7y7c8upv"]
+[gd_scene load_steps=6 format=3 uid="uid://bwcqe7y7c8upv"]
 
-[ext_resource type="FontFile" uid="uid://bhcel1eb0ooi5" path="res://assets/PixeloidMono.ttf" id="1_8wxmc"]
 [ext_resource type="PackedScene" uid="uid://ct5v2edvqq13h" path="res://src/ui/lose_ui.tscn" id="1_orkqn"]
+[ext_resource type="Theme" uid="uid://qjkwh61ilwvk" path="res://assets/resources/main-theme.tres" id="1_sjdex"]
 [ext_resource type="Script" uid="uid://bphqyd6esm5s6" path="res://src/ui/ui.gd" id="1_v17bj"]
 [ext_resource type="PackedScene" uid="uid://cwj82y7otjcu" path="res://src/ui/hud.tscn" id="2_0qi8r"]
 [ext_resource type="PackedScene" uid="uid://de5fjgwgmdo2y" path="res://src/ui/start_ui.tscn" id="5_sjdex"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8wxmc"]
-bg_color = Color(0.07881496, 0.07881499, 0.07881493, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 2
-border_width_bottom = 2
-shadow_size = 2
-shadow_offset = Vector2(2, 4)
-
-[sub_resource type="Theme" id="Theme_sjdex"]
-default_font = ExtResource("1_8wxmc")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_8wxmc")
 
 [node name="UI" type="Control" unique_id=814134532]
 layout_mode = 3
@@ -26,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_sjdex")
+theme = ExtResource("1_sjdex")
 script = ExtResource("1_v17bj")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=133790596]
