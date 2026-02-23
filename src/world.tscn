@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://src/controllers/terrain_controller.tscn" id="2_53egh"]
 [ext_resource type="Environment" uid="uid://clolufp5dwoeo" path="res://assets/resources/environment.tres" id="3_jvefd"]
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://src/player/player.tscn" id="4_tnjnu"]
-[ext_resource type="Script" path="res://src/camera/camera_controller.gd" id="5_camera"]
+[ext_resource type="Script" uid="uid://bd80um4erqqcq" path="res://src/camera/camera_controller.gd" id="5_camera"]
 [ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://src/controllers/music_controller.gd" id="6_eemcn"]
 [ext_resource type="AudioStream" uid="uid://diahq04ocpctw" path="res://assets/sound/electric-spiral.mp3" id="7_jvefd"]
 [ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://assets/sound/wika-wika.mp3" id="7_njovb"]

@@ -1,75 +1,95 @@
-[gd_scene load_steps=2 format=3 uid="uid://de5fjgwgmdo2y"]
+[gd_scene load_steps=5 format=3 uid="uid://de5fjgwgmdo2y"]
 
-[ext_resource type="Script" path="res://src/ui/start_ui.gd" id="1_start_ui"]
+[ext_resource type="Theme" uid="uid://qjkwh61ilwvk" path="res://assets/resources/main-theme.tres" id="1_l4tyo"]
+[ext_resource type="Script" uid="uid://bwcyq8qinxnp2" path="res://src/ui/start_ui.gd" id="1_start_ui"]
+[ext_resource type="FontFile" uid="uid://bhcel1eb0ooi5" path="res://assets/PixeloidMono.ttf" id="2_lvrv4"]
 
-[node name="StartUI" type="Control"]
+[sub_resource type="Theme" id="Theme_8vcao"]
+
+[node name="StartUI" type="Control" unique_id=1454356383]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_l4tyo")
 script = ExtResource("1_start_ui")
 
-[node name="MenuContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -80.0
-offset_right = 100.0
-offset_bottom = 80.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="TitleLabel" type="Label" parent="MenuContainer"]
-layout_mode = 2
-text = "STROOP EFFECT"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="StartButton" type="Button" parent="MenuContainer"]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "Start Game"
-
-[node name="HowToPlayButton" type="Button" parent="MenuContainer"]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "How to Play"
-
-[node name="OptionsButton" type="Button" parent="MenuContainer"]
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-text = "Options"
-
-[node name="TutorialPanel" type="PanelContainer" parent="."]
-visible = false
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2104422598]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 128
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 128
 
-[node name="MarginContainer" type="MarginContainer" parent="TutorialPanel"]
+[node name="MenuContainer" type="VBoxContainer" parent="MarginContainer" unique_id=362339684]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/MenuContainer" unique_id=522730458]
+texture_filter = 2
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 8
+theme_override_constants/shadow_outline_size = 8
+theme_override_fonts/font = ExtResource("2_lvrv4")
+theme_override_font_sizes/font_size = 48
+text = "STROOP EFFECT"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_trim_flags = 0
+
+[node name="StartButton" type="Button" parent="MarginContainer/MenuContainer" unique_id=188873297]
+custom_minimum_size = Vector2(164, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_8vcao")
+theme_override_fonts/font = ExtResource("2_lvrv4")
+text = "Start Game"
+
+[node name="HowToPlayButton" type="Button" parent="MarginContainer/MenuContainer" unique_id=1727297959]
+custom_minimum_size = Vector2(164, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_8vcao")
+theme_override_fonts/font = ExtResource("2_lvrv4")
+text = "How to Play"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/MenuContainer" unique_id=2072573716]
+custom_minimum_size = Vector2(164, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+theme = SubResource("Theme_8vcao")
+theme_override_fonts/font = ExtResource("2_lvrv4")
+text = "Options"
+
+[node name="TutorialPanel" type="PanelContainer" parent="MarginContainer" unique_id=661548814]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/TutorialPanel" unique_id=865312239]
 layout_mode = 2
 theme_override_constants/margin_left = 50
 theme_override_constants/margin_top = 50
 theme_override_constants/margin_right = 50
 theme_override_constants/margin_bottom = 50
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TutorialPanel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/TutorialPanel/MarginContainer" unique_id=2029059712]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="TutorialLabel" type="RichTextLabel" parent="TutorialPanel/MarginContainer/VBoxContainer"]
+[node name="TutorialLabel" type="RichTextLabel" parent="MarginContainer/TutorialPanel/MarginContainer/VBoxContainer" unique_id=1794499171]
 layout_mode = 2
 size_flags_vertical = 3
 text = "Controls:
@@ -84,12 +104,14 @@ Instructions:
 3. Collect rotating Color Change Blocks to gain points and change the destructible color
 4. Slam down on obstacles with your current color to bounce on them"
 
-[node name="CloseButton" type="Button" parent="TutorialPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 50)
+[node name="CloseButton" type="Button" parent="MarginContainer/TutorialPanel/MarginContainer/VBoxContainer" unique_id=903726079]
+custom_minimum_size = Vector2(164, 64)
 layout_mode = 2
-text = "Close"
+size_flags_horizontal = 8
+size_flags_vertical = 8
+text = "Close | x"
 
-[connection signal="pressed" from="MenuContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="MenuContainer/HowToPlayButton" to="." method="_on_how_to_play_button_pressed"]
-[connection signal="pressed" from="MenuContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="TutorialPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MenuContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MenuContainer/HowToPlayButton" to="." method="_on_how_to_play_button_pressed"]
+[connection signal="pressed" from="MarginContainer/MenuContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/TutorialPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
