@@ -4,7 +4,7 @@ const JUMP_VELOCITY := 5.5
 const TRACK_POSITIONS := [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
 const DOWN_SPEED := 100.0 # Speed of going down when pressing down in a jump
 const MOVE_SPEED := 7.5 # Speed of lerping between tracks
-const STREAK_DECAY := 1.5 # time in second for the streak to decay
+const STREAK_DECAY := 3.5 # time in second for the streak to decay
 const MAX_STREAK := 5.0
 const DOUBLE_JUMP_DURATION := 5.0
 const FLIGHT_DURATION := 10.0
@@ -51,6 +51,8 @@ signal double_jump_started(duration: float)
 signal double_jump_ended()
 signal flight_started(duration: float)
 signal flight_ended()
+signal collision_with_obstacle()
+signal slam_ended()
 
 func _ready():
 	_load_colors(materials_path)
@@ -97,6 +99,7 @@ func _physics_process(delta):
 			animation_player.play("slam")
 			var slammed_object = slam_raycast.get_collider()
 			is_slamming = false
+			slam_ended.emit()
 			if slammed_object and slammed_object.is_in_group("obstacle"):
 				var obstacle_color = slammed_object.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
 				if obstacle_color != current_color:
@@ -110,7 +113,7 @@ func _physics_process(delta):
 					obstacle.start_dissolve(collision_point)
 					velocity.y = JUMP_VELOCITY * 1.5
 		
-					add_points(2.0)
+					add_points(1.0)
 				
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")
@@ -160,6 +163,7 @@ func _on_hitbox_area_entered(area):
 	
 	if area.is_in_group("obstacle"):
 		var obstacle_color = area.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
+		collision_with_obstacle.emit()
 		if obstacle_color != current_color:
 			lose.emit()
 			set_physics_process(false)

@@ -37,6 +37,7 @@ alignment = 1
 [node name="TitleLabel" type="Label" parent="MarginContainer/MenuContainer" unique_id=522730458]
 texture_filter = 2
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 4
