@@ -11,22 +11,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_gh3jp")
 
-[node name="LoseText" type="Label" parent="." unique_id=1380688978]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -101.5
-offset_right = 101.5
-offset_bottom = 58.0
-grow_horizontal = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 42
-text = "YOU LOST"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="ResultsContainer" type="VBoxContainer" parent="." unique_id=604365877]
 layout_mode = 1
 anchors_preset = -1
@@ -95,11 +79,4 @@ size_flags_vertical = 8
 theme_override_font_sizes/font_size = 36
 text = "Restart"
 
-[node name="ExitButton" type="Button" parent="Buttons" unique_id=2073017223]
-custom_minimum_size = Vector2(260, 80)
-layout_mode = 2
-theme_override_font_sizes/font_size = 36
-text = "Exit"
-
 [connection signal="pressed" from="Buttons/RestartButton" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="Buttons/ExitButton" to="." method="_on_exit_button_pressed"]

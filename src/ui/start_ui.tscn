@@ -37,6 +37,7 @@ alignment = 1
 [node name="TitleLabel" type="Label" parent="MarginContainer/MenuContainer" unique_id=522730458]
 texture_filter = 2
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 4
@@ -111,7 +112,72 @@ size_flags_horizontal = 8
 size_flags_vertical = 8
 text = "Close | x"
 
+[node name="OptionsPanel" type="PanelContainer" parent="MarginContainer" unique_id=1568945823]
+visible = false
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/OptionsPanel" unique_id=2145698734]
+layout_mode = 2
+theme_override_constants/margin_left = 240
+theme_override_constants/margin_top = 120
+theme_override_constants/margin_right = 240
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/OptionsPanel/MarginContainer" unique_id=987456321]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="OptionsLabel" type="Label" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=456789012]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvrv4")
+theme_override_font_sizes/font_size = 32
+text = "Options"
+horizontal_alignment = 1
+
+[node name="MasterLabel" type="Label" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=123456789]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvrv4")
+theme_override_font_sizes/font_size = 20
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=234567890]
+layout_mode = 2
+value = 100.0
+
+[node name="MusicLabel" type="Label" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=345678901]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvrv4")
+theme_override_font_sizes/font_size = 20
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=1158987493]
+layout_mode = 2
+value = 100.0
+
+[node name="SFXLabel" type="Label" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=567890123]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_lvrv4")
+theme_override_font_sizes/font_size = 20
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer" unique_id=678901234]
+layout_mode = 2
+value = 100.0
+
+[node name="BackButton" type="Button" parent="MarginContainer/OptionsPanel/MarginContainer" unique_id=789012345]
+custom_minimum_size = Vector2(164, 64)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+theme = SubResource("Theme_8vcao")
+theme_override_fonts/font = ExtResource("2_lvrv4")
+text = "Back"
+
 [connection signal="pressed" from="MarginContainer/MenuContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MenuContainer/HowToPlayButton" to="." method="_on_how_to_play_button_pressed"]
 [connection signal="pressed" from="MarginContainer/MenuContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MarginContainer/TutorialPanel/MarginContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="value_changed" from="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer/MasterSlider" to="." method="_on_master_volume_changed"]
+[connection signal="value_changed" from="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer/MusicSlider" to="." method="_on_music_volume_changed"]
+[connection signal="value_changed" from="MarginContainer/OptionsPanel/MarginContainer/VBoxContainer/SFXSlider" to="." method="_on_sfx_volume_changed"]
+[connection signal="pressed" from="MarginContainer/OptionsPanel/MarginContainer/BackButton" to="." method="_on_options_back_pressed"]

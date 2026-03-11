@@ -35,6 +35,8 @@ func _ready():
 	player.double_jump_ended.connect(_on_double_jump_ended)
 	player.flight_started.connect(_on_flight_started)
 	player.flight_ended.connect(_on_flight_ended)
+	player.collision_with_obstacle.connect(camera._on_collision_shake)
+	player.slam_ended.connect(camera._on_slam_shake)
 	startUi.game_start_requested.connect(_on_game_start)
 
 func _process(delta):
