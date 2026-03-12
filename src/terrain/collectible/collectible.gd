@@ -34,7 +34,6 @@ func _spawn_collectible() -> void:
 	# Spawn the selected collectible (if not nothing)
 	if selected_scene != null:
 		var collectible_instance = selected_scene.instantiate()
-		print("selected scene: " + collectible_instance.name)
 
 		# Add as child of this spawner node
 		add_child(collectible_instance)
