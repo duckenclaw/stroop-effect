@@ -1,0 +1,13 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bd0g03fpgb5vv"]
+
+[ext_resource type="Shader" uid="uid://oecjsm42j4bi" path="res://assets/resources/shaders/electric_field.gdshader" id="1_shader"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_shader")
+shader_parameter/field_color = Color(0.2, 0.6, 1, 0.6)
+shader_parameter/animation_speed = 1.5
+shader_parameter/field_intensity = 0.8
+shader_parameter/edge_brightness = 2.0
+shader_parameter/noise_scale = 8.0
+shader_parameter/flicker_speed = 3.0

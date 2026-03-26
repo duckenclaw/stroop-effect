@@ -115,6 +115,7 @@ func _physics_process(delta):
 					velocity.y = JUMP_VELOCITY * 1.5
 		
 					add_points(1.0)
+					streak
 				
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")

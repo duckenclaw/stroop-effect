@@ -16,7 +16,7 @@
 
 [node name="TerrainController" parent="." unique_id=857633645 instance=ExtResource("2_53egh")]
 terrain_velocity_increase = 0.002
-stage_2_distance = 250.0
+stage_2_distance = 50.0
 stage_3_distance = 500.0
 stage_4_distance = 750.0
 
@@ -35,6 +35,8 @@ script = ExtResource("5_camera")
 
 [node name="Player" parent="." unique_id=908379222 instance=ExtResource("4_tnjnu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+modifier_multipier = null
+materials_path = null
 
 [node name="AudioListener3D" type="AudioListener3D" parent="." unique_id=1267849246]
 current = true
