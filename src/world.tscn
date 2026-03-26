@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://3kb35cm3l6ce"]
+[gd_scene load_steps=8 format=3 uid="uid://3kb35cm3l6ce"]
 
 [ext_resource type="PackedScene" uid="uid://bwcqe7y7c8upv" path="res://src/ui/ui.tscn" id="1_jvefd"]
 [ext_resource type="PackedScene" uid="uid://cn4cwipscakb7" path="res://src/controllers/terrain_controller.tscn" id="2_53egh"]
@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://dguvbimxk8r80" path="res://src/player/player.tscn" id="4_tnjnu"]
 [ext_resource type="Script" uid="uid://bd80um4erqqcq" path="res://src/camera/camera_controller.gd" id="5_camera"]
 [ext_resource type="Script" uid="uid://dkqnm6pvylxek" path="res://src/controllers/music_controller.gd" id="6_eemcn"]
-[ext_resource type="AudioStream" uid="uid://diahq04ocpctw" path="res://assets/sound/electric-spiral.mp3" id="7_jvefd"]
 [ext_resource type="AudioStream" uid="uid://o7r147fx8jkm" path="res://assets/sound/wika-wika.mp3" id="7_njovb"]
 
 [node name="World" type="Node3D" unique_id=629089285]
@@ -41,12 +40,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.0
 current = true
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1634425807]
-stream = ExtResource("7_jvefd")
 autoplay = true
 bus = &"Music"
 script = ExtResource("6_eemcn")
 lose_sound = ExtResource("7_njovb")
-bgm = ExtResource("7_jvefd")
 
 [connection signal="lose" from="Player" to="CanvasLayer/UI" method="_on_player_lose"]
 [connection signal="lose" from="Player" to="TerrainController" method="_on_player_lose"]

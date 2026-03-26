@@ -8,6 +8,7 @@ const STREAK_DECAY := 3.5 # time in second for the streak to decay
 const MAX_STREAK := 5.0
 const DOUBLE_JUMP_DURATION := 5.0
 const FLIGHT_DURATION := 10.0
+const FLIGHT_HEIGHT := 2.0
 const COLOR_CLEAR_WIDTH := 7.0
 const COLOR_CLEAR_LENGTH := 30.0
 
@@ -84,7 +85,7 @@ func change_color(target_color: String):
 func _physics_process(delta):
 	
 	if is_levitating:
-		global_transform.origin.y = lerp(global_transform.origin.y, 1.5, MOVE_SPEED * delta)
+		global_transform.origin.y = lerp(global_transform.origin.y, FLIGHT_HEIGHT, MOVE_SPEED * delta)
 	elif not is_on_floor():
 		# Add gravity. 
 		velocity.y -= gravity * delta

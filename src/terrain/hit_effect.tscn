@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c8qgjt36pv0xt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8k61"]
+cull_mode = 2
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_vnj66"]
+material = SubResource("StandardMaterial3D_r8k61")
+
+[node name="HitEffect" type="CPUParticles3D" unique_id=179197730]
+mesh = SubResource("QuadMesh_vnj66")
