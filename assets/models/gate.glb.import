@@ -38,6 +38,13 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={
+"materials": {
+"Material": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://assets/resources/materials/purple.tres",
+"use_external/path": "uid://bp5i71xqo6v4g"
+}
+},
 "meshes": {
 "gate_Cube": {
 "generate/lightmap_uv": 0,

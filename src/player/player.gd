@@ -56,7 +56,8 @@ signal collision_with_obstacle()
 signal slam_ended()
 
 func _ready():
-	_load_colors(materials_path)
+	var colors_path = materials_path if materials_path else "res://assets/resources/materials/outline-materials/"
+	_load_colors(colors_path)
 	change_color(colors.pick_random())
 	set_physics_process(false)  # Disable player processing until game starts
 
@@ -115,7 +116,6 @@ func _physics_process(delta):
 					velocity.y = JUMP_VELOCITY * 1.5
 		
 					add_points(1.0)
-					streak
 				
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")

@@ -1,12 +1,12 @@
 shader_type spatial;
 render_mode blend_add, depth_draw_opaque, cull_back, unshaded;
 
-uniform vec4 field_color : source_color = vec4(0.2, 0.6, 1.0, 1.0);
+uniform vec4 field_color : source_color = vec4(0.5, 0.6, 1.0, 1.0);
 uniform float animation_speed : hint_range(0.1, 5.0) = 1.5;
 uniform float field_intensity : hint_range(0.0, 2.0) = 0.8;
 uniform float edge_brightness : hint_range(0.0, 5.0) = 2.0;
 uniform float noise_scale : hint_range(1.0, 20.0) = 8.0;
-uniform float flicker_speed : hint_range(0.1, 10.0) = 3.0;
+uniform float flicker_speed : hint_range(0.1, 10.0) = 5.0;
 
 // Simple 2D noise function
 float noise(vec2 p) {
