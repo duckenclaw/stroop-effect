@@ -77,8 +77,10 @@ func _progress_terrain(delta: float) -> void:
 		var first_terrain = terrain_belt.pop_front()
 		var block
 
-		# Calculate what the distance will be after spawning the next terrain
-		var next_distance = (terrains_count + 1) * terrain_length
+		# Calculate what the distance will be after spawning the next terrain. Must use the same
+		# formula as `distance` below: gating on the raw block count instead put this ~110 units
+		# ahead of the number on the HUD, so stage 2 fired before the run had really started.
+		var next_distance = _distance_after(terrains_count + 1)
 
 		# Check if this terrain spawning will cross a stage threshold
 		var next_stage = _calculate_stage_from_distance(next_distance)
@@ -98,13 +100,20 @@ func _progress_terrain(delta: float) -> void:
 		add_child(block)
 		terrain_belt.append(block)
 		terrains_count += 1
-		distance = (terrains_count - num_terrain_blocks) * terrain_length  # Update distance
+		distance = _distance_after(terrains_count)
+		# Difficulty ramps with the score. Kept here rather than inside _append_to_far_edge, which
+		# is a positioning helper and also runs while the starting belt is being built.
+		terrain_velocity += player.points * terrain_velocity_increase
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 
+## Distance travelled once `block_count` blocks have been spawned. The first num_terrain_blocks
+## make up the starting belt and are already on screen, so they do not count as distance.
+func _distance_after(block_count: int) -> float:
+	return (block_count - num_terrain_blocks) * terrain_length
+
 func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInstance3D) -> void:
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
-	terrain_velocity += player.points * terrain_velocity_increase
 
 # Randomly assign colors to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
@@ -131,7 +140,9 @@ func apply_color(node: Node, color_name: String) -> void:
 		mesh_instance.material_override = ColorUtil.material_for(color_name)
 
 func _on_player_lose():
-	terrain_velocity = 0.0
+	# Zeroing terrain_velocity alone left get_scroll_speed() returning terrains_count/100, so the
+	# world kept sliding after death.
+	_set_progressing(false)
 
 func _set_progressing(value: bool) -> void:
 	is_progressing = value
@@ -171,10 +182,21 @@ func _on_color_clear(color_name: String):
 			obstacle.start_dissolve(obstacle.position)
 			player.add_points(1.0)
 
+## Obstacles in the next `terrain_count` blocks the player has yet to reach.
+##
+## terrain_belt is ordered by descending z: index 0 is the block behind the player, about to be
+## recycled. Slicing from the head therefore affected terrain that had already gone past, which
+## is why color-match and color-clear appeared to do nothing.
 func _obstacles_in_terrains(terrain_count: int) -> Array[Obstacle]:
 	var obstacles: Array[Obstacle] = []
-	for i in range(min(terrain_count, terrain_belt.size())):
-		for child in terrain_belt[i].get_children():
+	var affected := 0
+	for block in terrain_belt:
+		if block.position.z >= 0.0:
+			continue  # the player is at z = 0; anything at or past it is behind them
+		if affected >= terrain_count:
+			break
+		affected += 1
+		for child in block.get_children():
 			if child is Obstacle:
 				obstacles.append(child)
 	return obstacles

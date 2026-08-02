@@ -47,31 +47,33 @@ func _process(delta):
 func update_points(target: float, point_modifier: float):
 	points = target
 	pointsLabel.text = str(int(points))
-	losePointsLabel.text = str(int(points))
-	if point_modifier > 1.0:
-		modifierLabel.visible = true
+	modifierLabel.visible = point_modifier > 1.0
+	if modifierLabel.visible:
 		modifierLabel.text = str(int(point_modifier))
-	else:
-		modifierLabel.visible = false
 
 func update_distance():
 	if terrain_controller:
-		var distance = terrain_controller.distance
-		distanceLabel.text = str(int(distance))
-		loseDistanceLabel.text = str(int(distance))
-		
-	
+		distanceLabel.text = str(int(terrain_controller.distance))
+
+
 func update_color(target: String):
 	colorLabel.text = target
 
+## The results panel is only ever read once the run stops, so it is filled in at that moment
+## rather than written every frame while hidden.
+func _snapshot_results():
+	losePointsLabel.text = pointsLabel.text
+	loseDistanceLabel.text = distanceLabel.text
 
 func _on_player_lose():
 	is_lost = true
 	hud.visible = false
+	_snapshot_results()
 	loseUi.visible = true
 
 func _on_player_pause():
 	hud.visible = false
+	_snapshot_results()
 	loseUi.visible = true
 
 func _on_player_unpause():
@@ -79,8 +81,9 @@ func _on_player_unpause():
 	hud.visible = true
 
 func _unhandled_input(event):
-	# Handle restart key when game is lost
-	if event is InputEventKey and event.keycode == 82 and is_lost:
+	# Handle restart key when game is lost. Physical keycode so it stays on the same physical key
+	# regardless of layout.
+	if event is InputEventKey and event.pressed and event.physical_keycode == KEY_R and is_lost:
 		restart()
 
 func _on_lose_ui_restart():

@@ -3,8 +3,10 @@ extends CharacterBody3D
 const JUMP_VELOCITY := 5.5
 const SLAM_BOUNCE_MULTIPLIER := 1.5  # applied to JUMP_VELOCITY when a slam destroys an obstacle
 const TRACK_POSITIONS := [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
-const DOWN_SPEED := 100.0 # Speed of going down when pressing down in a jump
-const MOVE_SPEED := 7.5 # Speed of lerping between tracks
+# Downward kick when slamming. Was gravity * 100.0 * delta, which made the slam twice as strong
+# at 30fps as at 60; this is that expression's value at 60fps, applied as a one-off impulse.
+const SLAM_IMPULSE := 20.0
+const MOVE_SPEED := 7.5 # Rate of exponential smoothing between tracks
 const STREAK_DECAY := 3.5 # time in second for the streak to decay
 const MAX_STREAK := 5.0
 const DOUBLE_JUMP_DURATION := 5.0
@@ -54,6 +56,7 @@ const PUFF_PRESETS := {
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_slamming: bool = false
 var is_levitating: bool = false  # currently hovering; flight.active means the power-up is held
+var air_jump_used: bool = false  # reset on landing, so double jump grants one jump per airtime
 var point_modifier: float = 1.0
 @export var modifier_multipier: float = 1.0
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
@@ -142,18 +145,19 @@ func change_color(target_color: String):
 func _physics_process(delta):
 	
 	if is_levitating:
-		global_transform.origin.y = lerp(global_transform.origin.y, FLIGHT_HEIGHT, MOVE_SPEED * delta)
+		global_transform.origin.y = _smooth(global_transform.origin.y, FLIGHT_HEIGHT, MOVE_SPEED, delta)
 	elif not is_on_floor():
-		# Add gravity. 
+		# Add gravity.
 		velocity.y -= gravity * delta
 	if Input.is_action_just_pressed("slam") and !is_slamming and not is_on_floor():
 		is_slamming = true
 		is_levitating = false
-		velocity.y -= gravity * DOWN_SPEED * delta
+		velocity.y -= SLAM_IMPULSE
 		_emit_puff("slam_start")
 
 	# Handle jump.
 	if is_on_floor():
+		air_jump_used = false
 		if is_slamming:
 			animation_player.play("slam")
 			_emit_puff("slam_land")
@@ -177,11 +181,14 @@ func _physics_process(delta):
 				is_levitating = true
 			else:
 				velocity.y = JUMP_VELOCITY
-	elif double_jump.active and Input.is_action_just_pressed("jump"):
+	elif double_jump.active and not air_jump_used and Input.is_action_just_pressed("jump"):
+		# One extra jump per airborne stretch, refreshed on landing -- not an unlimited supply
+		# for the whole duration, which is what an unconsumed flag gave.
+		air_jump_used = true
 		animation_player.play("jump")
 		_emit_puff("jump")
 		velocity.y = JUMP_VELOCITY
-	
+
 	# Handle track switching with input.
 	if Input.is_action_just_pressed("left") and current_track > 0:
 		current_track -= 1
@@ -196,15 +203,20 @@ func _physics_process(delta):
 	var target_x = TRACK_POSITIONS[current_track]
 	
 	# Smoothly move towards the target X position.
-	global_transform.origin.x = lerp(global_transform.origin.x, target_x, MOVE_SPEED * delta)
-	
+	global_transform.origin.x = _smooth(global_transform.origin.x, target_x, MOVE_SPEED, delta)
+
 	# Keep the player centered on the Z axis.
-	global_transform.origin.z = lerp(global_transform.origin.z, 0.0, MOVE_SPEED * delta)
+	global_transform.origin.z = _smooth(global_transform.origin.z, 0.0, MOVE_SPEED, delta)
 
 	# Move the character.
 	move_and_slide()
 
 	_update_trail(delta)
+
+## Frame-rate independent exponential smoothing. Plain lerp(a, b, rate * delta) converges faster
+## the higher the frame rate, so lane changes felt different at 30fps and 144fps.
+static func _smooth(from: float, to: float, rate: float, delta: float) -> float:
+	return lerp(from, to, 1.0 - exp(-rate * delta))
 
 func _scroll_speed() -> float:
 	var terrain := Game.terrain
@@ -336,10 +348,7 @@ func _play_sfx(stream: AudioStream) -> void:
 func _pickup_color_change(area: Area3D) -> void:
 	# Collectibles are scriptless Area3Ds, so the name still comes off the material here.
 	change_color(ColorUtil.name_of(area.get_node("Mesh").get_active_material(0)))
-	if point_modifier < MAX_STREAK:
-		point_modifier += modifier_multipier
-	else:
-		point_modifier = MAX_STREAK
+	point_modifier = minf(point_modifier + modifier_multipier, MAX_STREAK)
 
 func _pickup_color_match(_area: Area3D) -> void:
 	match_color.emit(current_color)
