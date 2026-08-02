@@ -45,6 +45,6 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
-[connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_lose_ui_restart"]
+[connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_restart_requested"]
 [connection signal="resume" from="MarginContainer/PauseUI" to="." method="_on_pause_ui_resume"]
-[connection signal="restart" from="MarginContainer/PauseUI" to="." method="_on_lose_ui_restart"]
+[connection signal="restart" from="MarginContainer/PauseUI" to="." method="_on_restart_requested"]

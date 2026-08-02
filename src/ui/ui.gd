@@ -97,7 +97,7 @@ func _unhandled_input(event):
 		player.set_paused(not player.is_paused)
 		get_viewport().set_input_as_handled()
 
-func _on_lose_ui_restart():
+func _on_restart_requested():
 	restart()
 
 func restart():
