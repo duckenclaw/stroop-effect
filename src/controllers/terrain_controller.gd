@@ -106,15 +106,29 @@ func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInst
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
 	terrain_velocity += player.points * terrain_velocity_increase
 
-# Randomly assign materials to each obstacle within the block
+# Randomly assign colors to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
 	if obstacle_materials.is_empty():
 		return
-	for obstacle in block.get_children():
-		if obstacle.is_in_group("obstacle") or obstacle.is_in_group("color-change"):
-			var mesh_instance = obstacle.get_node("Mesh")
-			var random_material = obstacle_materials.pick_random()
-			mesh_instance.material_override = random_material
+	for child in block.get_children():
+		if child.is_in_group("obstacle") or child.is_in_group("color-change"):
+			apply_color(child, random_color_name())
+
+## Picks from the editor-configured material list so the palette stays controllable per project.
+func random_color_name() -> String:
+	if obstacle_materials.is_empty():
+		return ColorUtil.random_name()
+	return ColorUtil.name_of(obstacle_materials.pick_random())
+
+## Recolors an obstacle or a color-change collectible. Obstacles remember their color name;
+## collectibles are scriptless, so they only get the material.
+func apply_color(node: Node, color_name: String) -> void:
+	if node is Obstacle:
+		node.set_color(color_name)
+		return
+	var mesh_instance := node.get_node_or_null(^"Mesh") as MeshInstance3D
+	if mesh_instance:
+		mesh_instance.material_override = ColorUtil.material_for(color_name)
 
 func _on_player_lose():
 	terrain_velocity = 0.0
@@ -151,44 +165,22 @@ func _calculate_stage_from_distance(dist: float) -> int:
 	else:
 		return 1
 
+# Change obstacles in 5 terrains to match the player's color
 func _on_match_color(color_name: String):
-	# Load the material for the specified color
-	var material_file = player.materials_path + "/" + color_name + ".tres"
-	var material = load(material_file)
+	for obstacle in _obstacles_in_terrains(5):
+		obstacle.set_color(color_name)
 
-	if material == null:
-		push_warning("Could not load material: " + material_file)
-		return
-
-	# Change obstacles in the next 5 terrains to match the player's color
-	var terrains_to_affect = min(5, terrain_belt.size())
-	for i in range(terrains_to_affect):
-		var terrain = terrain_belt[i]
-		for obstacle in terrain.get_children():
-			if obstacle.is_in_group("obstacle"):
-				var mesh_instance = obstacle.get_node("Mesh")
-				mesh_instance.material_override = material
-
+# Dissolve all obstacles with matching color in 3 terrains
 func _on_color_clear(color_name: String):
-	# Load the material for the specified color
-	var material_file = player.materials_path + "/" + color_name + ".tres"
-	var material = load(material_file)
+	for obstacle in _obstacles_in_terrains(3):
+		if obstacle.color_name == color_name:
+			obstacle.start_dissolve(obstacle.position)
+			player.add_points(1.0)
 
-	if material == null:
-		push_warning("Could not load material: " + material_file)
-		return
-
-	# Dissolve all obstacles with matching color in the next 3 terrains
-	var terrains_to_affect = min(3, terrain_belt.size())
-	for i in range(terrains_to_affect):
-		var terrain = terrain_belt[i]
-		for obstacle in terrain.get_children():
-			if obstacle.is_in_group("obstacle"):
-				var mesh_instance = obstacle.get_node("Mesh")
-				var obstacle_material = mesh_instance.get_active_material(0)
-
-				# Check if the obstacle's material matches the player's color
-				if obstacle_material == material:
-					var collision_point = obstacle.position
-					obstacle.start_dissolve(collision_point)
-					player.add_points(1.0)
+func _obstacles_in_terrains(terrain_count: int) -> Array[Obstacle]:
+	var obstacles: Array[Obstacle] = []
+	for i in range(min(terrain_count, terrain_belt.size())):
+		for child in terrain_belt[i].get_children():
+			if child is Obstacle:
+				obstacles.append(child)
+	return obstacles

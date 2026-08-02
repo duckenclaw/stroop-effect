@@ -10,14 +10,6 @@ const DOUBLE_JUMP_DURATION := 5.0
 const FLIGHT_DURATION := 10.0
 const FLIGHT_HEIGHT := 2.0
 
-# Tint sources for the wind puffs and the speed trail. The outline materials carry a black
-# outline_color and get their visible color from next_pass -> obstacle-materials/<color>.tres,
-# whose color lives in an albedo_texture, so there is no Color to read at runtime.
-const COLOR_VALUES := {
-	"blue": Color(0.106, 0.259, 0.471),
-	"green": Color(0.184, 0.439, 0.247),
-	"red": Color(0.431, 0.031, 0.035),
-}
 const PUFF_WHITE_MIX := 0.2  # small white core; the rest stays the player's hue
 const PUFF_ALPHA := 0.55  # multiplied by the color_ramp alpha envelope
 const PUFF_GAIN := 1.6  # pushes the tint past 1.0 so the additive blend reads as a glow
@@ -26,8 +18,6 @@ const TRAIL_POINTS := 28  # ~0.45s of history at 60Hz physics
 const TRAIL_WIDTH := 0.22  # half-width at the head; tapers to 0 at the tail
 const TRAIL_HEIGHT := 0.5  # anchored at the player mesh's centre, not its feet
 const FALLBACK_SCROLL_SPEED := 5.5  # used only if TerrainController isn't reachable
-
-const DEFAULT_MATERIALS_PATH := "res://assets/resources/materials/outline-materials/"
 
 # One emitter serves every event; these presets are applied just before restart(). "dir" always
 # points away from the direction of travel. "vel" and "scale" are (min, max) pairs. "drift" makes
@@ -91,12 +81,6 @@ var flight_timer: Timer
 @export var point_sfx: AudioStreamMP3
 @export var color_change_sfx: AudioStreamMP3
 
-# Typed on purpose: an untyped export lets a `= null` instance override in a .tscn survive and
-# beat this default, which crashes every "materials_path + ..." concatenation. A typed export
-# coerces null back to the default instead.
-@export_dir var materials_path: String = DEFAULT_MATERIALS_PATH  # Path to obstacle materials
-
-var colors = []
 var current_color = ""
 var points = 0.0
 
@@ -114,10 +98,6 @@ signal collision_with_obstacle()
 signal slam_ended()
 
 func _ready():
-	# Normalise the member itself rather than a local, so change_color() and TerrainController's
-	# player.materials_path lookups are covered by the same fallback.
-	if materials_path.is_empty():
-		materials_path = DEFAULT_MATERIALS_PATH
 	# Own the trail material so change_color() tints this player rather than the shared
 	# sub-resource baked into player.tscn. Must happen before the first change_color() call.
 	trail_material = trail.material_override.duplicate()
@@ -127,8 +107,7 @@ func _ready():
 	trail_mesh = ImmediateMesh.new()
 	trail.mesh = trail_mesh
 	trail.global_transform = Transform3D.IDENTITY
-	_load_colors(materials_path)
-	change_color(colors.pick_random())
+	change_color(ColorUtil.random_name())
 	set_physics_process(false)  # Disable player processing until game starts
 
 	# Create and configure timers
@@ -145,17 +124,13 @@ func _ready():
 func change_color(target_color: String):
 	current_color = target_color
 
-	var vivid := _vivid_color(current_color)
+	var vivid := ColorUtil.vivid(current_color)
 	puff_tint = vivid.lerp(Color.WHITE, PUFF_WHITE_MIX) * PUFF_GAIN
 	puff_tint.a = PUFF_ALPHA
 	if trail_material:
 		trail_material.albedo_color = Color(vivid.r, vivid.g, vivid.b, TRAIL_ALPHA)
 
-	# Load and apply the material to the player mesh
-	var material_file = materials_path + "/" + current_color + ".tres"
-	var material = load(material_file)
-
-	mesh.material_override = material
+	mesh.material_override = ColorUtil.material_for(current_color)
 
 	ui.update_color(current_color)
 
@@ -177,22 +152,23 @@ func _physics_process(delta):
 		if is_slamming:
 			animation_player.play("slam")
 			_emit_puff("slam_land")
-			var slammed_object = slam_raycast.get_collider()
+			# The raycast collides with areas only, so the hit is an obstacle's Hitbox, not its body.
+			var slammed_hitbox = slam_raycast.get_collider()
 			is_slamming = false
 			slam_ended.emit()
-			if slammed_object and slammed_object.is_in_group("obstacle"):
-				var obstacle_color = slammed_object.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
-				if obstacle_color != current_color:
+			var slammed_obstacle: Obstacle = null
+			if slammed_hitbox:
+				slammed_obstacle = slammed_hitbox.get_parent() as Obstacle
+			if slammed_obstacle:
+				if slammed_obstacle.color_name != current_color:
 					animation_player.play("jump", 0.1)
 				else:
 					audio_stream_player.stream = point_sfx
 					audio_stream_player.playing = true
-		
-					var obstacle = slammed_object.get_parent()
-					var collision_point = global_position # Approximation: player’s position
-					obstacle.start_dissolve(collision_point)
+
+					slammed_obstacle.start_dissolve(global_position)
 					velocity.y = JUMP_VELOCITY * 1.5
-		
+
 					add_points(1.0)
 				
 		if Input.is_action_just_pressed("jump"):
@@ -279,15 +255,6 @@ func _rebuild_trail() -> void:
 		trail_mesh.surface_add_vertex(point - side)
 	trail_mesh.surface_end()
 
-func _vivid_color(color_name: String) -> Color:
-	# The stored values are averages of dark albedo textures. Scale to full brightness so the
-	# hue reads vividly instead of muddy, then let the caller decide the wash and alpha.
-	var base: Color = COLOR_VALUES.get(color_name, Color.WHITE)
-	var peak := maxf(base.r, maxf(base.g, base.b))
-	if peak <= 0.0:
-		return base
-	return Color(base.r / peak, base.g / peak, base.b / peak)
-
 func _emit_puff(preset_name: String) -> void:
 	var cfg: Dictionary = PUFF_PRESETS.get(preset_name, {})
 	if cfg.is_empty():
@@ -332,26 +299,24 @@ func _unhandled_input(event):
 func _on_hitbox_area_entered(area):
 	
 	if area.is_in_group("obstacle"):
-		var obstacle_color = area.get_parent().get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
+		var obstacle := area.get_parent() as Obstacle
 		collision_with_obstacle.emit()
-		if obstacle_color != current_color:
+		if obstacle.color_name != current_color:
 			lose.emit()
 			set_physics_process(false)
 		else:
 			audio_stream_player.stream = point_sfx
 			audio_stream_player.playing = true
 
-			var obstacle = area.get_parent()
-			var collision_point = global_position # Approximation: player’s position
-			obstacle.start_dissolve(collision_point)
+			obstacle.start_dissolve(global_position)
 
 			add_points(1.0)
 
 	elif area.is_in_group("color-change"):
 		audio_stream_player.stream = color_change_sfx
 		audio_stream_player.playing = true
-		var collectible_color = area.get_node("Mesh").get_active_material(0).get_path().get_file().get_basename()
-		change_color(collectible_color)
+		# Collectibles are scriptless Area3Ds, so the name still comes off the material here.
+		change_color(ColorUtil.name_of(area.get_node("Mesh").get_active_material(0)))
 
 		if point_modifier < 5.0:
 			point_modifier += modifier_multipier
@@ -399,16 +364,6 @@ func add_points(amount: float):
 	points += amount * point_modifier
 	streak_timer.start(STREAK_DECAY)
 	ui.update_points(points, point_modifier)
-
-func _load_colors(target_path: String) -> void:
-	var dir = DirAccess.open(target_path)
-	for material_path in dir.get_files():
-		var material = load(target_path + "/" + material_path)
-		if material is ShaderMaterial:
-			# Extract the name of the material without the file extension
-			var color_name = material_path.get_file().get_basename()  # This removes the extension
-			colors.append(color_name)
-
 
 func _on_animation_player_animation_finished(anim_name):
 	match anim_name:
