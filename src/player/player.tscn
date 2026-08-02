@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dguvbimxk8r80"]
+[gd_scene load_steps=20 format=3 uid="uid://dguvbimxk8r80"]
 
 [ext_resource type="Script" uid="uid://dm18ngbeufinn" path="res://src/player/player.gd" id="1_kqdvt"]
 [ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://assets/sound/score.mp3" id="2_2m7jq"]
@@ -11,16 +11,32 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_p3nr5"]
 size = Vector3(1, 0.25, 1.25)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqkch"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_puff"]
+render_priority = 1
 transparency = 1
-metallic = 1.0
-metallic_specular = 1.0
-emission_enabled = true
-emission = Color(1, 0, 1, 1)
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
 
-[sub_resource type="BoxMesh" id="BoxMesh_tuyoq"]
-material = SubResource("StandardMaterial3D_dqkch")
-size = Vector3(0.1, 0.1, 0.1)
+[sub_resource type="BoxMesh" id="BoxMesh_puff"]
+material = SubResource("StandardMaterial3D_puff")
+size = Vector3(0.12, 0.12, 0.12)
+
+[sub_resource type="Curve" id="Curve_puff"]
+_data = [Vector2(0, 0.35), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.15), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_puff"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.85, 1, 1, 1, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trail"]
+render_priority = 1
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.45)
 
 [sub_resource type="Animation" id="Animation_tuyoq"]
 length = 0.001
@@ -224,20 +240,35 @@ shape = SubResource("BoxShape3D_p3nr5")
 volume_db = -5.0
 bus = &"SFX"
 
-[node name="TrailParticles3D" type="CPUParticles3D" parent="." unique_id=198451092]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-visible = false
-amount = 25
-speed_scale = 1.25
-fixed_fps = 30
-mesh = SubResource("BoxMesh_tuyoq")
-emission_shape = 3
-emission_box_extents = Vector3(0.45, 0.45, 0.45)
-direction = Vector3(0, 0, 100)
-spread = 15.0
-gravity = Vector3(0, 0, 0)
-initial_velocity_min = 5.0
-initial_velocity_max = 5.0
+[node name="PuffParticles" type="CPUParticles3D" parent="." unique_id=436362552]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+emitting = false
+amount = 26
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+lifetime_randomness = 0.25
+mesh = SubResource("BoxMesh_puff")
+emission_shape = 1
+emission_sphere_radius = 0.25
+direction = Vector3(1, 0.25, 0)
+spread = 35.0
+gravity = Vector3(0, -3, 5.6)
+initial_velocity_min = 2.0
+initial_velocity_max = 3.5
+damping_min = 2.0
+damping_max = 4.0
+angle_min = -180.0
+angle_max = 180.0
+scale_amount_min = 0.6
+scale_amount_max = 1.2
+scale_amount_curve = SubResource("Curve_puff")
+color_ramp = SubResource("Gradient_puff")
+
+[node name="Trail" type="MeshInstance3D" parent="." unique_id=198451092]
+top_level = true
+cast_shadow = 0
+material_override = SubResource("StandardMaterial3D_trail")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1415720531]
 libraries = {

@@ -19,9 +19,9 @@ var is_progressing: bool = false
 @export var terrain_velocity_increase: float = 0.0025
 @export var num_terrain_blocks = 10
 @export var deletion_offset = 10
-@export var start_block = load("res://src/terrain/terrains/terrain_free.tscn")
-@export var color_change_block = load("res://src/terrain/terrains/terrain_color_change.tscn")
-@export var stage_change_block = load("res://src/terrain/terrains/terrain_stage_change.tscn")
+@export var start_block = load("res://src/terrain/terrains/special/terrain_free.tscn")
+@export var color_change_block = load("res://src/terrain/terrains/special/terrain_color_change.tscn")
+@export var stage_change_block = load("res://src/terrain/terrains/special/terrain_stage_change.tscn")
 @export var color_change_frequency: int = 7
 @export var terrain_length: float = 10.0  # Length of each terrain in meters
 @export var stage_2_distance: float = 500.0  # Distance to reach stage 2
@@ -60,9 +60,17 @@ func _init_blocks(number_of_blocks: int) -> void:
 		terrains_count += 1
 		_assign_random_materials(block)  # Assign materials after adding block
 
+func get_scroll_speed() -> float:
+	# How fast the world slides past the player, in m/s. Zero while the game is not running so
+	# effects that follow the ground (the player's trail, its puffs) freeze with the terrain.
+	if not is_progressing:
+		return 0.0
+	return terrain_velocity + terrains_count/100.0
+
 func _progress_terrain(delta: float) -> void:
+	var scroll := get_scroll_speed()
 	for block in terrain_belt:
-		block.position.z += (terrain_velocity + terrains_count/100.0) * delta
+		block.position.z += scroll * delta
 
 	if terrain_belt[0].position.z-deletion_offset >= terrain_belt[0].mesh.size.y/2:
 		var last_terrain = terrain_belt[-1]
