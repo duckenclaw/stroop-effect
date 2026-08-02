@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://brdlaqygpuxk4"]
+[gd_scene load_steps=7 format=3 uid="uid://brdlaqygpuxk4"]
+
+[ext_resource type="Material" path="res://assets/resources/materials/collectible_plain.tres" id="99_curve"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3h4qi"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_tkvro"]
+material = ExtResource("99_curve")
 top_radius = 0.1
 height = 0.5
 

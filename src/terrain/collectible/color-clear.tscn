@@ -1,8 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://d1xhkljnbh828"]
+[gd_scene load_steps=8 format=3 uid="uid://d1xhkljnbh828"]
+
+[ext_resource type="Material" path="res://assets/resources/materials/collectible_plain.tres" id="99_curve"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3h4qi"]
 
 [sub_resource type="TorusMesh" id="TorusMesh_70eek"]
+material = ExtResource("99_curve")
 
 [sub_resource type="Animation" id="Animation_avxf0"]
 length = 0.001

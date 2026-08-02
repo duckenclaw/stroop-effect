@@ -76,3 +76,10 @@ tutorial={
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/vram_compression/import_etc2_astc=true
+
+[shader_globals]
+
+world_curve={
+"type": "vec2",
+"value": Vector2(0, 0)
+}

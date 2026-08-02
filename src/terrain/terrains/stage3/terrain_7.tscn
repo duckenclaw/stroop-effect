@@ -12,6 +12,8 @@
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)
+subdivide_width = 4
+subdivide_depth = 40
 
 [node name="Terrain_7" type="MeshInstance3D" unique_id=658524039]
 material_override = ExtResource("1_o217r")

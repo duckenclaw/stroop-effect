@@ -1,6 +1,8 @@
 shader_type spatial;
 render_mode blend_add, depth_draw_opaque, cull_back, unshaded;
 
+#include "res://assets/resources/shaders/world_curve.gdshaderinc"
+
 uniform vec4 field_color : source_color = vec4(0.5, 0.6, 1.0, 1.0);
 uniform float animation_speed : hint_range(0.1, 5.0) = 1.5;
 uniform float field_intensity : hint_range(0.0, 2.0) = 0.8;
@@ -25,6 +27,10 @@ float fractal_noise(vec2 p) {
     }
 
     return value;
+}
+
+void vertex() {
+    POSITION = curve_position(VERTEX, MODELVIEW_MATRIX, PROJECTION_MATRIX);
 }
 
 void fragment() {

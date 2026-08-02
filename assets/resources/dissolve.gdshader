@@ -1,6 +1,8 @@
 shader_type spatial;
 render_mode cull_disabled; // View both sides
 
+#include "res://assets/resources/shaders/world_curve.gdshaderinc"
+
 uniform vec3 sphere_position;
 uniform float sphere_radius = 1.0;
 uniform float burn_threshold = 0.1;
@@ -33,6 +35,13 @@ vec3 calculate_neon_effect(float value, vec3 base_color) {
     return neon_color;
 }
 
+
+void vertex() {
+	// Bend in clip space only. VERTEX is deliberately left untouched so the world position
+	// reconstructed in fragment() below still matches the un-bent sphere_position that
+	// obstacle.gd feeds in -- otherwise the dissolve origin would drift with the curve.
+	POSITION = curve_position(VERTEX, MODELVIEW_MATRIX, PROJECTION_MATRIX);
+}
 
 void fragment(){
 	vec3 world_pos = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).xyz;

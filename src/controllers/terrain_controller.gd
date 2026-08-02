@@ -1,6 +1,24 @@
 extends Node3D
 class_name TerrainController
 
+# --- Curved world -------------------------------------------------------------------------
+# Drives the `world_curve` global shader parameter (declared in project.godot [shader_globals]),
+# which every distant-geometry shader reads via world_curve.gdshaderinc. The bend is purely
+# visual: it scales with the square of view depth, so it is ~0.01 units at the player and only
+# becomes visible far down the track. Lanes, colliders and gameplay are untouched.
+const CURVE_PARAM := &"world_curve"
+# Calibrated against what is actually on screen, not the full 144m belt: the ground fades into
+# the sky well before then, so the useful range is ~60m. At 0.0015 that is ~5 units of bend at
+# the visible horizon (about one track width) and ~0.03 units at the player, i.e. nothing.
+@export var max_curve: float = 0.025
+@export var curve_drift_speed: float = 0.01  # how quickly the current bend chases its target
+@export var curve_retarget_min: float = 5.0  # seconds between new random directions
+@export var curve_retarget_max: float = 6.0
+
+var curve_current := Vector2.ZERO
+var curve_target := Vector2.ZERO
+var curve_retarget_in := 0.0
+
 @onready var player = get_parent().get_node("Player")
 
 @export var obstacle_materials: Array[ShaderMaterial] = []  # Drag and drop materials here in the editor
@@ -39,8 +57,26 @@ func _ready() -> void:
 	player.color_clear.connect(_on_color_clear)
 
 func _physics_process(delta: float) -> void:
+	_update_world_curve(delta)
 	if is_progressing:
 		_progress_terrain(delta)
+
+func _update_world_curve(delta: float) -> void:
+	if is_progressing:
+		curve_retarget_in -= delta
+		if curve_retarget_in <= 0.0:
+			# A fresh random degree AND direction -- any mix of up/down/left/right.
+			curve_target = Vector2(
+				randf_range(-max_curve, max_curve),
+				randf_range(-max_curve, max_curve))
+			curve_retarget_in = randf_range(curve_retarget_min, curve_retarget_max)
+	else:
+		# Flat in the menu, on pause and after a loss.
+		curve_target = Vector2.ZERO
+
+	# Ease toward the target so the world sways rather than snapping between directions.
+	curve_current = curve_current.lerp(curve_target, minf(curve_drift_speed * delta, 1.0))
+	RenderingServer.global_shader_parameter_set(CURVE_PARAM, curve_current)
 
 func _init_blocks(number_of_blocks: int) -> void:
 	for block_index in number_of_blocks:
