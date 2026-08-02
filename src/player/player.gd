@@ -294,19 +294,18 @@ func _emit_puff(preset_name: String) -> void:
 	# re-fires a finished one_shot. Setting emitting = true as well is not needed.
 	puff_particles.restart()
 
-func _unhandled_input(event):
-	if event.is_action_pressed("ui_cancel"):
-		if is_paused:
-			# Unpause the game
-			is_paused = false
-			unpause.emit()
-			set_physics_process(true)
-		else:
-			# Pause the game
-			is_paused = true
-			pause.emit()
-			set_physics_process(false)
-		get_viewport().set_input_as_handled()
+## Pausing the whole tree freezes physics, the obstacle dissolves and the camera shake together,
+## which toggling only this node's physics never did. The UI drives it, because a paused player
+## stops receiving input and so could not unpause itself.
+func set_paused(value: bool) -> void:
+	if is_paused == value:
+		return
+	is_paused = value
+	get_tree().paused = value
+	if value:
+		pause.emit()
+	else:
+		unpause.emit()
 
 func _on_hitbox_area_entered(area):
 	

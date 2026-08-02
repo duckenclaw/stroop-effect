@@ -4,4 +4,3 @@
 
 [node name="Collectible" type="Node3D" unique_id=450236818]
 script = ExtResource("1_olq28")
-remove_after_spawn = false

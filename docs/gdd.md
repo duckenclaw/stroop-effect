@@ -64,7 +64,7 @@ Minimal, and incomplete.
 
 **Buses:** Master, Music, SFX (`assets/sound/default_bus_layout.tres`), all at 0 dB with no effects.
 
-**There is no background music.** `music_controller.gd` exports a `bgm` field, but it is never assigned in `world.tscn` and never read by any code. The node it lives on has `autoplay = true` with no stream, so autoplay does nothing. The Music bus carries exactly one sound: `wika-wika.mp3`, a death sting played on `lose`. `electric-spiral.mp3` is committed to the repo and referenced by nothing.
+**There is no background music.** The node that would play it has `autoplay = true` with no stream, so autoplay does nothing. The Music bus carries exactly one sound: `wika-wika.mp3`, a death sting played on `lose`. `electric-spiral.mp3` is committed to the repo and referenced by nothing.
 
 **SFX:** two clips total — `score.mp3` (obstacle destroyed) and `color_change.mp3` (any of the five pickups). Both play through a single `AudioStreamPlayer3D` on the player at `-5 dB`, whose `stream` is reassigned before each play. Because it is one voice, overlapping pickups cut each other off.
 
@@ -90,11 +90,13 @@ The Options menu exposes Master / Music / SFX sliders that map `value / 100.0` t
 | Lane lerp speed | `MOVE_SPEED = 7.5` | Exponential lerp toward the target X each physics frame |
 | Jump velocity | `JUMP_VELOCITY = 5.5` | |
 | Gravity | `12.0` | Project setting, well above Earth's 9.8 for a snappier arc |
-| Slam impulse | `gravity * DOWN_SPEED (100.0) * delta` | Applied for one frame on slam press |
-| Slam bounce | `JUMP_VELOCITY * 1.5` = `8.25` | Only on a color-matched slam |
+| Slam impulse | `SLAM_IMPULSE = 20.0` | One-off downward kick on slam press |
+| Slam bounce | `JUMP_VELOCITY * SLAM_BOUNCE_MULTIPLIER (1.5)` = `8.25` | Only on a color-matched slam |
 | Flight hover height | `FLIGHT_HEIGHT = 2.0` | |
 
-The player's Z position is lerped back to `0.0` every frame — it never actually travels forward. The terrain moves instead.
+The player's Z position is smoothed back to `0.0` every frame — it never actually travels forward. The terrain moves instead.
+
+Lane, Z and levitation smoothing all use `1 - exp(-rate * delta)` so the feel is identical at any frame rate.
 
 Slam requires being airborne and not already slamming. On landing, a downward `RayCast3D` reports what was hit; that is what distinguishes a slam-destroy from an ordinary landing.
 
@@ -110,7 +112,7 @@ The color is picked at random in `_ready()` and changes only via the Color Chang
 2. Recomputes a "vivid" tint — the stored albedo averages are dark, so they are normalized by their peak channel to full brightness — and applies it to the wind puffs and the speed trail.
 3. Pushes the new color name to the HUD.
 
-**Color comparison is done by resource filename.** An obstacle's color is recovered with `mesh.get_active_material(0).get_path().get_file().get_basename()`, yielding `"blue"`, `"green"`, or `"red"`. The material file's name *is* the color identity.
+**Color comparison is done by name.** Obstacles carry a `color_name` string, assigned when the terrain controller colors them, and the player compares against that directly.
 
 ### Scoring
 
@@ -166,9 +168,9 @@ Detection is by global group on an `Area3D`. All five award 1 point and play the
 | Pickup | Group | Effect |
 |---|---|---|
 | **Color Change** | `color-change` | Sets the player's color to the pickup's own color, and raises the score multiplier one step toward 5.0. This is the only way to change color. |
-| **Color Match** | `color-match` | Recolors every obstacle across 5 terrain blocks to the player's current color, making them all destructible. |
-| **Color Clear** | `color-clear` | Immediately dissolves every obstacle matching the player's color across 3 terrain blocks, scoring a point for each. |
-| **Double Jump** | `double-jump` | Enables jumping while airborne for **5.0 seconds**. |
+| **Color Match** | `color-match` | Recolors every obstacle across the next 5 terrain blocks ahead to the player's current color, making them all destructible. |
+| **Color Clear** | `color-clear` | Immediately dissolves every obstacle matching the player's color across the next 3 terrain blocks ahead, scoring a point for each. |
+| **Double Jump** | `double-jump` | For **5.0 seconds**, grants one extra mid-air jump per airborne stretch, refreshed each time the player lands. |
 | **Flight** | `flight` | For **10.0 seconds**, jumping makes the player levitate at `FLIGHT_HEIGHT = 2.0` instead of arcing — effectively a fourth, vertical lane. Slamming drops back to the ground and cancels levitation. |
 
 Both timed pickups surface a radial countdown widget in the top-right of the HUD.
@@ -221,7 +223,9 @@ Stage 4 reuses the stage 3 pool — reaching it changes nothing except that no f
 | 3 | 500 |
 | 4 | 750 |
 
-Distance is reported as `(terrains_count - num_terrain_blocks) * terrain_length` with `terrain_length = 10.0`. Note this is a block count scaled by a nominal length, not a measurement — the actual terrain meshes are 15 units long (20 for the special blocks), so the displayed number and the world are on different scales.
+Distance is `(blocks_spawned - num_terrain_blocks) * terrain_length` with `terrain_length = 10.0`; the ten blocks of the starting belt are already on screen and do not count. The stage gate uses the same formula, so the thresholds above are the numbers the HUD actually shows.
+
+Note this is a block count scaled by a nominal length, not a measurement — the terrain meshes are 15 units long (20 for the special blocks), so distance is reported at about two-thirds of true world distance. Reconciling that would rescale every threshold, so it is left as a tuning decision.
 
 Crossing a threshold spawns the gate block: an arch mesh with the electric field quad stretched across it. Running through it is purely cosmetic.
 
@@ -230,8 +234,10 @@ Crossing a threshold spawns the gate block: an arch mesh with the electric field
 1. Boot into `world.tscn`. The start menu is a layer inside the UI, not a separate scene — the camera sits at a three-quarter angle looking at the idle player.
 2. Press Start. The menu hides, the HUD appears, player physics enables, terrain begins scrolling, and the camera tweens over 0.8 s from `(-2, 2, -2)` to the gameplay position `(0, 4, 4)`. There is no scene load, so the transition is seamless.
 3. Run. Dodge, destroy, collect, chase the multiplier while the world speeds up.
-4. Touch one mismatched obstacle. Player physics halts, terrain velocity zeroes, the death sting plays, and the results screen shows final score and distance.
+4. Touch one mismatched obstacle. Player physics halts, terrain progression stops, the death sting plays, and the results screen shows final score and distance.
 5. Restart reloads the scene.
+
+Pressing `Esc` mid-run pauses the scene tree and shows a dedicated pause screen with Resume and Restart. Everything freezes together: physics, in-flight dissolves, camera shake, power-up timers and the HUD countdowns. The UI itself runs with `PROCESS_MODE_ALWAYS` so its buttons stay live, and it owns the pause toggle — a paused player would not receive the input to unpause itself.
 
 The camera shakes on a trauma model — `0.45` trauma added on any obstacle collision, `0.35` on a slam landing, decaying at `1.5`/second, driving up to `0.3` units of offset and 3° of rotation.
 
@@ -254,7 +260,7 @@ Lane switching is clamped at both ends — there is no wraparound. Jump, slam, a
 
 The tutorial panel on the start menu is opened by a button, not by a key binding.
 
-Pause is handled on the player: it toggles the player's physics processing and shows the results screen. It does not use Godot's scene-tree pause, so the camera shake, in-flight dissolves, and HUD countdown timers continue to run while paused.
+`R` is read as a physical keycode, so it stays on the same physical key regardless of keyboard layout.
 
 ---
 
@@ -269,7 +275,7 @@ Pause is handled on the player: it toggles the player's physics processing and s
 ```
 World (Node3D)
 ├── CanvasLayer
-│   └── UI                    ui.gd  →  HUD / LoseUI / StartUI
+│   └── UI                    ui.gd  →  HUD / LoseUI / StartUI / PauseUI
 ├── TerrainController         terrain_controller.gd
 ├── WorldEnvironment          sky = world.gdshader
 ├── DirectionalLight3D        energy 2.5, indirect 3.0
@@ -279,18 +285,22 @@ World (Node3D)
 └── AudioStreamPlayer3D       music_controller.gd, Music bus
 ```
 
-There are no autoloads. Systems locate each other by walking the scene tree with hardcoded node names — the UI reaches the player via `get_parent().get_parent().get_node("Player")`, the terrain controller via `get_parent().get_node("Player")`, and the collectible spawner by walking its whole ancestor chain looking for a `TerrainController`. Renaming a node in `world.tscn` breaks several files at once.
+One autoload, `Game` (`src/globals/game.gd`), holds handles to the player, terrain controller, UI and camera. It resolves lazily against `current_scene` — an autoload readies before there is a scene — and validity-checks its cache, so it heals across `reload_current_scene()`. It holds no game state: the score lives on the player, the stage on the terrain controller.
+
+`Game` exists because every system used to find every other by hardcoded relative path (`get_parent().get_parent().get_node("Player")` and friends), which meant renaming a node in `world.tscn` broke several files at once. That coupling is now in one file rather than five.
 
 ## Signal wiring
 
-The player is the event source for almost everything. Its signals: `lose`, `start_game`, `pause`, `unpause`, `match_color`, `color_clear`, `double_jump_started/ended`, `flight_started/ended`, `collision_with_obstacle`, `slam_ended`.
+The player is the event source for almost everything. Its signals: `lose`, `start_game`, `pause`, `unpause`, `match_color`, `color_clear`, `effect_started(name, duration)`, `effect_ended(name)`, `collision_with_obstacle`, `slam_ended`, `points_changed(total, modifier)`, `color_changed(name)`.
+
+Timed power-ups go through `TimedEffect` (`src/player/timed_effect.gd`), a `Timer` subclass that carries its own display name and emits `activated`/`expired`. The player re-emits those as the two `effect_*` signals, so the HUD binds `_add_modifier_status`/`_remove_modifier_status` once each rather than needing a handler per power-up.
 
 Wiring is split across two places, which is worth knowing when tracing behavior:
 
 - **In `world.tscn`** — only `lose`, connected to three receivers (UI, TerrainController, music player).
-- **In code** — everything else, across two different `_ready()` bodies. `terrain_controller.gd` connects five player signals; `ui.gd` connects six more, including two that forward player events straight to the camera's shake handlers.
+- **In code** — everything else, across two `_ready()` bodies. `terrain_controller.gd` connects five player signals; `ui.gd` connects the rest, including two that forward player events straight to the camera's shake handlers.
 
-Two inversions of ownership are worth noting: `ui.gd` emits `player.start_game` on the player's behalf and calls `player.set_physics_process(true)` directly, and `player.gd` calls UI update methods directly rather than emitting.
+One inversion of ownership remains: `ui.gd` emits `player.start_game` on the player's behalf and calls `player.set_physics_process(true)` directly, rather than the player owning its own start.
 
 ## Shaders
 
@@ -305,19 +315,27 @@ Two inversions of ownership are worth noting: `ui.gd` emits `player.start_game` 
 
 Color identity is a **string equal to the material's filename**. `blue.tres` is the color "blue".
 
-- Terrain assignment: `TerrainController` picks a random material from its `obstacle_materials` array and writes it to the obstacle's `Mesh.material_override`.
-- Recovery: `mesh.get_active_material(0).get_path().get_file().get_basename()`.
-- Application: `load(materials_path + "/" + color_name + ".tres")`.
+`ColorUtil` (`src/terrain/color_util.gd`) is the single source of truth:
 
-Color Clear compares by resource identity rather than by name, which works because `load()` returns the same cached instance that was assigned at spawn.
+| | |
+|---|---|
+| `ColorUtil.NAMES` | the colors that ship — `["blue", "green", "red"]` |
+| `ColorUtil.material_for(name)` | cached outline material lookup |
+| `ColorUtil.name_of(material)` | reverse lookup, for nodes with a material but no script |
+| `ColorUtil.random_name()` | |
+| `ColorUtil.vivid(name)` | the hue at full brightness, for VFX tinting |
 
-The outline materials themselves carry a black `outline_color`; the visible color comes from `next_pass` → `obstacle-materials/<color>.tres`, whose color is stored in an albedo *texture*. There is therefore no `Color` value readable from the material at runtime, which is why `player.gd` hardcodes a `COLOR_VALUES` table to tint the puffs and trail.
+`TerrainController` colors an obstacle through `Obstacle.set_color()`, which stores the name in `color_name` and applies the material. Everything downstream — the player's collision and slam checks, Color Clear's matching — compares that string. Collectibles are scriptless `Area3D`s, so the Color Change pickup is the one place that still reads its color back off the material via `ColorUtil.name_of()`.
+
+The outline materials themselves carry a black `outline_color`; the visible color comes from `next_pass` → `obstacle-materials/<color>.tres`, whose color is stored in an albedo *texture*. There is no `Color` value readable from the material at runtime, which is why `ColorUtil` carries a hardcoded `TINTS` table for the puffs and trail.
 
 ## Groups
 
 Global groups declared in `project.godot`: `double-jump`, `color-clear`, `color-change`, `color-match`, `flight`.
 
-`obstacle` is used pervasively but is not declared globally. It is applied to **both** the obstacle's `StaticBody3D` root and its `Area3D` hitbox, so `is_in_group("obstacle")` means different things depending on which node the caller is holding — the slam raycast hits the root, while the player's hitbox overlap reports the Area3D and has to call `get_parent()`.
+`obstacle` is used pervasively but is not declared globally. It is applied to **both** the obstacle's `StaticBody3D` root and its `Area3D` hitbox, so `is_in_group("obstacle")` means different things depending on which node the caller is holding. Both the slam raycast (`collide_with_bodies = false`, so it reports the hitbox) and the player's own hitbox overlap end up at the `Area3D` and reach the obstacle via `get_parent()`.
+
+Code that needs the obstacle itself prefers `node is Obstacle` over the group, which sidesteps the ambiguity entirely.
 
 ## Rendering and export
 

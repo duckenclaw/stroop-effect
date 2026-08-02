@@ -3,6 +3,7 @@ extends Control
 @onready var hud = $MarginContainer/HUD
 @onready var loseUi = $MarginContainer/LoseUI
 @onready var startUi = $MarginContainer/StartUI
+@onready var pauseUi = $MarginContainer/PauseUI
 @onready var colorLabel = hud.get_node("ColorContainer/Color")
 @onready var pointsLabel = hud.get_node("RunStatsContainer/ScoreContainer/ValueLabel")
 @onready var modifierLabel = hud.get_node("RunStatsContainer/ScoreContainer/ModifierLabel")
@@ -40,7 +41,9 @@ func _ready():
 	startUi.game_start_requested.connect(_on_game_start)
 
 func _process(delta):
-	if game_started and not is_lost:
+	# This node runs with process_mode = ALWAYS so its buttons stay clickable while the tree is
+	# paused, which means the pause check has to be explicit here.
+	if game_started and not is_lost and not get_tree().paused:
 		update_distance()
 		_update_modifier_timers(delta)
 
@@ -73,23 +76,32 @@ func _on_player_lose():
 
 func _on_player_pause():
 	hud.visible = false
-	_snapshot_results()
-	loseUi.visible = true
+	pauseUi.visible = true
 
 func _on_player_unpause():
-	loseUi.visible = false
+	pauseUi.visible = false
 	hud.visible = true
+
+func _on_pause_ui_resume():
+	player.set_paused(false)
 
 func _unhandled_input(event):
 	# Handle restart key when game is lost. Physical keycode so it stays on the same physical key
 	# regardless of layout.
 	if event is InputEventKey and event.pressed and event.physical_keycode == KEY_R and is_lost:
 		restart()
+		return
+	# Pause lives here rather than on the player: pausing the tree stops the player from
+	# receiving input, so it could never unpause itself.
+	if event.is_action_pressed("ui_cancel") and game_started and not is_lost:
+		player.set_paused(not player.is_paused)
+		get_viewport().set_input_as_handled()
 
 func _on_lose_ui_restart():
 	restart()
 
 func restart():
+	get_tree().paused = false
 	get_tree().reload_current_scene()
 
 func _on_game_start():
@@ -107,9 +119,6 @@ func _on_game_start():
 	# Trigger smooth camera transition to gameplay position
 	camera.transition_to_gameplay()
 
-
-func _on_lose_ui_exit():
-	get_tree().quit(0)
 
 # Modifier status functions
 func _add_modifier_status(modifier_name: String, duration: float):
