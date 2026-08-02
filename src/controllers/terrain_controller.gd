@@ -165,7 +165,7 @@ func _on_match_color(color_name: String):
 	for i in range(terrains_to_affect):
 		var terrain = terrain_belt[i]
 		for obstacle in terrain.get_children():
-			if obstacle.is_in_group("obstacle") or obstacle.is_in_group("collectible"):
+			if obstacle.is_in_group("obstacle"):
 				var mesh_instance = obstacle.get_node("Mesh")
 				mesh_instance.material_override = material
 

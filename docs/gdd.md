@@ -252,7 +252,7 @@ The camera shakes on a trauma model — `0.45` trauma added on any obstacle coll
 
 Lane switching is clamped at both ends — there is no wraparound. Jump, slam, and lane switching are all read as `just_pressed`, so holding a key does nothing.
 
-A `tutorial` action bound to `T` is defined in the InputMap but is not referenced by any script. (The tutorial panel on the start menu is opened by a button, not by that key.)
+The tutorial panel on the start menu is opened by a button, not by a key binding.
 
 Pause is handled on the player: it toggles the player's physics processing and shows the results screen. It does not use Godot's scene-tree pause, so the camera shake, in-flight dissolves, and HUD countdown timers continue to run while paused.
 
@@ -300,7 +300,6 @@ Two inversions of ownership are worth noting: `ui.gd` emits `player.start_game` 
 | `dissolve.gdshader` | spatial, `cull_disabled` | `sphere_position`, `sphere_radius`, `burn_threshold`, `noise_texture`, `noise_strength`, `noise_scale`, `neon_base_color`, `albedo_color`, `inner_face_neon_intensity` |
 | `world.gdshader` | sky | *none* — fully procedural from `EYEDIR` and `TIME` |
 | `shaders/electric_field.gdshader` | spatial, `blend_add`, unshaded | `field_color`, `animation_speed`, `field_intensity`, `edge_brightness`, `noise_scale`, `flicker_speed` |
-| `wireframe.gdshader` | spatial, unshaded | `modelColor`, `wireframeColor`, `width`, `modelOpacity`, `filtered` — *unused; no material or scene references it* |
 
 ## Color convention
 

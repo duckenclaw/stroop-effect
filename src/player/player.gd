@@ -9,8 +9,6 @@ const MAX_STREAK := 5.0
 const DOUBLE_JUMP_DURATION := 5.0
 const FLIGHT_DURATION := 10.0
 const FLIGHT_HEIGHT := 2.0
-const COLOR_CLEAR_WIDTH := 7.0
-const COLOR_CLEAR_LENGTH := 30.0
 
 # Tint sources for the wind puffs and the speed trail. The outline materials carry a black
 # outline_color and get their visible color from next_pass -> obstacle-materials/<color>.tres,
@@ -19,9 +17,6 @@ const COLOR_VALUES := {
 	"blue": Color(0.106, 0.259, 0.471),
 	"green": Color(0.184, 0.439, 0.247),
 	"red": Color(0.431, 0.031, 0.035),
-	"orange": Color(0.835, 0.322, 0.125),
-	"yellow": Color(0.863, 0.718, 0.157),
-	"purple": Color(0.533, 0.137, 0.416),
 }
 const PUFF_WHITE_MIX := 0.2  # small white core; the rest stays the player's hue
 const PUFF_ALPHA := 0.55  # multiplied by the color_ramp alpha envelope
@@ -67,7 +62,6 @@ const PUFF_PRESETS := {
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_slamming: bool = false
-var is_on_streak: bool = true
 var can_double_jump: bool = false
 var is_flying: bool = false
 var is_levitating: bool = false
@@ -405,8 +399,6 @@ func add_points(amount: float):
 	points += amount * point_modifier
 	streak_timer.start(STREAK_DECAY)
 	ui.update_points(points, point_modifier)
-	#if points % 3 == 0:
-		#change_color()
 
 func _load_colors(target_path: String) -> void:
 	var dir = DirAccess.open(target_path)
