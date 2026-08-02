@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 const JUMP_VELOCITY := 5.5
+const SLAM_BOUNCE_MULTIPLIER := 1.5  # applied to JUMP_VELOCITY when a slam destroys an obstacle
 const TRACK_POSITIONS := [-2.0, 0.0, 2.0]  # Left, Center, Right tracks along the X-axis
 const DOWN_SPEED := 100.0 # Speed of going down when pressing down in a jump
 const MOVE_SPEED := 7.5 # Speed of lerping between tracks
@@ -52,9 +53,7 @@ const PUFF_PRESETS := {
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_slamming: bool = false
-var can_double_jump: bool = false
-var is_flying: bool = false
-var is_levitating: bool = false
+var is_levitating: bool = false  # currently hovering; flight.active means the power-up is held
 var point_modifier: float = 1.0
 @export var modifier_multipier: float = 1.0
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
@@ -75,8 +74,12 @@ var trail_material: StandardMaterial3D
 var trail_mesh: ImmediateMesh
 var trail_points: Array[Vector3] = []
 
-var double_jump_timer: Timer
-var flight_timer: Timer
+var double_jump: TimedEffect
+var flight: TimedEffect
+
+# Group -> handler for everything the player can pick up. Adding a collectible type means adding
+# an entry and a one-line handler rather than another branch in an if/elif chain.
+var _pickup_handlers: Dictionary = {}
 
 @export var point_sfx: AudioStreamMP3
 @export var color_change_sfx: AudioStreamMP3
@@ -90,10 +93,8 @@ signal pause()
 signal unpause()
 signal match_color(color_name: String)
 signal color_clear(color_name: String)
-signal double_jump_started(duration: float)
-signal double_jump_ended()
-signal flight_started(duration: float)
-signal flight_ended()
+signal effect_started(effect_name: String, duration: float)
+signal effect_ended(effect_name: String)
 signal collision_with_obstacle()
 signal slam_ended()
 
@@ -110,16 +111,20 @@ func _ready():
 	change_color(ColorUtil.random_name())
 	set_physics_process(false)  # Disable player processing until game starts
 
-	# Create and configure timers
-	double_jump_timer = Timer.new()
-	double_jump_timer.one_shot = true
-	double_jump_timer.timeout.connect(_on_double_jump_timeout)
-	add_child(double_jump_timer)
+	double_jump = TimedEffect.attach(self, "Double Jump")
+	flight = TimedEffect.attach(self, "Flight")
+	for effect in [double_jump, flight]:
+		effect.activated.connect(_on_effect_activated)
+		effect.expired.connect(_on_effect_expired)
+	flight.expired.connect(_on_flight_expired)
 
-	flight_timer = Timer.new()
-	flight_timer.one_shot = true
-	flight_timer.timeout.connect(_on_flight_timeout)
-	add_child(flight_timer)
+	_pickup_handlers = {
+		&"color-change": _pickup_color_change,
+		&"color-match": _pickup_color_match,
+		&"double-jump": _pickup_double_jump,
+		&"color-clear": _pickup_color_clear,
+		&"flight": _pickup_flight,
+	}
 
 func change_color(target_color: String):
 	current_color = target_color
@@ -163,22 +168,16 @@ func _physics_process(delta):
 				if slammed_obstacle.color_name != current_color:
 					animation_player.play("jump", 0.1)
 				else:
-					audio_stream_player.stream = point_sfx
-					audio_stream_player.playing = true
+					_destroy_obstacle(slammed_obstacle, true)
 
-					slammed_obstacle.start_dissolve(global_position)
-					velocity.y = JUMP_VELOCITY * 1.5
-
-					add_points(1.0)
-				
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")
 			_emit_puff("jump")
-			if is_flying:
+			if flight.active:
 				is_levitating = true
 			else:
 				velocity.y = JUMP_VELOCITY
-	elif can_double_jump and Input.is_action_just_pressed("jump"):
+	elif double_jump.active and Input.is_action_just_pressed("jump"):
 		animation_player.play("jump")
 		_emit_puff("jump")
 		velocity.y = JUMP_VELOCITY
@@ -299,66 +298,59 @@ func _unhandled_input(event):
 func _on_hitbox_area_entered(area):
 	
 	if area.is_in_group("obstacle"):
-		var obstacle := area.get_parent() as Obstacle
-		collision_with_obstacle.emit()
-		if obstacle.color_name != current_color:
-			lose.emit()
-			set_physics_process(false)
-		else:
-			audio_stream_player.stream = point_sfx
-			audio_stream_player.playing = true
+		_on_obstacle_hit(area.get_parent() as Obstacle)
+		return
+	for group in _pickup_handlers:
+		if area.is_in_group(group):
+			_collect(area, _pickup_handlers[group])
+			return
 
-			obstacle.start_dissolve(global_position)
+func _on_obstacle_hit(obstacle: Obstacle) -> void:
+	collision_with_obstacle.emit()
+	if obstacle.color_name != current_color:
+		lose.emit()
+		set_physics_process(false)
+	else:
+		_destroy_obstacle(obstacle, false)
 
-			add_points(1.0)
+## Shared by the frontal-collision and the slam-from-above paths.
+func _destroy_obstacle(obstacle: Obstacle, bounce: bool) -> void:
+	_play_sfx(point_sfx)
+	obstacle.start_dissolve(global_position)
+	if bounce:
+		velocity.y = JUMP_VELOCITY * SLAM_BOUNCE_MULTIPLIER
+	add_points(1.0)
 
-	elif area.is_in_group("color-change"):
-		audio_stream_player.stream = color_change_sfx
-		audio_stream_player.playing = true
-		# Collectibles are scriptless Area3Ds, so the name still comes off the material here.
-		change_color(ColorUtil.name_of(area.get_node("Mesh").get_active_material(0)))
+## Every collectible sounds the same, scores the same and frees itself; only the effect differs.
+func _collect(area: Area3D, effect: Callable) -> void:
+	_play_sfx(color_change_sfx)
+	effect.call(area)
+	add_points(1.0)
+	area.queue_free()
 
-		if point_modifier < 5.0:
-			point_modifier += modifier_multipier
-		else:
-			point_modifier = 5.0
+func _play_sfx(stream: AudioStream) -> void:
+	audio_stream_player.stream = stream
+	audio_stream_player.playing = true
 
-		add_points(1.0)
-		area.queue_free()
+func _pickup_color_change(area: Area3D) -> void:
+	# Collectibles are scriptless Area3Ds, so the name still comes off the material here.
+	change_color(ColorUtil.name_of(area.get_node("Mesh").get_active_material(0)))
+	if point_modifier < MAX_STREAK:
+		point_modifier += modifier_multipier
+	else:
+		point_modifier = MAX_STREAK
 
-	elif area.is_in_group("color-match"):
-		audio_stream_player.stream = color_change_sfx
-		audio_stream_player.playing = true
-		match_color.emit(current_color)
-		add_points(1.0)
-		area.queue_free()
+func _pickup_color_match(_area: Area3D) -> void:
+	match_color.emit(current_color)
 
-	elif area.is_in_group("double-jump"):
-		audio_stream_player.stream = color_change_sfx
-		audio_stream_player.playing = true
-		can_double_jump = true
-		double_jump_timer.start(DOUBLE_JUMP_DURATION)
-		double_jump_started.emit(DOUBLE_JUMP_DURATION)
-		add_points(1.0)
-		area.queue_free()
+func _pickup_color_clear(_area: Area3D) -> void:
+	color_clear.emit(current_color)
 
-	elif area.is_in_group("color-clear"):
-		audio_stream_player.stream = color_change_sfx
-		audio_stream_player.playing = true
-		color_clear.emit(current_color)
-		add_points(1.0)
-		area.queue_free()
+func _pickup_double_jump(_area: Area3D) -> void:
+	double_jump.activate(DOUBLE_JUMP_DURATION)
 
-	elif area.is_in_group("flight"):
-		audio_stream_player.stream = color_change_sfx
-		audio_stream_player.playing = true
-		is_flying = true
-		flight_timer.start(FLIGHT_DURATION)
-		flight_started.emit(FLIGHT_DURATION)
-		add_points(1.0)
-		area.queue_free()
-
-
+func _pickup_flight(_area: Area3D) -> void:
+	flight.activate(FLIGHT_DURATION)
 
 func add_points(amount: float):
 	points += amount * point_modifier
@@ -378,15 +370,11 @@ func _on_streak_timeout():
 	point_modifier = 1.0
 	ui.update_points(points, point_modifier)
 
-func _on_double_jump_timeout():
-	can_double_jump = false
-	double_jump_ended.emit()
+func _on_effect_activated(effect_name: String, duration: float) -> void:
+	effect_started.emit(effect_name, duration)
 
-func _on_flight_timeout():
-	_end_flight()
+func _on_effect_expired(effect_name: String) -> void:
+	effect_ended.emit(effect_name)
 
-func _end_flight():
-	is_flying = false
+func _on_flight_expired(_effect_name: String) -> void:
 	is_levitating = false
-	flight_timer.stop()
-	flight_ended.emit()

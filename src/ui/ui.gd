@@ -31,10 +31,8 @@ func _ready():
 	startUi.visible = true
 	player.pause.connect(_on_player_pause)
 	player.unpause.connect(_on_player_unpause)
-	player.double_jump_started.connect(_on_double_jump_started)
-	player.double_jump_ended.connect(_on_double_jump_ended)
-	player.flight_started.connect(_on_flight_started)
-	player.flight_ended.connect(_on_flight_ended)
+	player.effect_started.connect(_add_modifier_status)
+	player.effect_ended.connect(_remove_modifier_status)
 	player.collision_with_obstacle.connect(camera._on_collision_shake)
 	player.slam_ended.connect(camera._on_slam_shake)
 	startUi.game_start_requested.connect(_on_game_start)
@@ -143,18 +141,6 @@ func _remove_modifier_status(modifier_name: String):
 		var modifier_data = active_modifiers[modifier_name]
 		modifier_data.node.queue_free()
 		active_modifiers.erase(modifier_name)
-
-func _on_double_jump_started(duration: float):
-	_add_modifier_status("Double Jump", duration)
-
-func _on_double_jump_ended():
-	_remove_modifier_status("Double Jump")
-
-func _on_flight_started(duration: float):
-	_add_modifier_status("Flight", duration)
-
-func _on_flight_ended():
-	_remove_modifier_status("Flight")
 
 func _update_modifier_timers(delta: float):
 	for modifier_name in active_modifiers.keys():
