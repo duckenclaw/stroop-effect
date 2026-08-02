@@ -1,7 +1,7 @@
 extends Node3D
 class_name TerrainController
 
-@onready var player = get_parent().get_node("Player")
+@onready var player = Game.player
 
 @export var obstacle_materials: Array[ShaderMaterial] = []  # Drag and drop materials here in the editor
 
@@ -32,9 +32,9 @@ func _ready() -> void:
 	if obstacle_materials.is_empty():
 		push_warning("No obstacle materials assigned. Obstacles will use their default materials.")
 	_init_blocks(num_terrain_blocks)
-	player.start_game.connect(_on_game_start)
-	player.pause.connect(_on_game_pause)
-	player.unpause.connect(_on_game_unpause)
+	player.start_game.connect(_set_progressing.bind(true))
+	player.pause.connect(_set_progressing.bind(false))
+	player.unpause.connect(_set_progressing.bind(true))
 	player.match_color.connect(_on_match_color)
 	player.color_clear.connect(_on_color_clear)
 
@@ -133,14 +133,8 @@ func apply_color(node: Node, color_name: String) -> void:
 func _on_player_lose():
 	terrain_velocity = 0.0
 
-func _on_game_start():
-	is_progressing = true
-
-func _on_game_pause():
-	is_progressing = false
-
-func _on_game_unpause():
-	is_progressing = true
+func _set_progressing(value: bool) -> void:
+	is_progressing = value
 
 # Helper function to get terrain blocks for the current stage
 func _get_current_stage_blocks() -> Array[PackedScene]:

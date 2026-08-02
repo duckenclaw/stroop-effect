@@ -21,6 +21,10 @@ config/icon="res://icon.png"
 
 buses/default_bus_layout="res://assets/sound/default_bus_layout.tres"
 
+[autoload]
+
+Game="*res://src/globals/game.gd"
+
 [display]
 
 window/size/viewport_width=1600

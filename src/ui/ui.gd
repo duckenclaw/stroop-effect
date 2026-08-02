@@ -10,9 +10,9 @@ extends Control
 @onready var losePointsLabel = loseUi.get_node("ResultsContainer/ScoreContainer/Number")
 @onready var loseDistanceLabel = loseUi.get_node("ResultsContainer/DistanceContainer/Number")
 @onready var modifiersContainer = hud.get_node("ModifiersContainer")
-@onready var player = get_parent().get_parent().get_node("Player")
-@onready var terrain_controller = get_parent().get_parent().get_node("TerrainController")
-@onready var camera = get_parent().get_parent().get_node("Camera")
+@onready var player = Game.player
+@onready var terrain_controller = Game.terrain
+@onready var camera = Game.camera
 
 # Preloaded modifier status scene
 var modifier_status_scene = preload("res://src/ui/modifier_status.tscn")
@@ -31,6 +31,8 @@ func _ready():
 	startUi.visible = true
 	player.pause.connect(_on_player_pause)
 	player.unpause.connect(_on_player_unpause)
+	player.points_changed.connect(update_points)
+	player.color_changed.connect(update_color)
 	player.effect_started.connect(_add_modifier_status)
 	player.effect_ended.connect(_remove_modifier_status)
 	player.collision_with_obstacle.connect(camera._on_collision_shake)

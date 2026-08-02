@@ -59,7 +59,6 @@ var point_modifier: float = 1.0
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 var is_paused: bool = false
 
-@onready var ui = get_parent().get_node("CanvasLayer/UI")
 @onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var mesh: MeshInstance3D = $Mesh
@@ -67,7 +66,6 @@ var is_paused: bool = false
 @onready var streak_timer: Timer = $StreakTimer
 @onready var puff_particles: CPUParticles3D = $PuffParticles
 @onready var trail: MeshInstance3D = $Trail
-@onready var terrain_controller = get_parent().get_node_or_null("TerrainController")
 
 var puff_tint: Color = Color(1, 1, 1, PUFF_ALPHA)
 var trail_material: StandardMaterial3D
@@ -97,6 +95,8 @@ signal effect_started(effect_name: String, duration: float)
 signal effect_ended(effect_name: String)
 signal collision_with_obstacle()
 signal slam_ended()
+signal points_changed(total: float, modifier: float)
+signal color_changed(color_name: String)
 
 func _ready():
 	# Own the trail material so change_color() tints this player rather than the shared
@@ -137,7 +137,7 @@ func change_color(target_color: String):
 
 	mesh.material_override = ColorUtil.material_for(current_color)
 
-	ui.update_color(current_color)
+	color_changed.emit(current_color)
 
 func _physics_process(delta):
 	
@@ -207,8 +207,9 @@ func _physics_process(delta):
 	_update_trail(delta)
 
 func _scroll_speed() -> float:
-	if terrain_controller and terrain_controller.has_method("get_scroll_speed"):
-		return terrain_controller.get_scroll_speed()
+	var terrain := Game.terrain
+	if terrain:
+		return terrain.get_scroll_speed()
 	return FALLBACK_SCROLL_SPEED
 
 func _update_trail(delta: float) -> void:
@@ -355,7 +356,7 @@ func _pickup_flight(_area: Area3D) -> void:
 func add_points(amount: float):
 	points += amount * point_modifier
 	streak_timer.start(STREAK_DECAY)
-	ui.update_points(points, point_modifier)
+	points_changed.emit(points, point_modifier)
 
 func _on_animation_player_animation_finished(anim_name):
 	match anim_name:
@@ -368,7 +369,7 @@ func _on_animation_player_animation_finished(anim_name):
 
 func _on_streak_timeout():
 	point_modifier = 1.0
-	ui.update_points(points, point_modifier)
+	points_changed.emit(points, point_modifier)
 
 func _on_effect_activated(effect_name: String, duration: float) -> void:
 	effect_started.emit(effect_name, duration)
