@@ -1,4 +1,4 @@
 - [x] add collectible scene that randomly spawns certain collectibles with weighted distribution
-- [ ] vfx for collectible gathering
+- [ ] vfx for special collectibles
 - [x] main menu with seamless transition into the game
 - [ ] more textures to turn into (maybe stuff like iron, bacon, cheese and more weird ones)
