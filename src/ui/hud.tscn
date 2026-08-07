@@ -1,4 +1,5 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwj82y7otjcu"]
+[gd_scene load_steps=8 format=3 uid="uid://cwj82y7otjcu"]
+[ext_resource type="Script" path="res://src/ui/hud.gd" id="9_hud"]
 
 [sub_resource type="Animation" id="Animation_snmo6"]
 length = 0.001
@@ -101,6 +102,7 @@ _data = {
 }
 
 [node name="HUD" type="Control" unique_id=644119042]
+script = ExtResource("9_hud")
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

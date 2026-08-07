@@ -53,8 +53,8 @@ signal pause()
 signal unpause()
 signal match_color(color_name: String)
 signal color_clear(color_name: String)
-signal effect_started(effect_name: String, duration: float)
-signal effect_ended(effect_name: String)
+signal effect_started(effect: TimedEffect)
+signal effect_ended(effect: TimedEffect)
 signal collision_with_obstacle()
 signal slam_ended()
 signal points_changed(total: float, modifier: float)
@@ -69,8 +69,8 @@ func _ready():
 	double_jump = TimedEffect.attach(self, "Double Jump")
 	flight = TimedEffect.attach(self, "Flight")
 	for effect in [double_jump, flight]:
-		effect.activated.connect(_on_effect_activated)
-		effect.expired.connect(_on_effect_expired)
+		effect.activated.connect(effect_started.emit)
+		effect.expired.connect(effect_ended.emit)
 	flight.expired.connect(_on_flight_expired)
 
 	_pickup_handlers = {
@@ -247,11 +247,5 @@ func _on_animation_player_animation_finished(anim_name):
 		_:
 			animation_player.play("idle", 0.5)
 
-func _on_effect_activated(effect_name: String, duration: float) -> void:
-	effect_started.emit(effect_name, duration)
-
-func _on_effect_expired(effect_name: String) -> void:
-	effect_ended.emit(effect_name)
-
-func _on_flight_expired(_effect_name: String) -> void:
+func _on_flight_expired(_effect: TimedEffect) -> void:
 	is_levitating = false

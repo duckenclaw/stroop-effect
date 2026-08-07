@@ -6,8 +6,10 @@ extends Timer
 ## needs, so adding one is a single attach() call rather than another timer plus another pair of
 ## signals on the player and another pair of handlers on the UI.
 
-signal activated(effect_name: String, duration: float)
-signal expired(effect_name: String)
+## Both carry the effect itself rather than a name/duration snapshot, so listeners can read
+## time_left off the live Timer instead of tracking their own copy of the countdown.
+signal activated(effect: TimedEffect)
+signal expired(effect: TimedEffect)
 
 var effect_name := ""
 
@@ -25,14 +27,14 @@ static func attach(host: Node, display_name: String) -> TimedEffect:
 
 func activate(duration: float) -> void:
 	start(duration)
-	activated.emit(effect_name, duration)
+	activated.emit(self)
 
 ## Ends the effect early. Does nothing if it wasn't running, so callers don't have to check.
 func cancel() -> void:
 	if is_stopped():
 		return
 	stop()
-	expired.emit(effect_name)
+	expired.emit(self)
 
 func _on_timeout() -> void:
-	expired.emit(effect_name)
+	expired.emit(self)
