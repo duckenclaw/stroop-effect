@@ -103,7 +103,11 @@ Uses a custom shader at `assets/resources/materials/dissolve_material.tres`:
 - `src/terrain/terrains/stage2/` - Medium difficulty terrain blocks
 - `src/terrain/terrains/stage3/` - Hard difficulty terrain blocks
 - `src/terrain/terrains/special/` - Special terrain types (free, color_change, stage_change)
-- `src/terrain/obstacle-scenes/` - Reusable obstacle prefabs (low, high, wide, moving, etc.)
+- `src/terrain/obstacles/` - `obstacle.gd` plus the reusable obstacle prefabs (low, high, wide, moving, etc.)
+- `src/controllers/` - TerrainController, CameraController, MusicController
+- `src/globals/` - `game.gd` (autoload) and `color_util.gd`
+- `src/player/` - `player.gd` and its component scripts (`trail.gd`, `puff_emitter.gd`, `score_keeper.gd`, `timed_effect.gd`)
+- `src/ui/` - one script per UI scene (`ui.gd`, `hud.gd`, `lose_ui.gd`, `pause_ui.gd`, `start_ui.gd`, `modifier_status.gd`)
 
 ### Naming Patterns
 - Terrain blocks: `terrain_N.tscn` where N is 0-20
@@ -137,7 +141,7 @@ Uses a custom shader at `assets/resources/materials/dissolve_material.tres`:
 ### Creating New Terrain Blocks
 
 1. Instantiate `src/terrain/terrains/terrain_colliders.tscn` as base
-2. Add obstacle instances from `src/terrain/obstacle-scenes/`
+2. Add obstacle instances from `src/terrain/obstacles/`
 3. Ensure obstacles have "obstacle" group and proper Mesh/Collider structure
 4. Save in appropriate stage folder
 5. Add to corresponding `stage_N_blocks` array in TerrainController scene

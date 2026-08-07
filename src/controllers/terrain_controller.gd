@@ -1,5 +1,5 @@
-extends Node3D
 class_name TerrainController
+extends Node3D
 
 ## Points scored by terrain effects, rather than reaching into the player to add them directly.
 signal points_awarded(amount: float)
@@ -20,11 +20,11 @@ var is_progressing: bool = false
 var score: float = 0.0
 @export var terrain_velocity: float = 5.5
 @export var terrain_velocity_increase: float = 0.0025
-@export var num_terrain_blocks = 10
-@export var deletion_offset = 10
-@export var start_block = load("res://src/terrain/terrains/special/terrain_free.tscn")
-@export var color_change_block = load("res://src/terrain/terrains/special/terrain_color_change.tscn")
-@export var stage_change_block = load("res://src/terrain/terrains/special/terrain_stage_change.tscn")
+@export var num_terrain_blocks: int = 10
+@export var deletion_offset: float = 10.0
+@export var start_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_free.tscn")
+@export var color_change_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_color_change.tscn")
+@export var stage_change_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_stage_change.tscn")
 @export var color_change_frequency: int = 7
 @export var terrain_length: float = 10.0  # Length of each terrain in meters
 @export var stage_2_distance: float = 500.0  # Distance to reach stage 2
