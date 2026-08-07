@@ -45,6 +45,23 @@ bus = &"Music"
 script = ExtResource("6_eemcn")
 lose_sound = ExtResource("7_njovb")
 
+[connection signal="game_started" from="CanvasLayer/UI" to="Player" method="_on_game_started"]
+[connection signal="game_started" from="CanvasLayer/UI" to="Camera" method="transition_to_gameplay"]
 [connection signal="lose" from="Player" to="CanvasLayer/UI" method="_on_player_lose"]
 [connection signal="lose" from="Player" to="TerrainController" method="_on_player_lose"]
 [connection signal="lose" from="Player" to="AudioStreamPlayer3D" method="_on_player_lose"]
+[connection signal="pause" from="Player" to="CanvasLayer/UI" method="_on_player_pause"]
+[connection signal="pause" from="Player" to="TerrainController" method="_on_player_pause"]
+[connection signal="unpause" from="Player" to="CanvasLayer/UI" method="_on_player_unpause"]
+[connection signal="unpause" from="Player" to="TerrainController" method="_on_player_unpause"]
+[connection signal="points_changed" from="Player" to="CanvasLayer/UI" method="_on_player_points_changed"]
+[connection signal="points_changed" from="Player" to="TerrainController" method="_on_player_points_changed"]
+[connection signal="color_changed" from="Player" to="CanvasLayer/UI" method="_on_player_color_changed"]
+[connection signal="effect_started" from="Player" to="CanvasLayer/UI" method="_on_player_effect_started"]
+[connection signal="effect_ended" from="Player" to="CanvasLayer/UI" method="_on_player_effect_ended"]
+[connection signal="collision_with_obstacle" from="Player" to="Camera" method="_on_collision_shake"]
+[connection signal="slam_ended" from="Player" to="Camera" method="_on_slam_shake"]
+[connection signal="start_game" from="Player" to="TerrainController" method="_on_game_started"]
+[connection signal="match_color" from="Player" to="TerrainController" method="_on_match_color"]
+[connection signal="color_clear" from="Player" to="TerrainController" method="_on_color_clear"]
+[connection signal="points_awarded" from="TerrainController" to="Player" method="add_points"]

@@ -45,6 +45,7 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[connection signal="game_start_requested" from="MarginContainer/StartUI" to="." method="_on_start_ui_game_start_requested"]
 [connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_restart_requested"]
 [connection signal="resume" from="MarginContainer/PauseUI" to="." method="_on_pause_ui_resume"]
 [connection signal="restart" from="MarginContainer/PauseUI" to="." method="_on_restart_requested"]

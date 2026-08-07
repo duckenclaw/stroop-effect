@@ -81,6 +81,11 @@ func _ready():
 		&"flight": _pickup_flight,
 	}
 
+## The UI owns the start button, but the player owns the decision to start moving.
+func _on_game_started() -> void:
+	set_physics_process(true)
+	start_game.emit()
+
 func change_color(target_color: String):
 	current_color = target_color
 

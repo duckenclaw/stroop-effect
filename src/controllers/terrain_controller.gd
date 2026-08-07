@@ -1,7 +1,8 @@
 extends Node3D
 class_name TerrainController
 
-@onready var player = Game.player
+## Points scored by terrain effects, rather than reaching into the player to add them directly.
+signal points_awarded(amount: float)
 
 @export var obstacle_materials: Array[ShaderMaterial] = []  # Drag and drop materials here in the editor
 
@@ -15,6 +16,8 @@ var terrains_count: int = 0
 var distance: float = 0.0
 var current_stage: int = 1
 var is_progressing: bool = false
+## Mirrored from the player's points_changed signal; only used to ramp difficulty.
+var score: float = 0.0
 @export var terrain_velocity: float = 5.5
 @export var terrain_velocity_increase: float = 0.0025
 @export var num_terrain_blocks = 10
@@ -32,11 +35,6 @@ func _ready() -> void:
 	if obstacle_materials.is_empty():
 		push_warning("No obstacle materials assigned. Obstacles will use their default materials.")
 	_init_blocks(num_terrain_blocks)
-	player.start_game.connect(_set_progressing.bind(true))
-	player.pause.connect(_set_progressing.bind(false))
-	player.unpause.connect(_set_progressing.bind(true))
-	player.match_color.connect(_on_match_color)
-	player.color_clear.connect(_on_color_clear)
 
 func _physics_process(delta: float) -> void:
 	if is_progressing:
@@ -103,7 +101,7 @@ func _progress_terrain(delta: float) -> void:
 		distance = _distance_after(terrains_count)
 		# Difficulty ramps with the score. Kept here rather than inside _append_to_far_edge, which
 		# is a positioning helper and also runs while the starting belt is being built.
-		terrain_velocity += player.points * terrain_velocity_increase
+		terrain_velocity += score * terrain_velocity_increase
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 
@@ -144,6 +142,18 @@ func _on_player_lose():
 	# world kept sliding after death.
 	_set_progressing(false)
 
+func _on_game_started() -> void:
+	_set_progressing(true)
+
+func _on_player_pause() -> void:
+	_set_progressing(false)
+
+func _on_player_unpause() -> void:
+	_set_progressing(true)
+
+func _on_player_points_changed(total: float, _modifier: float) -> void:
+	score = total
+
 func _set_progressing(value: bool) -> void:
 	is_progressing = value
 
@@ -180,7 +190,7 @@ func _on_color_clear(color_name: String):
 	for obstacle in _obstacles_in_terrains(3):
 		if obstacle.color_name == color_name:
 			obstacle.start_dissolve(obstacle.position)
-			player.add_points(1.0)
+			points_awarded.emit(1.0)
 
 ## Obstacles in the next `terrain_count` blocks the player has yet to reach.
 ##
