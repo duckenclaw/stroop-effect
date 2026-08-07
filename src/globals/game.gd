@@ -9,6 +9,8 @@ extends Node
 ## This holds no game state on purpose: the score belongs to the player, the stage to the terrain
 ## controller. It is a lookup table, not a blackboard.
 
+const FALLBACK_SCROLL_SPEED := 5.5  # used only if TerrainController isn't reachable
+
 const PLAYER_PATH := ^"Player"
 const TERRAIN_PATH := ^"TerrainController"
 const UI_PATH := ^"CanvasLayer/UI"
@@ -25,6 +27,15 @@ var ui: Node:
 
 var camera: CameraController:
 	get: return _resolve(CAMERA_PATH) as CameraController
+
+## How fast the world slides past the player, in m/s. Lives here because the player's trail and its
+## puffs both need it to travel with the ground, and neither should have to know how to find the
+## terrain controller. Still a lookup, not state -- the number belongs to TerrainController.
+func scroll_speed() -> float:
+	var controller := terrain
+	if controller:
+		return controller.get_scroll_speed()
+	return FALLBACK_SCROLL_SPEED
 
 var _cache: Dictionary = {}
 

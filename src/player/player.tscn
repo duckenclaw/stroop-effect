@@ -1,10 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dguvbimxk8r80"]
+[gd_scene load_steps=23 format=3 uid="uid://dguvbimxk8r80"]
 
 [ext_resource type="Script" uid="uid://dm18ngbeufinn" path="res://src/player/player.gd" id="1_kqdvt"]
 [ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://assets/sound/score.mp3" id="2_2m7jq"]
 [ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://assets/sound/color_change.mp3" id="3_jhvac"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="4_244u8"]
 [ext_resource type="ArrayMesh" uid="uid://6xji3ygn4m0u" path="res://assets/models/smooth_cube.res" id="5_5f2sf"]
+[ext_resource type="Script" path="res://src/player/puff_emitter.gd" id="6_puff"]
+[ext_resource type="Script" path="res://src/player/trail.gd" id="7_trail"]
+[ext_resource type="Script" path="res://src/player/score_keeper.gd" id="8_score"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qlg0r"]
 
@@ -242,6 +245,7 @@ bus = &"SFX"
 
 [node name="PuffParticles" type="CPUParticles3D" parent="." unique_id=436362552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+script = ExtResource("6_puff")
 emitting = false
 amount = 26
 lifetime = 0.4
@@ -267,6 +271,7 @@ color_ramp = SubResource("Gradient_puff")
 
 [node name="Trail" type="MeshInstance3D" parent="." unique_id=198451092]
 top_level = true
+script = ExtResource("7_trail")
 cast_shadow = 0
 material_override = SubResource("StandardMaterial3D_trail")
 
@@ -280,9 +285,8 @@ autoplay = &"idle"
 collide_with_areas = true
 collide_with_bodies = false
 
-[node name="StreakTimer" type="Timer" parent="." unique_id=730767639]
-wait_time = 5.0
+[node name="Score" type="Timer" parent="." unique_id=730767639]
+script = ExtResource("8_score")
 
 [connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="timeout" from="StreakTimer" to="." method="_on_streak_timeout"]
