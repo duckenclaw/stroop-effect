@@ -1,10 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://boici0vkcy5bv"]
+[gd_scene load_steps=5 format=3 uid="uid://boici0vkcy5bv"]
+[ext_resource type="Script" path="res://src/ui/modifier_status.gd" id="9_chip"]
 
 [ext_resource type="Texture2D" uid="uid://bwe5msw0k004o" path="res://assets/resources/textures/under.svg" id="1_681jq"]
 [ext_resource type="Texture2D" uid="uid://7j7b0hs2fe0n" path="res://assets/resources/textures/over.svg" id="2_mvale"]
 [ext_resource type="Texture2D" uid="uid://bm0efa4iaq5tu" path="res://assets/resources/textures/progress.svg" id="3_iaixu"]
 
 [node name="ModifierStatus" type="Control" unique_id=1641593130]
+script = ExtResource("9_chip")
 custom_minimum_size = Vector2(256, 128)
 layout_mode = 3
 anchors_preset = 0

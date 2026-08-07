@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://bfqlqvjegibge"]
 
-[ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacle.gd" id="1_3nc8v"]
+[ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacles/obstacle.gd" id="1_3nc8v"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="2_3nc8v"]
 [ext_resource type="ArrayMesh" uid="uid://bn6fvu02fsot0" path="res://assets/models/smooth_ultrawide_cube.res" id="3_e7arh"]
 

@@ -1,7 +1,8 @@
-extends Node3D
 class_name TerrainController
+extends Node3D
 
-@onready var player = get_parent().get_node("Player")
+## Points scored by terrain effects, rather than reaching into the player to add them directly.
+signal points_awarded(amount: float)
 
 @export var obstacle_materials: Array[ShaderMaterial] = []  # Drag and drop materials here in the editor
 
@@ -15,13 +16,15 @@ var terrains_count: int = 0
 var distance: float = 0.0
 var current_stage: int = 1
 var is_progressing: bool = false
+## Mirrored from the player's points_changed signal; only used to ramp difficulty.
+var score: float = 0.0
 @export var terrain_velocity: float = 5.5
 @export var terrain_velocity_increase: float = 0.0025
-@export var num_terrain_blocks = 10
-@export var deletion_offset = 10
-@export var start_block = load("res://src/terrain/terrains/special/terrain_free.tscn")
-@export var color_change_block = load("res://src/terrain/terrains/special/terrain_color_change.tscn")
-@export var stage_change_block = load("res://src/terrain/terrains/special/terrain_stage_change.tscn")
+@export var num_terrain_blocks: int = 10
+@export var deletion_offset: float = 10.0
+@export var start_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_free.tscn")
+@export var color_change_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_color_change.tscn")
+@export var stage_change_block: PackedScene = preload("res://src/terrain/terrains/special/terrain_stage_change.tscn")
 @export var color_change_frequency: int = 7
 @export var terrain_length: float = 10.0  # Length of each terrain in meters
 @export var stage_2_distance: float = 500.0  # Distance to reach stage 2
@@ -32,11 +35,6 @@ func _ready() -> void:
 	if obstacle_materials.is_empty():
 		push_warning("No obstacle materials assigned. Obstacles will use their default materials.")
 	_init_blocks(num_terrain_blocks)
-	player.start_game.connect(_on_game_start)
-	player.pause.connect(_on_game_pause)
-	player.unpause.connect(_on_game_unpause)
-	player.match_color.connect(_on_match_color)
-	player.color_clear.connect(_on_color_clear)
 
 func _physics_process(delta: float) -> void:
 	if is_progressing:
@@ -77,8 +75,10 @@ func _progress_terrain(delta: float) -> void:
 		var first_terrain = terrain_belt.pop_front()
 		var block
 
-		# Calculate what the distance will be after spawning the next terrain
-		var next_distance = (terrains_count + 1) * terrain_length
+		# Calculate what the distance will be after spawning the next terrain. Must use the same
+		# formula as `distance` below: gating on the raw block count instead put this ~110 units
+		# ahead of the number on the HUD, so stage 2 fired before the run had really started.
+		var next_distance = _distance_after(terrains_count + 1)
 
 		# Check if this terrain spawning will cross a stage threshold
 		var next_stage = _calculate_stage_from_distance(next_distance)
@@ -98,35 +98,64 @@ func _progress_terrain(delta: float) -> void:
 		add_child(block)
 		terrain_belt.append(block)
 		terrains_count += 1
-		distance = (terrains_count - num_terrain_blocks) * terrain_length  # Update distance
+		distance = _distance_after(terrains_count)
+		# Difficulty ramps with the score. Kept here rather than inside _append_to_far_edge, which
+		# is a positioning helper and also runs while the starting belt is being built.
+		terrain_velocity += score * terrain_velocity_increase
 		_assign_random_materials(block)  # Assign materials after adding block
 		first_terrain.queue_free()
 
+## Distance travelled once `block_count` blocks have been spawned. The first num_terrain_blocks
+## make up the starting belt and are already on screen, so they do not count as distance.
+func _distance_after(block_count: int) -> float:
+	return (block_count - num_terrain_blocks) * terrain_length
+
 func _append_to_far_edge(target_block: MeshInstance3D, appending_block: MeshInstance3D) -> void:
 	appending_block.position.z = target_block.position.z - target_block.mesh.size.y/2 - appending_block.mesh.size.y/2
-	terrain_velocity += player.points * terrain_velocity_increase
 
-# Randomly assign materials to each obstacle within the block
+# Randomly assign colors to each obstacle within the block
 func _assign_random_materials(block: Node) -> void:
 	if obstacle_materials.is_empty():
 		return
-	for obstacle in block.get_children():
-		if obstacle.is_in_group("obstacle") or obstacle.is_in_group("color-change"):
-			var mesh_instance = obstacle.get_node("Mesh")
-			var random_material = obstacle_materials.pick_random()
-			mesh_instance.material_override = random_material
+	for child in block.get_children():
+		if child.is_in_group("obstacle") or child.is_in_group("color-change"):
+			apply_color(child, random_color_name())
+
+## Picks from the editor-configured material list so the palette stays controllable per project.
+func random_color_name() -> String:
+	if obstacle_materials.is_empty():
+		return ColorUtil.random_name()
+	return ColorUtil.name_of(obstacle_materials.pick_random())
+
+## Recolors an obstacle or a color-change collectible. Obstacles remember their color name;
+## collectibles are scriptless, so they only get the material.
+func apply_color(node: Node, color_name: String) -> void:
+	if node is Obstacle:
+		node.set_color(color_name)
+		return
+	var mesh_instance := node.get_node_or_null(^"Mesh") as MeshInstance3D
+	if mesh_instance:
+		mesh_instance.material_override = ColorUtil.material_for(color_name)
 
 func _on_player_lose():
-	terrain_velocity = 0.0
+	# Zeroing terrain_velocity alone left get_scroll_speed() returning terrains_count/100, so the
+	# world kept sliding after death.
+	_set_progressing(false)
 
-func _on_game_start():
-	is_progressing = true
+func _on_game_started() -> void:
+	_set_progressing(true)
 
-func _on_game_pause():
-	is_progressing = false
+func _on_player_pause() -> void:
+	_set_progressing(false)
 
-func _on_game_unpause():
-	is_progressing = true
+func _on_player_unpause() -> void:
+	_set_progressing(true)
+
+func _on_player_points_changed(total: float, _modifier: float) -> void:
+	score = total
+
+func _set_progressing(value: bool) -> void:
+	is_progressing = value
 
 # Helper function to get terrain blocks for the current stage
 func _get_current_stage_blocks() -> Array[PackedScene]:
@@ -151,44 +180,33 @@ func _calculate_stage_from_distance(dist: float) -> int:
 	else:
 		return 1
 
+# Change obstacles in 5 terrains to match the player's color
 func _on_match_color(color_name: String):
-	# Load the material for the specified color
-	var material_file = player.materials_path + "/" + color_name + ".tres"
-	var material = load(material_file)
+	for obstacle in _obstacles_in_terrains(5):
+		obstacle.set_color(color_name)
 
-	if material == null:
-		push_warning("Could not load material: " + material_file)
-		return
-
-	# Change obstacles in the next 5 terrains to match the player's color
-	var terrains_to_affect = min(5, terrain_belt.size())
-	for i in range(terrains_to_affect):
-		var terrain = terrain_belt[i]
-		for obstacle in terrain.get_children():
-			if obstacle.is_in_group("obstacle") or obstacle.is_in_group("collectible"):
-				var mesh_instance = obstacle.get_node("Mesh")
-				mesh_instance.material_override = material
-
+# Dissolve all obstacles with matching color in 3 terrains
 func _on_color_clear(color_name: String):
-	# Load the material for the specified color
-	var material_file = player.materials_path + "/" + color_name + ".tres"
-	var material = load(material_file)
+	for obstacle in _obstacles_in_terrains(3):
+		if obstacle.color_name == color_name:
+			obstacle.start_dissolve(obstacle.position)
+			points_awarded.emit(1.0)
 
-	if material == null:
-		push_warning("Could not load material: " + material_file)
-		return
-
-	# Dissolve all obstacles with matching color in the next 3 terrains
-	var terrains_to_affect = min(3, terrain_belt.size())
-	for i in range(terrains_to_affect):
-		var terrain = terrain_belt[i]
-		for obstacle in terrain.get_children():
-			if obstacle.is_in_group("obstacle"):
-				var mesh_instance = obstacle.get_node("Mesh")
-				var obstacle_material = mesh_instance.get_active_material(0)
-
-				# Check if the obstacle's material matches the player's color
-				if obstacle_material == material:
-					var collision_point = obstacle.position
-					obstacle.start_dissolve(collision_point)
-					player.add_points(1.0)
+## Obstacles in the next `terrain_count` blocks the player has yet to reach.
+##
+## terrain_belt is ordered by descending z: index 0 is the block behind the player, about to be
+## recycled. Slicing from the head therefore affected terrain that had already gone past, which
+## is why color-match and color-clear appeared to do nothing.
+func _obstacles_in_terrains(terrain_count: int) -> Array[Obstacle]:
+	var obstacles: Array[Obstacle] = []
+	var affected := 0
+	for block in terrain_belt:
+		if block.position.z >= 0.0:
+			continue  # the player is at z = 0; anything at or past it is behind them
+		if affected >= terrain_count:
+			break
+		affected += 1
+		for child in block.get_children():
+			if child is Obstacle:
+				obstacles.append(child)
+	return obstacles

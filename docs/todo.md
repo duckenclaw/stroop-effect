@@ -1,4 +1,6 @@
 - [x] add collectible scene that randomly spawns certain collectibles with weighted distribution
-- [ ] vfx for collectible gathering
-- [ ] main menu with seamless transition into the game
+- [ ] vfx for special collectibles
+- [ ] add decorations to the sides of the terrain
+- [ ] create splitting paths
+- [x] main menu with seamless transition into the game
 - [ ] more textures to turn into (maybe stuff like iron, bacon, cheese and more weird ones)

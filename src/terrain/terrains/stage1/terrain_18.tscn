@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b5cjx06477y11"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_7sg6t"]
-[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacle-scenes/wide_obstacle.tscn" id="2_7sg6t"]
+[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacles/wide_obstacle.tscn" id="2_7sg6t"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)

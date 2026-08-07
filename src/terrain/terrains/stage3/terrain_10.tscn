@@ -2,10 +2,10 @@
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_acmh0"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="3_13aaf"]
-[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="5_vphf8"]
+[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacles/low_obstacle.tscn" id="5_vphf8"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="6_nlalv"]
-[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="6_nn8pw"]
-[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="7_4qh5v"]
+[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacles/vmoving_obstacle.tscn" id="6_nn8pw"]
+[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacles/long_obstacle.tscn" id="7_4qh5v"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]
 size = Vector2(7, 15)

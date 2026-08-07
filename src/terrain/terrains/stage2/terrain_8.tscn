@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://brdamf01k28wb"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_kdwbh"]
-[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacle-scenes/long_obstacle.tscn" id="1_ku4ls"]
-[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="2_jh3f1"]
+[ext_resource type="PackedScene" uid="uid://d2ityq1t648me" path="res://src/terrain/obstacles/long_obstacle.tscn" id="1_ku4ls"]
+[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacles/low_obstacle.tscn" id="2_jh3f1"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="4_hr7ay"]
-[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacle-scenes/wide_obstacle.tscn" id="5_fqm4i"]
+[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacles/wide_obstacle.tscn" id="5_fqm4i"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="6_w0rr7"]
 [ext_resource type="PackedScene" uid="uid://dne86saoygync" path="res://src/terrain/collectible/double_jump.tscn" id="7_3akvy"]
 

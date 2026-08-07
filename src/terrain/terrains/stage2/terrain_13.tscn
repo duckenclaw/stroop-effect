@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bf0dkrpqs4ywj"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_em1yg"]
-[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacle-scenes/vmoving_obstacle.tscn" id="2_gdg6x"]
-[ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacle-scenes/ultrawide_obstacle.tscn" id="2_rxuuv"]
+[ext_resource type="PackedScene" uid="uid://c4c6nq1irl6t8" path="res://src/terrain/obstacles/vmoving_obstacle.tscn" id="2_gdg6x"]
+[ext_resource type="PackedScene" uid="uid://bfqlqvjegibge" path="res://src/terrain/obstacles/ultrawide_obstacle.tscn" id="2_rxuuv"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="4_xrxaj"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="5_new8l"]
 [ext_resource type="PackedScene" uid="uid://brdlaqygpuxk4" path="res://src/terrain/collectible/color_match.tscn" id="6_48xa4"]
