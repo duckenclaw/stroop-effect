@@ -14,8 +14,8 @@ const TERRAIN_PATH := ^"TerrainController"
 const UI_PATH := ^"CanvasLayer/UI"
 const CAMERA_PATH := ^"Camera"
 
-var player: Node:
-	get: return _resolve(PLAYER_PATH)
+var player: Player:
+	get: return _resolve(PLAYER_PATH) as Player
 
 var terrain: TerrainController:
 	get: return _resolve(TERRAIN_PATH) as TerrainController
@@ -23,8 +23,8 @@ var terrain: TerrainController:
 var ui: Node:
 	get: return _resolve(UI_PATH)
 
-var camera: Camera3D:
-	get: return _resolve(CAMERA_PATH) as Camera3D
+var camera: CameraController:
+	get: return _resolve(CAMERA_PATH) as CameraController
 
 var _cache: Dictionary = {}
 

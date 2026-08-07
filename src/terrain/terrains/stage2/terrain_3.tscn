@@ -1,12 +1,12 @@
 [gd_scene load_steps=10 format=3 uid="uid://bog1lio3v4co3"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_6hhcc"]
-[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacle-scenes/wide_obstacle.tscn" id="1_oe5ee"]
-[ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacle-scenes/high_obstacle.tscn" id="1_ouneh"]
+[ext_resource type="PackedScene" uid="uid://bug0idg373q3i" path="res://src/terrain/obstacles/wide_obstacle.tscn" id="1_oe5ee"]
+[ext_resource type="PackedScene" uid="uid://8txuom4mwvyj" path="res://src/terrain/obstacles/high_obstacle.tscn" id="1_ouneh"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="2_o8tso"]
 [ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="4_7fmn6"]
-[ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="5_ypu0d"]
-[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacle-scenes/low_obstacle.tscn" id="6_bt6e4"]
+[ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacles/ramp.tscn" id="5_ypu0d"]
+[ext_resource type="PackedScene" uid="uid://s3a57hylxwtw" path="res://src/terrain/obstacles/low_obstacle.tscn" id="6_bt6e4"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="7_3hedp"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]

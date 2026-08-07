@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c133uraxu5m8p"]
 
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_06r7i"]
-[ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacle-scenes/hmoving_obstacle.tscn" id="2_78j4e"]
+[ext_resource type="PackedScene" uid="uid://ba4lhgtmkl0qc" path="res://src/terrain/obstacles/hmoving_obstacle.tscn" id="2_78j4e"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="3_ocenx"]
 [ext_resource type="PackedScene" uid="uid://byo6qyin7nhyn" path="res://src/terrain/collectible/flight.tscn" id="4_22uyi"]
 

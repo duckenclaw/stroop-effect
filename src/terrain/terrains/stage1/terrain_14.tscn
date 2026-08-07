@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://k1h2mrfmmv46"]
 
-[ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://src/terrain/obstacle-scenes/long_high_obstacle.tscn" id="1_2sxa2"]
+[ext_resource type="PackedScene" uid="uid://daigbqo1tvuoe" path="res://src/terrain/obstacles/long_high_obstacle.tscn" id="1_2sxa2"]
 [ext_resource type="Material" uid="uid://c8886jm5uh5ny" path="res://assets/resources/materials/terrain.tres" id="1_ioewk"]
 [ext_resource type="PackedScene" uid="uid://b0u8urhv7r1j0" path="res://src/terrain/collectible/collectible.tscn" id="4_k8jkr"]
 [ext_resource type="PackedScene" uid="uid://xaaw8o5xxd88" path="res://src/terrain/collectible/color_change.tscn" id="5_85gik"]
-[ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacle-scenes/ramp.tscn" id="6_qi1xu"]
+[ext_resource type="PackedScene" uid="uid://5ya4w4jp3api" path="res://src/terrain/obstacles/ramp.tscn" id="6_qi1xu"]
 [ext_resource type="PackedScene" uid="uid://brdlaqygpuxk4" path="res://src/terrain/collectible/color_match.tscn" id="6_twk35"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_nrxnt"]

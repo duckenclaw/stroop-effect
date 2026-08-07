@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c4c6nq1irl6t8"]
 
-[ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacle.gd" id="1_at8qy"]
+[ext_resource type="Script" uid="uid://my3jt2vwdc47" path="res://src/terrain/obstacles/obstacle.gd" id="1_at8qy"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="2_6l7d8"]
 
 [sub_resource type="PrismMesh" id="PrismMesh_at8qy"]

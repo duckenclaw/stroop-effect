@@ -1,3 +1,4 @@
+class_name CameraController
 extends Camera3D
 
 # Menu and gameplay camera positions/rotations
