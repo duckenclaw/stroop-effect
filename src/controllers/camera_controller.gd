@@ -15,8 +15,13 @@ const MAX_ROTATION := 3.0  # Maximum rotation offset in degrees
 
 # Screen shake state
 var trauma := 0.0  # Current trauma level (0.0 to 1.0)
-var base_position := Vector3.ZERO  # Store base position for shake offset
-var base_rotation := Vector3.ZERO  # Store base rotation for shake offset
+var base_position := Vector3.ZERO  # Pose the shake offsets are measured from
+var base_rotation := Vector3.ZERO
+
+# While the menu-to-gameplay tween runs it owns position/rotation_degrees outright. Shaking during
+# the transition would fight it, and updating base_* up front made any trauma snap the camera
+# straight to the gameplay pose.
+var _is_transitioning := false
 
 signal transition_complete
 
@@ -26,63 +31,62 @@ func _ready():
 	rotation_degrees = MENU_ROTATION
 	base_position = position
 	base_rotation = rotation_degrees
+	# Nothing to shake yet; add_trauma() turns processing back on when there is.
+	set_process(false)
 
 func transition_to_gameplay() -> void:
-	# Create tween for smooth camera transition
-	var tween = create_tween()
+	_is_transitioning = true
+	var tween := create_tween()
 	tween.set_parallel(true)  # Animate position and rotation simultaneously
 	tween.set_ease(Tween.EASE_IN_OUT)
 	tween.set_trans(Tween.TRANS_CUBIC)
-
-	# Animate position
 	tween.tween_property(self, "position", GAMEPLAY_POSITION, TRANSITION_DURATION)
-
-	# Animate rotation
 	tween.tween_property(self, "rotation_degrees", GAMEPLAY_ROTATION, TRANSITION_DURATION)
-
-	# Update base position/rotation for shake system
-	base_position = GAMEPLAY_POSITION
-	base_rotation = GAMEPLAY_ROTATION
-
-	# Emit signal when transition completes
 	tween.finished.connect(_on_transition_finished)
 
 func _on_transition_finished() -> void:
+	# Adopt the pose the tween actually landed on, then hand control back to the shake.
+	base_position = GAMEPLAY_POSITION
+	base_rotation = GAMEPLAY_ROTATION
+	_is_transitioning = false
+	set_process(trauma > 0.0)
 	transition_complete.emit()
 
 func _process(delta: float) -> void:
-	# Decay trauma over time
-	if trauma > 0.0:
-		trauma = max(trauma - TRAUMA_DECAY * delta, 0.0)
+	if _is_transitioning:
+		return
 
-		# Calculate shake intensity using trauma squared for smoother falloff
-		var shake_intensity = trauma * trauma
-
-		# Generate random offsets based on shake intensity
-		var offset_x = randf_range(-1.0, 1.0) * MAX_OFFSET * shake_intensity
-		var offset_y = randf_range(-1.0, 1.0) * MAX_OFFSET * shake_intensity
-		var offset_z = randf_range(-1.0, 1.0) * MAX_OFFSET * shake_intensity
-
-		var rotation_x = randf_range(-1.0, 1.0) * MAX_ROTATION * shake_intensity
-		var rotation_y = randf_range(-1.0, 1.0) * MAX_ROTATION * shake_intensity
-		var rotation_z = randf_range(-1.0, 1.0) * MAX_ROTATION * shake_intensity
-
-		# Apply shake to camera
-		position = base_position + Vector3(offset_x, offset_y, offset_z)
-		rotation_degrees = base_rotation + Vector3(rotation_x, rotation_y, rotation_z)
-	else:
-		# Reset to base position when no trauma
+	trauma = maxf(trauma - TRAUMA_DECAY * delta, 0.0)
+	if trauma <= 0.0:
+		# One last write to settle back onto the base pose, then stop burning a frame callback for
+		# the rest of the run.
 		position = base_position
 		rotation_degrees = base_rotation
+		set_process(false)
+		return
 
+	# Trauma squared gives a smoother falloff than trauma alone.
+	var shake_intensity := trauma * trauma
+	position = base_position + _random_offset(MAX_OFFSET * shake_intensity)
+	rotation_degrees = base_rotation + _random_offset(MAX_ROTATION * shake_intensity)
+
+func _random_offset(magnitude: float) -> Vector3:
+	return Vector3(
+		randf_range(-1.0, 1.0) * magnitude,
+		randf_range(-1.0, 1.0) * magnitude,
+		randf_range(-1.0, 1.0) * magnitude,
+	)
+
+## Add trauma to the camera shake system. Amount should be between 0.0 and 1.0.
 func add_trauma(amount: float) -> void:
-	"""Add trauma to the camera shake system. Amount should be between 0.0 and 1.0."""
-	trauma = min(trauma + amount, 1.0)
+	trauma = minf(trauma + amount, 1.0)
+	if not _is_transitioning:
+		set_process(true)
 
+## Called when the player collides with a wrong-color obstacle.
 func _on_collision_shake() -> void:
-	"""Called when player collides with wrong color obstacle."""
 	add_trauma(0.45)
 
+## Called when the player's slam ends.
 func _on_slam_shake() -> void:
-	"""Called when player's slam ends."""
 	add_trauma(0.35)
