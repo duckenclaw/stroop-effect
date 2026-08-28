@@ -1,6 +1,6 @@
 extends AudioStreamPlayer3D
 
-@export var lose_sound: AudioStreamMP3
+@export var lose_sound: AudioStreamWAV
 
 
 func _on_player_lose():

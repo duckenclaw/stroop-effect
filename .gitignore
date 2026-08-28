@@ -1,6 +1,7 @@
 # Godot 4+ specific ignores
 .godot/
-build/
+build/*
+!build/.gdignore
 
 .DS_Store
 .idea
