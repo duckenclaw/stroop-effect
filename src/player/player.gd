@@ -2,8 +2,8 @@ class_name Player
 extends CharacterBody3D
 ## Locomotion, input and pickup routing.
 ##
-## The player's visual effects and its score live in sibling components on child nodes -- see
-## trail.gd, puff_emitter.gd and score_keeper.gd.
+## The player's visual effects, its sounds and its score live in sibling components on child nodes
+## -- see trail.gd, puff_emitter.gd, sfx_player.gd and score_keeper.gd.
 
 const JUMP_VELOCITY := 5.5
 const SLAM_BOUNCE_MULTIPLIER := 1.5  # applied to JUMP_VELOCITY when a slam destroys an obstacle
@@ -23,7 +23,7 @@ var air_jump_used: bool = false  # reset on landing, so double jump grants one j
 var current_track = 1  # Start at the center track (0 = left, 1 = center, 2 = right)
 var is_paused: bool = false
 
-@onready var audio_stream_player: AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var sfx: PlayerSfx = $Sfx
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var mesh: MeshInstance3D = $Mesh
 @onready var slam_raycast: RayCast3D = $SlamRaycast
@@ -37,9 +37,6 @@ var flight: TimedEffect
 # Group -> handler for everything the player can pick up. Adding a collectible type means adding
 # an entry and a one-line handler rather than another branch in an if/elif chain.
 var _pickup_handlers: Dictionary = {}
-
-@export var point_sfx: AudioStreamMP3
-@export var color_change_sfx: AudioStreamMP3
 
 var current_color = ""
 
@@ -117,6 +114,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("jump"):
 			animation_player.play("jump")
 			puff.emit_preset(&"jump")
+			sfx.play(&"jump")
 			if flight.active:
 				is_levitating = true
 			else:
@@ -127,6 +125,7 @@ func _physics_process(delta):
 		air_jump_used = true
 		animation_player.play("jump")
 		puff.emit_preset(&"jump")
+		sfx.play(&"jump")
 		velocity.y = JUMP_VELOCITY
 
 	# Handle track switching with input.
@@ -134,10 +133,12 @@ func _physics_process(delta):
 		current_track -= 1
 		animation_player.play("left", 0.01)
 		puff.emit_preset(&"lane_left")
+		sfx.play(&"lane_change")
 	elif Input.is_action_just_pressed("right") and current_track < TRACK_POSITIONS.size() - 1:
 		current_track += 1
 		animation_player.play("right", 0.01)
 		puff.emit_preset(&"lane_right")
+		sfx.play(&"lane_change")
 
 	# Smoothly move towards the current track, and keep the player centered on the Z axis.
 	global_transform.origin.x = _smooth(global_transform.origin.x, TRACK_POSITIONS[current_track], MOVE_SPEED, delta)
@@ -150,6 +151,7 @@ func _physics_process(delta):
 func _land_slam() -> void:
 	animation_player.play("slam")
 	puff.emit_preset(&"slam_land")
+	sfx.play(&"slam")
 	is_slamming = false
 	slam_ended.emit()
 	# The raycast collides with areas only, so the hit is an obstacle's Hitbox, not its body.
@@ -201,22 +203,25 @@ func _on_obstacle_hit(obstacle: Obstacle) -> void:
 
 ## Shared by the frontal-collision and the slam-from-above paths.
 func _destroy_obstacle(obstacle: Obstacle, bounce: bool) -> void:
-	_play_sfx(point_sfx)
 	obstacle.start_dissolve(global_position)
 	if bounce:
 		velocity.y = JUMP_VELOCITY * SLAM_BOUNCE_MULTIPLIER
+		sfx.play(&"slam_jump")  # only the slam path bounces
+	# Scored first so the streak the SFX pitches itself to already counts this one.
 	score.add(1.0)
+	sfx.play_rising(&"score", _streak_step())
 
 ## Every collectible sounds the same, scores the same and frees itself; only the effect differs.
 func _collect(area: Area3D, effect: Callable) -> void:
-	_play_sfx(color_change_sfx)
+	# color-change boosts the multiplier, so the pickup runs before the score that reflects it.
 	effect.call(area)
 	score.add(1.0)
+	sfx.play_rising(&"color_change", _streak_step())
 	area.queue_free()
 
-func _play_sfx(stream: AudioStream) -> void:
-	audio_stream_player.stream = stream
-	audio_stream_player.playing = true
+## The rising pitch is the reward for a boosted streak; at a 1x modifier every score sounds alike.
+func _streak_step() -> int:
+	return score.streak if score.modifier > 1.0 else 0
 
 func _pickup_color_change(area: Area3D) -> void:
 	# Collectibles are scriptless Area3Ds, so the name still comes off the material here.

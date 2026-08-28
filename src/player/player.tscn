@@ -1,13 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://dguvbimxk8r80"]
+[gd_scene load_steps=28 format=3 uid="uid://dguvbimxk8r80"]
 
 [ext_resource type="Script" uid="uid://dm18ngbeufinn" path="res://src/player/player.gd" id="1_kqdvt"]
-[ext_resource type="AudioStream" uid="uid://4ijglykos4qn" path="res://assets/sound/score.mp3" id="2_2m7jq"]
-[ext_resource type="AudioStream" uid="uid://bqf8h8h13tvwl" path="res://assets/sound/color_change.mp3" id="3_jhvac"]
+[ext_resource type="AudioStream" uid="uid://dvsiu4o2d7lh6" path="res://assets/sound/score.wav" id="2_x42xx"]
+[ext_resource type="AudioStream" uid="uid://cv4b81xd1wrt1" path="res://assets/sound/color_change.wav" id="3_x42xx"]
 [ext_resource type="Material" uid="uid://c514kpmegsnsd" path="res://assets/resources/materials/outline-materials/red.tres" id="4_244u8"]
 [ext_resource type="ArrayMesh" uid="uid://6xji3ygn4m0u" path="res://assets/models/smooth_cube.res" id="5_5f2sf"]
-[ext_resource type="Script" path="res://src/player/puff_emitter.gd" id="6_puff"]
-[ext_resource type="Script" path="res://src/player/trail.gd" id="7_trail"]
-[ext_resource type="Script" path="res://src/player/score_keeper.gd" id="8_score"]
+[ext_resource type="Script" uid="uid://cgvnkv2r0d7nb" path="res://src/player/puff_emitter.gd" id="6_puff"]
+[ext_resource type="Script" uid="uid://dmxoh32hjuvif" path="res://src/player/trail.gd" id="7_trail"]
+[ext_resource type="Script" uid="uid://cgn2hkm6mrrhx" path="res://src/player/score_keeper.gd" id="8_score"]
+[ext_resource type="Script" uid="uid://d4jkp0cs13k4u" path="res://src/player/sfx_player.gd" id="9_sfx"]
+[ext_resource type="AudioStream" uid="uid://xrw4qjl4uxy7" path="res://assets/sound/jump.wav" id="10_jump"]
+[ext_resource type="AudioStream" uid="uid://b5vivcucdrir2" path="res://assets/sound/slam.wav" id="11_slam"]
+[ext_resource type="AudioStream" uid="uid://dt1kyc10njxne" path="res://assets/sound/slam_jump.wav" id="12_sjump"]
+[ext_resource type="AudioStream" uid="uid://cawrscq5qw756" path="res://assets/sound/change_lane.wav" id="13_lane"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qlg0r"]
 
@@ -221,8 +226,6 @@ _data = {
 
 [node name="Player" type="CharacterBody3D" unique_id=978713656]
 script = ExtResource("1_kqdvt")
-point_sfx = ExtResource("2_2m7jq")
-color_change_sfx = ExtResource("3_jhvac")
 
 [node name="Mesh" type="MeshInstance3D" parent="." unique_id=1075244860]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -239,13 +242,17 @@ shape = SubResource("BoxShape3D_qlg0r")
 transform = Transform3D(1, -3.48787e-16, 3.48787e-16, 3.48787e-16, 1, -3.48787e-16, -3.48787e-16, 3.48787e-16, 1, 2.08165e-12, 0.5, -0.1)
 shape = SubResource("BoxShape3D_p3nr5")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1928102002]
-volume_db = -5.0
-bus = &"SFX"
+[node name="Sfx" type="Node3D" parent="." unique_id=1928102002]
+script = ExtResource("9_sfx")
+jump_sfx = ExtResource("10_jump")
+slam_sfx = ExtResource("11_slam")
+slam_jump_sfx = ExtResource("12_sjump")
+lane_change_sfx = ExtResource("13_lane")
+score_sfx = ExtResource("2_x42xx")
+color_change_sfx = ExtResource("3_x42xx")
 
 [node name="PuffParticles" type="CPUParticles3D" parent="." unique_id=436362552]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
-script = ExtResource("6_puff")
 emitting = false
 amount = 26
 lifetime = 0.4
@@ -268,12 +275,13 @@ scale_amount_min = 0.6
 scale_amount_max = 1.2
 scale_amount_curve = SubResource("Curve_puff")
 color_ramp = SubResource("Gradient_puff")
+script = ExtResource("6_puff")
 
 [node name="Trail" type="MeshInstance3D" parent="." unique_id=198451092]
 top_level = true
-script = ExtResource("7_trail")
-cast_shadow = 0
 material_override = SubResource("StandardMaterial3D_trail")
+cast_shadow = 0
+script = ExtResource("7_trail")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1415720531]
 libraries = {

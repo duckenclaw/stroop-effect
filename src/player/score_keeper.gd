@@ -13,6 +13,9 @@ const MAX_MODIFIER := 5.0
 
 var points := 0.0
 var modifier := 1.0
+## Scores since the streak began. Drives the rising pitch of the score SFX; lives here because the
+## timer below is what decides when a streak is over.
+var streak := 0
 
 signal changed(total: float, modifier: float)
 
@@ -24,6 +27,7 @@ func _ready() -> void:
 
 func add(amount: float) -> void:
 	points += amount * modifier
+	streak += 1
 	start(STREAK_DECAY)
 	changed.emit(points, modifier)
 
@@ -32,4 +36,5 @@ func boost() -> void:
 
 func _on_timeout() -> void:
 	modifier = 1.0
+	streak = 0
 	changed.emit(points, modifier)
