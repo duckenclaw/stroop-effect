@@ -41,11 +41,11 @@ layout_mode = 2
 [node name="StartUI" parent="MarginContainer" unique_id=735652102 instance=ExtResource("5_sjdex")]
 layout_mode = 2
 
-[node name="PauseUI" parent="MarginContainer" instance=ExtResource("6_pause")]
+[node name="PauseUI" parent="MarginContainer" unique_id=1139589496 instance=ExtResource("6_pause")]
 visible = false
 layout_mode = 2
 
-[connection signal="game_start_requested" from="MarginContainer/StartUI" to="." method="_on_start_ui_game_start_requested"]
 [connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_restart_requested"]
-[connection signal="resume" from="MarginContainer/PauseUI" to="." method="_on_pause_ui_resume"]
+[connection signal="game_start_requested" from="MarginContainer/StartUI" to="." method="_on_start_ui_game_start_requested"]
 [connection signal="restart" from="MarginContainer/PauseUI" to="." method="_on_restart_requested"]
+[connection signal="resume" from="MarginContainer/PauseUI" to="." method="_on_pause_ui_resume"]
