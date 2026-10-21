@@ -8,6 +8,7 @@ const MODIFIER_STATUS_SCENE := preload("res://src/ui/modifier_status.tscn")
 @onready var lose_ui: LoseUI = $MarginContainer/LoseUI
 @onready var start_ui: Control = $MarginContainer/StartUI
 @onready var pause_ui: Control = $MarginContainer/PauseUI
+@onready var touch_controls: TouchControls = $TouchControls
 @onready var player: Player = Game.player
 @onready var terrain_controller: TerrainController = Game.terrain
 
@@ -25,6 +26,7 @@ func _ready():
 	hud.set_points(0.0, 1.0)
 	hud.visible = false
 	start_ui.visible = true
+	touch_controls.exclusion_zones.append(hud.pause_button)
 
 func _process(_delta):
 	# This node runs with process_mode = ALWAYS so its buttons stay clickable while the tree is
@@ -58,6 +60,9 @@ func _on_start_ui_game_start_requested():
 
 func _on_restart_requested():
 	restart()
+
+func _on_hud_pause_requested():
+	player.set_paused(true)
 
 func _on_pause_ui_resume():
 	player.set_paused(false)

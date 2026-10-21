@@ -98,10 +98,10 @@ theme_override_constants/separation = 20
 layout_mode = 2
 size_flags_vertical = 3
 text = "Controls:
-↑/W/Space - Jump
-↓/S - Slam
-→/D - Right
-←/A - Left
+↑/W/Space or swipe up / tap - Jump
+↓/S or swipe down - Slam
+→/D or swipe right - Right
+←/A or swipe left - Left
 
 Instructions:
 1. Survive as long as possible!

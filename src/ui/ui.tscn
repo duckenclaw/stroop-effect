@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bwcqe7y7c8upv"]
+[gd_scene load_steps=8 format=3 uid="uid://bwcqe7y7c8upv"]
 
 [ext_resource type="PackedScene" uid="uid://ct5v2edvqq13h" path="res://src/ui/lose_ui.tscn" id="1_orkqn"]
 [ext_resource type="Theme" uid="uid://qjkwh61ilwvk" path="res://assets/resources/main-theme.tres" id="1_sjdex"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cwj82y7otjcu" path="res://src/ui/hud.tscn" id="2_0qi8r"]
 [ext_resource type="PackedScene" uid="uid://de5fjgwgmdo2y" path="res://src/ui/start_ui.tscn" id="5_sjdex"]
 [ext_resource type="PackedScene" path="res://src/ui/pause_ui.tscn" id="6_pause"]
+[ext_resource type="Script" path="res://src/ui/touch_controls.gd" id="7_touch"]
 
 [node name="UI" type="Control" unique_id=814134532]
 process_mode = 3
@@ -45,6 +46,10 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 
+[node name="TouchControls" type="Node" parent="."]
+script = ExtResource("7_touch")
+
+[connection signal="pause_requested" from="MarginContainer/HUD" to="." method="_on_hud_pause_requested"]
 [connection signal="restart" from="MarginContainer/LoseUI" to="." method="_on_restart_requested"]
 [connection signal="game_start_requested" from="MarginContainer/StartUI" to="." method="_on_start_ui_game_start_requested"]
 [connection signal="restart" from="MarginContainer/PauseUI" to="." method="_on_restart_requested"]

@@ -10,6 +10,13 @@ extends Control
 @onready var _modifier_label: Label = $RunStatsContainer/ScoreContainer/ModifierLabel
 @onready var _distance_label: Label = $RunStatsContainer/DistanceContainer/ValueLabel
 @onready var _modifiers_container: VBoxContainer = $ModifiersContainer
+## Keyboard players pause with Esc; touch players have no Esc, so they get a button instead.
+@onready var pause_button: Button = $PauseButton
+
+signal pause_requested
+
+func _ready() -> void:
+	pause_button.visible = DisplayServer.is_touchscreen_available()
 
 ## Last whole-metre value written, so a per-frame distance update does not rebuild an identical
 ## string 60 times a second.
@@ -39,3 +46,6 @@ func set_color_word(color_name: String) -> void:
 
 func add_modifier_chip(chip: Control) -> void:
 	_modifiers_container.add_child(chip)
+
+func _on_pause_button_pressed() -> void:
+	pause_requested.emit()
