@@ -20,9 +20,9 @@
 
 [node name="TerrainController" parent="." unique_id=857633645 instance=ExtResource("2_53egh")]
 terrain_velocity_increase = 0.002
-stage_2_distance = 50.0
+stage_2_distance = 250.0
 stage_3_distance = 500.0
-stage_4_distance = 750.0
+stage_4_distance = 1000.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=564663090]
 environment = ExtResource("3_jvefd")
@@ -52,8 +52,8 @@ lose_sound = ExtResource("7_jvefd")
 [connection signal="game_started" from="CanvasLayer/UI" to="Camera" method="transition_to_gameplay"]
 [connection signal="game_started" from="CanvasLayer/UI" to="Player" method="_on_game_started"]
 [connection signal="game_started" from="CanvasLayer/UI" to="MusicController" method="_on_game_started"]
-[connection signal="stage_changed" from="TerrainController" to="MusicController" method="_on_stage_changed"]
 [connection signal="points_awarded" from="TerrainController" to="Player" method="add_points"]
+[connection signal="stage_changed" from="TerrainController" to="MusicController" method="_on_stage_changed"]
 [connection signal="collision_with_obstacle" from="Player" to="Camera" method="_on_collision_shake"]
 [connection signal="color_changed" from="Player" to="CanvasLayer/UI" method="_on_player_color_changed"]
 [connection signal="color_clear" from="Player" to="TerrainController" method="_on_color_clear"]

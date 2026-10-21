@@ -12,8 +12,8 @@ const MATERIALS_DIR := "res://assets/resources/materials/outline-materials"
 const NAMES: Array[String] = ["blue", "green", "red"]
 
 ## Tint sources for the wind puffs and the speed trail. The outline materials carry a black
-## outline_color and get their visible color from next_pass -> obstacle-materials/<color>.tres,
-## whose color lives in an albedo_texture, so there is no Color to read off the material.
+## outline_color and get their visible color from next_pass -> toon-materials/<color>.tres
+## (toon_cel.gdshader). Keep these in step with each toon material's base_color.
 const TINTS := {
 	"blue": Color(0.106, 0.259, 0.471),
 	"green": Color(0.184, 0.439, 0.247),
